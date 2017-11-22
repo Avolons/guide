@@ -1,0 +1,127 @@
+我的订单列表的各个状态：
+            if (bean.getOrder_is_delect() == 0) {
+                if (bean.getOrder_refund_goods_status() == 0) {
+                    if (bean.getOrder_status() == 1) {
+                        if(bean.getOrder_shipping_status() == 8){
+                            orderClose(bean);订单关闭
+                        }else{
+                            waitForPay(bean);代付款
+                        }
+                    } else if (bean.getOrder_status() == 2) {
+                        switch (bean.getOrder_shipping_status()) {
+                            case 1:
+                                waitForDeliver(bean);代发货
+                                break;
+                            case 2:
+                                waitForGetGoods(bean);待收货
+                                break;
+                            case 3:
+                                waitForReturn(bean);待归还
+                                break;
+                            case 4:
+                                waitForSettle(bean);待结算
+                                break;
+                            case 5:
+                                waitForSureSettle(bean);待确认结算
+                                break;
+                            case 6:
+                                waitForParise(bean);待评价
+                                break;
+                            case 7:
+                                orderComplete(bean);订单完成
+                                break;
+                        }
+                    }
+                } else if (bean.getOrder_refund_goods_status() == 1) {
+                    refundOk(bean);//退款结束
+                } else if (bean.getOrder_refund_goods_status() == 2) {
+                    if (bean.getOrder_status() == 2) {//退款退货
+                        if (bean.getOrder_shipping_status() == 2) {
+                            refundWaitRefund(bean);退货待结算
+                        } else if (bean.getOrder_shipping_status() == 3) {
+                            refundWaitRefund(bean);退货待结算
+                        } else if (bean.getOrder_shipping_status() == 5) {
+                            refundForSureSettle(bean);退货待确认结算
+                        } else if (bean.getOrder_shipping_status() == 6) {
+                            refundGoodsOk(bean);退货完成
+                        }
+                    }
+                } else if (bean.getOrder_refund_goods_status() == 4) {
+                    if (bean.getOrder_shipping_status() == 6) {
+                        refundGoodsOk(bean);退货完成
+                    }
+                }else if(bean.getOrder_refund_goods_status() == 3){
+                    refundDeal(bean);退款处理中
+                }
+            }
+
+
+订单详情的各个状态：
+        if (bean.getOrder_is_delect() == 0) {
+            if (bean.getOrderRefundStatus() == 0) {
+                if (bean.getOrderStatus() == 1) {
+                    if(bean.getOrderShippingStatus() == 8){
+                        orderClose();
+                    }else{
+                        waitForPay();
+                    }
+                    mTvPayMoney.setText("0.00");
+                } else if (bean.getOrderStatus() == 2) {
+                    mTvPayMoney.setText(DataUtil.cs(bean.getTotalPrice()));
+                    switch (bean.getOrderShippingStatus()) {
+                        case 1:
+                            waitForDelivery();
+                            break;
+                        case 2:
+                            sureToGetGoods();
+                            break;
+                        case 3:
+                            waitToReback();
+                            break;
+                        case 4:
+                            remindSettle();
+                            break;
+                        case 5:
+                            sureToSettle();
+                            break;
+                        case 6:
+                            orderParise();
+                            break;
+                        case 7:
+                            overParise();
+                            break;
+                    }
+                }
+            } else if (bean.getOrderRefundStatus() == 1) {
+                mTvPayMoney.setText(DataUtil.cs(bean.getTotalPrice()));
+                refundOk();
+            } else if (bean.getOrderRefundStatus() == 2) {
+                mTvPayMoney.setText(DataUtil.cs(bean.getTotalPrice()));
+                if (bean.getOrderStatus() == 2) {
+                    if (bean.getOrderShippingStatus() == 2) {
+                        refundSettle();
+                    } else if (bean.getOrderShippingStatus() == 3) {
+                        refundSettle();
+                    } else if (bean.getOrderShippingStatus() == 5) {
+                        refundWaitSettle();
+                    } else if (bean.getOrderShippingStatus() == 6) {
+                        refund2ok();
+                    }
+                }
+            }else if(bean.getOrderRefundStatus() == 4){
+                if (bean.getOrderShippingStatus() == 6) {
+                    mTvPayMoney.setText(DataUtil.cs(bean.getTotalPrice()));
+                    refund2ok();
+                }
+            }else if(bean.getOrderRefundStatus() == 3){
+                mTvPayMoney.setText(DataUtil.cs(bean.getTotalPrice()));
+                refundDeal();
+            }
+        }
+
+1，确认订单页面支付流程：
+OrderApi里面的orderPay ————>  返回的order_big_sn，total_price。使用order_big_sn，再次请求
+payApi里面的支付接口（待确定是哪个接口）
+2，我的订单列表和订单详情里面的支付流程：
+OrderApi里面的orderShipPay ————> 返回的order_big_sn，total_price。使用order_big_sn，再次请求
+payApi里面的支付接口（待确定是哪个接口）
