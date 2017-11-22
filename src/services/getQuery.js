@@ -1,5 +1,5 @@
 
-
+ 'use strict';
 /* 网上抄的query解析函数，在路劲中包含#的时候会出现根本解析不出来的情况，慎用 */
 var getQuery ={
 	getQueryString(name) { 

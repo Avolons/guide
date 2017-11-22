@@ -4,6 +4,9 @@
  * sevices管理器
  */
 
+ 'use strict';
+
+
 import Vue from 'vue';
 import axios from 'axios';
 

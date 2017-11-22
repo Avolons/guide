@@ -3,6 +3,7 @@
  * wzh
  * 页面主入口函数
  */
+'use strict';
 
 import Vue from 'vue';
 import store from './store';
@@ -30,7 +31,8 @@ Router.prototype.goBack = function () {
 	}
 };
 
-// 登录跳转判断
+
+/* 登录跳转判断 */
 router.beforeEach((to, from, next) => {
 	// 判断该路由是否需要登录权限
 	if (to.meta.requireAuth) {
@@ -51,8 +53,6 @@ router.beforeEach((to, from, next) => {
 });
 
 
-
-
 /* 取出本地数据，赋值到store的state中 */
 /* 主要用于赋值登录状态和认证状态 */
 const userInfo=localStorage.getItem("userInfo");
@@ -63,8 +63,6 @@ const isCertify=localStorage.getItem("isCertify");
 if(isCertify){
 	store.state.isCertify= isCertify;
 }
-
-
 
 
 /* 调用vuex组件相关功能 */
@@ -92,6 +90,8 @@ Vue.filter('currency', function(value, _currency, decimals) {
     var digitsRE = /(\d{3})(?=\d)/g;  
     return sign + _currency + head + _int.slice(i).replace(digitsRE, '$1,') + _float;  
 }); 
+
+
 /* 时间格式化过滤器 */
 Vue.filter('dataform', function(value) {  
 	return dateFormat(value*1000, 'YYYY.MM.DD');
@@ -105,7 +105,7 @@ Vue.filter('orderdata', function(value) {
 
 
 //引入css重置文件,基本的样式文件
-require('./assets/css/reset.css')
+require('./assets/css/reset.css');
 
 
 // HTTP相关
