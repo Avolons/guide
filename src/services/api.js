@@ -18,7 +18,7 @@ axios.defaults.baseURL = '你的接口地址';
 /* POST传参序列化(添加请求拦截器) */
 axios.interceptors.request.use((config) => {
   //在发送请求之前做某件事
-  if (config.method === 'post') {
+  if(config.method === 'post') {
     config.data = JSON.stringify(config.data);
   }
   return config;
