@@ -75,7 +75,6 @@
 <template>
   <div ref="wrapper" class="wapper">
       <div class="wapper_content">
-         
           <i  :class="{'swiper_height':staPullDown}" class="iconfont  swiper_pullload">&#xe616;</i>
           <i  v-show="staPullDown" :class="{'swiper_rote':hasPullDown}" class="iconfont  swiper_pulldown">&#xe72f;</i>
           <slot></slot>

@@ -4,7 +4,7 @@
  * wzh
  * 找回密码第一步
  */
- .rsFor{
+ .rsChange{
    &_main{
      padding: 0 30px;
      box-sizing: border-box;
@@ -47,11 +47,7 @@
         }
       }
      }
-     &_codeList{
-       display: flex;
-       justify-content: space-between;
-     }
-     .rsFor_main_btn{
+     .rsChange_main_btn{
         height: 45px;
         box-sizing: border-box;
         width: 100%;
@@ -64,44 +60,35 @@
         font-size: 16px;
         display: block;
         margin: 0;
-        margin-top: 35px;
      }
-      &_code{
-        width: 55% !important;
+     &_confrim{
+         margin-bottom: 23px;
+         margin-top: 8px;
+         font-size: 11px;
+         color: #999;
+         box-sizing: border-box;
+         padding: 0 8px;
      }
-      .rsFor_main_getCode{
-        width: 42% !important;
-        border: solid 1px #969696;
-        background: transparent;
-        color: #333;
-        font-size: 16px;
-        margin-top: 15px;
-     }
-      
    }
  }
 </style>
 <template lang="pug">
-  .rsFor
-    .rsFor_main
-      group.rsFor_main_group
-        x-input(placeholder="请输入手机号码",is-type="china-mobile",type="text",required,v-model="form.user_phone")
-        .rsFor_main_codeList
-          x-input(class="rsFor_main_code",placeholder="请输入验证码",required,type="text",v-model="form.code")
-          x-button(class="rsFor_main_getCode rsFor_main_btn",:class="{'register_code--disable':isDisable}",required,@click.native="getcode") {{codeText}}
-        x-button(class="rsFor_main_btn" @click.native="nextStep") 下一步
+  .rsChange
+    .rsChange_main
+      group.rsChange_main_group
+        x-input(placeholder="请输入新密码",is-type="china-mobile",type="text",required,v-model="form.password")
+        x-input(placeholder="确认新密码",required,type="text",v-model="form.passwordAgain")
+        p.rsChange_main_confrim 提示：密码可由数字和字母组成，长度不少于6位字符，不超过16位字符
+        x-button(class="rsChange_main_btn" @click.native="nextStep") 确认
 </template>
 <script>
 import { XInput, Group, XButton } from 'vux'
 export default {
   data() {
     return {
-      confrim: "",
-      toast: false,
-      state: true,
       form: {
-        user_phone: "",
-        code: "",
+        password: "",
+        passwordAgain: "",
       },
       /* 验证码内容 */
       codeText: "获取验证码",
@@ -116,20 +103,8 @@ export default {
   mounted: function() {
   },
   methods: {
-    /* 获取验证码 */
-    getcode() {
-      /* 判断手机号是否有值 */
-      if (!this.form.user_phone) {
-        this.confrim = "请输入手机号码";
-        this.toast = true;
-        return false;
-      }
-      if (!this.isDisable) {
-        
-      }
-    },
     /**@argument
-     * 进入下一步
+     * 确认修改密码
      */
     nextStep() {
       /* 值判断 */

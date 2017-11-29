@@ -1,10 +1,11 @@
+'use strict'
+
+
 /**
- * 2017.8.30
+ * 2017.11.27
  * wzh
  * 路由控制器
  */
-
-'use strict'
 
 
 import Vue from 'vue';
@@ -12,363 +13,169 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
+/* 添加该字段，表示进入这个路由是需要登录的
+meta: {
+  requireAuth: true,
+}, */
+
+/* 登录注册通用模块 */
+const Login = () =>
+  import ( /* webpackChunkName: "login" */ '../components/Login/Login.vue'); //登录
+const Forget = () =>
+  import ( /* webpackChunkName: "login" */ '../components/Login/Forget.vue'); //忘记密码
+const Change = () =>
+  import ( /* webpackChunkName: "login" */ '../components/Login/Change.vue'); //修改密码
+const Register = () =>
+  import ( /* webpackChunkName: "login" */ '../components/Login/Register.vue'); //绑定手机号码
+
+/* 四个table页面以及其父页面 */
+const Index = () =>
+  import ( /* webpackChunkName: "main" */ '../components/Main/Index.vue'); //首页
+const Home = () =>
+  import ( /* webpackChunkName: "main" */ '../components/Main/Home.vue'); //父页面
+const Plan = () =>
+  import ( /* webpackChunkName: "main" */ '../components/Main/Plan.vue'); //随访计划
+const Result = () =>
+  import ( /* webpackChunkName: "main" */ '../components/Main/Result.vue'); //随访结果
+const Mine = () =>
+  import ( /* webpackChunkName: "main" */ '../components/Main/Mine.vue'); //个人中心
+const Search = () =>
+  import ( /* webpackChunkName: "main" */ '../components/Main/Search.vue'); //搜索
+
+/* 个人中心相关页面 */
+const Setting = () =>
+  import ( /* webpackChunkName: "mine" */ '../components/Mine/Setting.vue'); //设置
+const Follow = () =>
+  import ( /* webpackChunkName: "mine" */ '../components/Mine/Follow.vue'); //特别关注
+const Opinion = () =>
+  import ( /* webpackChunkName: "mine" */ '../components/Mine/Opinion.vue'); //建议反馈
+const Patient = () =>
+  import ( /* webpackChunkName: "mine" */ '../components/Mine/Patient.vue'); //我的患者
+const ActInfo = () =>
+  import ( /* webpackChunkName: "mine" */ '../components/Mine/ActInfo.vue'); //活动通知详情
+const Activity = () =>
+  import ( /* webpackChunkName: "mine" */ '../components/Mine/Activity.vue'); //活动通知
+
 const routes = [{
-    path: '/index/:id',
-    component: index,
+    path: '/main/:id',
+    component: Home,
     children: [{
         path: "",
-        component: main
-      },
-      {
-        path: "car",
-        component: car
-      },
-      {
-        path: "order",
         meta: {
-          requireAuth: true,
+          title: "首页"
         },
-        component: order
+        component: Index,
+      },
+      {
+        path: "plan",
+        meta: {
+          title: "随访计划"
+        },
+        component: Plan
+      },
+      {
+        path: "result",
+        meta: {
+          title: "随访结果"
+        },
+        component: Result
       },
       {
         path: "mine",
         meta: {
-          // 添加该字段，表示进入这个路由是需要登录的
-          requireAuth: true,
+          title: "个人中心",
         },
-        component: mine
+        component: Mine
       },
     ]
-  }, {
-    path: '/',
-    redirect: '/index/main',
-    name: 'index',
-    component: index
   },
   {
-    path: '/chaneel',
-    name: 'chaneel',
-    component: chaneel
+    path: '/',
+    redirect: '/main/main',
+    component: Index
+  },
+  {
+    path: '/main/main/search',
+    component: Search,
+    meta: {
+      title: "搜索"
+    }
   },
   {
     path: '/login',
-    name: 'login',
-    component: login
-  }, {
-    path: '/logincode',
-    name: 'logincode',
-    component: logincode
-  }, {
-    path: '/register',
-    name: 'register',
-    component: register
-  }, {
+    component: Login,
+    meta: {
+      title: "登录"
+    }
+  },
+  {
     path: '/forget',
-    name: 'forget',
-    component: forget
-  }, {
-    path: '/list',
-    name: 'list',
-    component: list
-  }, {
-    path: '/search',
-    name: 'search',
-    component: search
-  }, {
-    path: '/goodsinfo/:id',
-    name: 'goodsinfo',
-    component: goodsinfo
-  }, {
-    path: '/authInfo',
-    name: 'authInfo',
-    component: authInfo
-  }, {
-    path: '/authPage',
-    name: 'authPage',
-    component: authPage
-  }, {
-    path: '/goodslease/:id',
-    name: 'goodslease',
-    component: goodslease
-  },
-  {
-    path: '/authentication',
-    name: 'authentication',
-    component: authentication
-  }, {
-    path: '/help',
-    name: 'help',
-    component: help
-  },
-  {
-    path: '/card',
-    name: 'card',
-    component: card
-  },
-  {
-    path: '/opinion',
-    name: 'opinion',
-    component: opinion
-  }, {
-    path: '/logistics',
-    name: 'logistics',
-    component: logistics
-  },
-  {
-    path: '/agreement',
-    name: 'agreement',
-    component: agreement
-  },
-  {
-    path: '/service',
-    name: 'service',
-    component: service
-  }, {
-    path: '/transaction',
-    name: 'transaction',
-    component: transaction
-  }, {
-    path: '/addressList',
-    name: 'addressList',
+    component: Forget,
     meta: {
-      requireAuth: true,
-    },
-    component: addressList
-  }, {
-    path: '/editAddress/:id',
-    name: 'editAddress',
+      title: "找回密码"
+    }
+  },
+  {
+    path: '/change',
+    component: Change,
     meta: {
-      requireAuth: true,
-    },
-    component: editAddress
-  }, {
-    path: '/editAddress',
+      title: "修改密码"
+    }
+  },
+  {
+    path: '/register',
+    component: Register,
     meta: {
-      requireAuth: true,
-    },
-    redirect: '/editAddress/add'
-  }, {
-    path: '/orderInfo/:id',
+      title: "绑定手机号码"
+    }
+  },
+  {
+    path: '/main/main/mine/setting',
+    component: Setting,
     meta: {
-      requireAuth: true,
-    },
-    name: 'orderInfo',
-    component: orderInfo
-  }, {
-    path: '/orderLogistics/:id',
-    name: 'orderLogistics',
-    component: orderLogistics
-  }, {
-    path: '/orderReturn',
-    name: 'orderReturn',
-    component: orderReturn
+      title: "设置"
+    }
   },
   {
-    path: '/goodsList/',
-    name: 'goodsList',
-    component: goodsList
-  }, {
-    path: '/collection',
-    name: 'collection',
-    component: collection
-  }, {
-    path: '/setting',
-    name: 'setting',
-    component: setting
-  }, {
-    path: '/about',
-    name: 'about',
-    component: about
-  }, {
-    path: '/shop/:id',
-    name: 'shop',
-    component: shop
-  }, {
-    path: '/shopInfo/:id',
-    name: 'shopInfo',
-    component: shopInfo
+    path: '/main/main/mine/follow',
+    component: Follow,
+    meta: {
+      title: "特别关注"
+    }
   },
   {
-    path: '/selected',
-    name: 'selected',
-    component: selected
+    path: '/main/main/mine/setting/opinion',
+    component: Opinion,
+    meta: {
+      title: "意见反馈"
+    }
   },
   {
-    path: '/download',
-    name: 'download',
-    component: download
-  }, {
-    path: '/orderAction/:id',
-    name: 'orderAction',
-    component: orderAction
-  }, {
-    path: '/orderSuccess',
-    name: 'orderSuccess',
-    component: orderSuccess
-  }, {
-    path: '/settlement',
-    name: 'settlement',
-    component: settlement
-  }, {
-    path: '/moreHot',
-    name: 'moreHot',
-    component: moreHot
-  },{
-    path: '/share',
-    name: 'share',
-    component: share
+    path: '/main/main/mine/patient',
+    component: Patient,
+    meta: {
+      title: "我的患者"
+    }
   },
-  /* 绘本相关路由控制器 */
   {
-    path: '/book/:id',
-    component: B_home,
-    children: [{
-        path: "",
-        component: B_index
-      },
-      {
-        path: "car",
-        meta: {
-          requireAuth: true,
-        },
-        component: B_car
-      },
-      {
-        path: "collect",
-        meta: {
-          requireAuth: true,
-        },
-        component: B_collect
-      },
-      {
-        path: "mine",
-        meta: {
-          // 添加该字段，表示进入这个路由是需要登录的
-          requireAuth: true,
-        },
-        component: B_mine
-      },
-    ]
-  }, {
-    path: '/book',
-    redirect: '/book/main',
-    name: 'book',
-    component: B_home
-  },{
-    path: '/mine_plan',
-    name: 'B_mine_plan',
-    component: B_mine_plan  
-  },{
-    path: '/mine_order',
-    name: 'B_mine_order',
-    component: B_mine_order  
-  },{
-    path: '/mine_setting',
-    name: 'B_mine_setting',
-    component: B_mine_setting  
-  },{
-    path: '/mine_age',
-    name: 'B_mine_age',
-    component: B_mine_age  
-  },{
-    path: '/book_bookInfo/:id',
-    name: 'B_bookInfo',
-    component: B_bookInfo  
-  },{
-    path: '/book_planInfo',
-    name: 'B_mine_planInfo',
-    component: B_mine_planInfo  
-  }
-
-  /* 列表页面 */
-  ,{
-    path: '/book_bookNew',
-    name: 'B_bookNew',
-    component: B_bookNew  
-  },{
-    path: '/book_bookEnglish',
-    name: 'B_bookEnglish',
-    component: B_bookEnglish  
-  },{
-    path: '/book_bookHot',
-    name: 'B_bookHot',
-    component: B_bookHot  
-  },{
-    path: '/book_bookSeries',
-    name: 'B_bookSeries',
-    component: B_bookSeries  
-  },{
-    path: '/book_bookSeriesList',
-    name: 'B_bookSeriesList',
-    component: B_bookSeriesList  
+    path: '/main/main/mine/activity',
+    component: Activity,
+    meta: {
+      title: "活动通知"
+    }
   },
-  /* 选书页面 */
   {
-    path: '/book_bookSearch',
-    name: 'B_bookSearch',
-    component: B_bookSearch  
-  },{
-    path: '/book_bookPerSearch',
-    name: 'B_bookSearch',
-    component: B_bookSearch  
-  },{
-    path: '/book_bookSearchRe',
-    name: 'B_bookSearchRe',
-    component: B_bookSearchRe  
-  },{
-    path: '/book_bookPerSearchRe',
-    name: 'B_bookPerSearchRe',
-    component: B_bookPerSearchRe  
+    path: '/main/main/mine/actInfo',
+    component: ActInfo,
+    meta: {
+      title: "活动详情"
+    }
   },
-  /* 计划和图书租赁订单相关 */
-  {
-    path: '/book_bookCard',
-    name: 'B_bookCard',
-    component: B_bookCard  
-  },{
-    path: '/book_bookCardInfo',
-    name: 'B_bookCardInfo',
-    component: B_bookCardInfo  
-  },{
-    path: '/book_bookOrderInfo',
-    name: 'B_bookOrderInfo',
-    component: B_bookOrderInfo  
-  },{
-    path: '/book_bookOrderMessage/:id',
-    name: 'B_bookOrderMessage',
-    component: B_bookOrderMessage  
-  },{
-    /* 下单成功 */
-    path: '/book_bookSuccess',
-    name: 'B_success',
-    component: B_success  
-  },{
-    /* 下单成功 */
-    path: '/book_bookFail',
-    name: 'B_fail',
-    component: B_fail  
-  },{
-    /* 下单成功 */
-    path: '/book_rule',
-    name: 'B_rules',
-    component: B_rules  
-  },{
-    /* 精选页面 */
-    path: '/featured',
-    component: featured  
-  },{
-    // 更多图书改为HTML
-    path: '/books',
-    component: books  
-  }
-  
-
-  
 ];
 
 
 
 export default new Router({
-  mode: 'hash',
+  mode: 'history',
   routes
 });

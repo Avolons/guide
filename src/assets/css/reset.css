@@ -27,48 +27,29 @@
  [v-cloak] {
    display: none;
  }
+ input:-webkit-autofill {  
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;  
+} 
 
- @font-face {
-  font-family: 'iconfont';  /* project id 400924 */
-  src: url('//at.alicdn.com/t/font_400924_wqqgxsashzvq85mi.eot');
-  src: url('//at.alicdn.com/t/font_400924_wqqgxsashzvq85mi.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_400924_wqqgxsashzvq85mi.woff') format('woff'),
-  url('//at.alicdn.com/t/font_400924_wqqgxsashzvq85mi.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_400924_wqqgxsashzvq85mi.svg#iconfont') format('svg');
-}
-
-body .weui-toast{
-  width: auto !important;
-  padding: 0 5px;
-  display: flex;
-  min-height: 30px !important;
-  line-height: 30px;
-  top: 240px;
+@font-face {
+  font-family: 'iconfont';  /* project id 486266 */
+  src: url('//at.alicdn.com/t/font_486266_jj2gx189mpge3ik9.eot');
+  src: url('//at.alicdn.com/t/font_486266_jj2gx189mpge3ik9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_486266_jj2gx189mpge3ik9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_486266_jj2gx189mpge3ik9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_486266_jj2gx189mpge3ik9.svg#iconfont') format('svg');
 }
 
-body .weui-icon_toast{
-  display: none;
-  margin: 0;
-}
-
-body .weui-toast__content{
-  margin: 0;
-}
-body .weui-tabbar{
-  border-top: 1px solid #eee;
-  overflow: hidden;
-  height: 50px;
-}
-
-body .weui-tabbar:before{
-  display: none;
-}
 
 .center{
   position: fixed;
   left: calc(50% - 19px);
   top: 40%;
   
+}
+
+.elementAct:active{
+  background-color: #eee;
 }
 
 /* 两行超过出现点点点 */
@@ -79,12 +60,14 @@ body .weui-tabbar:before{
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-.pdTop{
-  padding-top: 47px;
+/* 一行超过出现点点点 */
+.nowarp{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-body{
- 
-}
+
+
  /*预定义css属性*/
  .iconfont{
   font-family:"iconfont";
@@ -102,13 +85,9 @@ body{
      content: "";
      display: block;
      clear: both;
-   }
+  }
 
- .nowarp{
-   white-space: nowrap;
-   overflow: hidden;
-   text-overflow: ellipsis;
- }
+
  .trans1{
    transition:all 0.1s ease-in;
  }

@@ -4,6 +4,8 @@
  * 状态管理机
  */
 
+ 'use strict'
+
  
 import Vue from 'vue';
 import Vuex from 'vuex';
