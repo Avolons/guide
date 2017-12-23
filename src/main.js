@@ -27,7 +27,7 @@ Router.prototype.goBack = function () {
 		window.location.href="/";
 	}else{
 		this.isBack = true;
-		　　window.history.go(-1);
+		window.history.go(-1);
 	}
 };
 
