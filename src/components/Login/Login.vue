@@ -1,0 +1,153 @@
+<style lang="scss">
+.rsLogin {
+  &_main {
+    box-sizing: border-box;
+    padding: 0 30px;
+    background-color: #fff;
+    overflow: hidden;
+    height: 100%;
+    &_asset {
+      display: block;
+      margin-top: 55px;
+      margin-bottom: 12.5px;
+      height: 91px;
+      >img {
+        display: block;
+        margin: 0 auto;
+        height: 100%;
+      }
+    }
+    &_title {
+      height: 45px;
+      margin-bottom: 30px;
+      >img {
+        display: block;
+        margin: 0 auto;
+        height: 100%;
+      }
+    }
+    &_group {
+      .weui-cells {
+         :after {
+          display: none;
+        }
+        &:before {
+          display: none;
+        }
+      }
+      .weui-cell {
+        &:after {
+          display: none;
+        }
+        &:before {
+          display: none;
+        }
+      }
+      input {
+        font-size: 14px;
+        color: #999;
+        background: transparent;
+        text-indent: 10px;
+      }
+      .vux-x-input {
+        height: 45px;
+        box-sizing: border-box;
+        width: 100%;
+        border-radius: 4px;
+        border: solid 1px #969696;
+        margin-bottom: 15px;
+      }
+      i {
+        font-size: 20px;
+        color: #999;
+      }
+    }
+    .rsLogin_main_button {
+      margin-top: 15px;
+      height: 45px;
+      background-color: #f36837;
+      text-align: center;
+      line-height: 45px;
+      border-radius: 4px;
+      font-size: 16px;
+      color: #fff;
+      display: block;
+    }
+    &_select {
+      font-size: 11px;
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .weui-icon-success:before {
+        color: #f36837 !important;
+      }
+    }
+    &_remember {}
+    &_forget {
+      font-size: 11px;
+      color: #999;
+    }
+  }
+}
+</style>
+<template lang="pug">
+  .rsLogin
+    .rsLogin_main
+      //- svg图标
+      .rsLogin_main_asset
+        img(src="../../assets/img/common/logo.png")
+      .rsLogin_main_title
+        img(src="../../assets/img/common/title.png")
+      group.rsLogin_main_group
+        x-input(placeholder="请输入账号",type="text",v-model="form.user_phone",required) 
+          i(class="iconfont",slot="label") &#xe6ac;
+        x-input(placeholder="请输入密码",type="password",v-model="form.user_password",required)
+          i(class="iconfont" slot="label") &#xe65e;
+        .rsLogin_main_select
+          check-icon(:value.sync="remember").rsLogin_main_remember 记住密码
+          router-link(to="/forget").rsLogin_main_forget 忘记密码
+        x-button(@click.native="login").rsLogin_main_button 登录
+</template>
+<script>
+import { XInput, Group, XButton, CheckIcon } from 'vux'
+
+export default {
+  data() {
+    return {
+      /* 登录信息 */
+      form: {
+        user_phone: "",
+        user_password: ""
+      },
+      remember: false
+    }
+  },
+  components: {
+    XInput,
+    Group,
+    XButton,
+    CheckIcon
+  },
+  watch: {
+    
+  },
+  methods: {
+    login() {
+      var self = this;
+      /* 用户名格式检验 */
+      if (this.form.user_phone == '') {
+        this.confrim = "请输入正确的用户名";
+        this.toast = true;
+        return false;
+      }
+      /* 用户密码格式校验 */
+      if (this.form.user_password == '') {
+        this.confrim = "请输入正确的用户密码";
+        this.toast = true;
+        return false;
+      }
+    },
+  },
+}
+</script>

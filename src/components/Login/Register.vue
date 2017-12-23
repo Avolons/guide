@@ -2,15 +2,12 @@
 /**
  * 2017.11.22
  * wzh
- * 找回密码第一步
+ * 注册页面
  */
- .rsFor{
+ .rsReg{
    &_main{
      padding: 0 30px;
      box-sizing: border-box;
-     background-color: #fff;
-     height: 100%;
-     overflow: hidden;
      &_group{
        input {
         font-size: 14px;
@@ -48,10 +45,10 @@
       }
      }
      &_codeList{
-       display: flex; 
+       display: flex;
        justify-content: space-between;
      }
-     .rsFor_main_btn{
+     .rsReg_main_btn{
         height: 45px;
         box-sizing: border-box;
         width: 100%;
@@ -69,7 +66,7 @@
       &_code{
         width: 55% !important;
      }
-      .rsFor_main_getCode{
+      .rsReg_main_getCode{
         width: 42% !important;
         border: solid 1px #969696;
         background: transparent;
@@ -82,14 +79,16 @@
  }
 </style>
 <template lang="pug">
-  .rsFor
-    .rsFor_main
-      group.rsFor_main_group
+  .rsReg
+    .rsReg_main
+      group.rsReg_main_group
         x-input(placeholder="请输入手机号码",is-type="china-mobile",type="text",required,v-model="form.user_phone")
-        .rsFor_main_codeList
-          x-input(class="rsFor_main_code",placeholder="请输入验证码",required,type="text",v-model="form.code")
-          x-button(class="rsFor_main_getCode rsFor_main_btn",:class="{'register_code--disable':isDisable}",required,@click.native="getcode") {{codeText}}
-        x-button(class="rsFor_main_btn" @click.native="nextStep") 下一步
+          i(class="iconfont",slot="label") &#xe666;
+        .rsReg_main_codeList
+          x-input(class="rsReg_main_code",placeholder="请输入验证码",required,type="text",v-model="form.code")
+            i(class="iconfont",slot="label") &#xe601;
+          x-button(class="rsReg_main_getCode rsReg_main_btn",:class="{'register_code--disable':isDisable}",required,@click.native="getcode") {{codeText}}
+        x-button(class="rsReg_main_btn" @click.native="register") 确定
 </template>
 <script>
 import { XInput, Group, XButton } from 'vux'
@@ -102,6 +101,7 @@ export default {
       form: {
         user_phone: "",
         code: "",
+        user_password: ""
       },
       /* 验证码内容 */
       codeText: "获取验证码",
@@ -128,27 +128,45 @@ export default {
         
       }
     },
-    /**@argument
-     * 进入下一步
-     */
-    nextStep() {
+    /* 密码修改 */
+    register() {
       /* 值判断 */
       if (!this.form.user_phone) {
-        this.$vux.toast.show({
-          text: '请输入手机号码',
-          type:"text",
-          time:2000,
-        });
+        this.confrim = "请输入手机号码";
+        this.toast = true;
         return false;
       }
       if (!this.form.code) {
-        this.$vux.toast.show({
-          text: '请输入验证码',
-          type:"text",
-          time:2000,
-        });
+        this.confrim = "请输入验证码";
+        this.toast = true;
         return false;
       }
+      if (!this.form.user_password) {
+        this.confrim = "请输入新密码";
+        this.toast = true;
+        return false;
+      }
+      API.login.register(this.form).then((Response) => {
+        if (Response.body.code == 200) {
+          Response = Response.body.data;
+          /* 触发vuex登录状态更改操作 */
+          let token = Response.token;
+          let userInfo = {
+            loginname: Response.nickname,
+            avatar: Response.face,
+            id: Response.user_id,
+            token: token,
+          };
+          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          this.$store.dispatch('SetUserInfo', userInfo);
+          this.$router.push({
+            path: '/index/main'
+          })
+        } else {
+          this.confrim = Response.body.msg;
+          this.toast = true;
+        }
+      });
     },
 
   }
