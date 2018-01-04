@@ -8,11 +8,11 @@
     //- 首页主体
     .rsIndex
         b-scroll(
-          :data="bookList",
+          :data="dataList",
           pullup=true,
           pulldown=true,
           @pulldown="getIcon",
-          @scrollToEnd="getBookList",
+          @scrollToEnd="getData",
           ref="scollView",
           :swiper_pullUp="swiper_pullUp",
           :swiper_nodata="swiper_nodata"
@@ -44,7 +44,7 @@ export default {
       swiper_nodata: false,//没有更多数据
       page: 1,
       loading: false,
-      bookList: [],
+      dataList: [],
       lineData: {
         chartData: {
           columns: ['日期', '成本', '利润', '占比', '其他'],
@@ -70,18 +70,18 @@ export default {
      */
     getIcon() {
       this.page = 1;
-      this.bookList = [];
+      this.dataList = [];
 
     },
     /**
      * 获取首页推荐列表
      */
-    getBookList() {
+    getData() {
       if (this.loading) {
         return false;
       }
       this.loading = true;
-      if (this.bookList.length >= 10) {
+      if (this.dataList.length >= 10) {
         this.swiper_pullUp = true;
         this.swiper_nodata = false;
       }

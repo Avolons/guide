@@ -110,17 +110,17 @@
         x-button(@click.native="login").rsLogin_main_button 登录
 </template>
 <script>
-import { XInput, Group, XButton, CheckIcon } from 'vux'
-
+import { XInput, Group, XButton, CheckIcon } from 'vux';
+import { API } from '@/services';
 export default {
   data() {
     return {
       /* 登录信息 */
       form: {
-        user_phone: "",
-        user_password: ""
+        user_phone: "ddddd4444",
+        user_password: "123456"
       },
-      remember: false
+      remember: true
     }
   },
   components: {
@@ -129,24 +129,41 @@ export default {
     XButton,
     CheckIcon
   },
-  watch: {
-    
-  },
   methods: {
     login() {
-      var self = this;
+      console.log(1);
       /* 用户名格式检验 */
       if (this.form.user_phone == '') {
-        this.confrim = "请输入正确的用户名";
-        this.toast = true;
+        this.$vux.toast.show({
+          text: '请输入正确的用户名',
+          type: "cancel"
+        })
         return false;
       }
       /* 用户密码格式校验 */
       if (this.form.user_password == '') {
-        this.confrim = "请输入正确的用户密码";
-        this.toast = true;
+        this.$vux.toast.show({
+          text: '请输入正确的用户密码',
+          type: "cancel"
+        })
         return false;
       }
+      API.common.login({
+        username: this.form.user_phone,
+        password: this.form.user_password
+      }).then((res) => {
+        this.$vux.toast.show({
+          text: '登录成功',
+          type: "success"
+        });
+        this.$store.dispatch('SetUserInfo', res.data);
+        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        setTimeout(()=> {
+            this.$router.push('/');
+        }, 500);
+      }).catch((err) => {
+
+      });
     },
   },
 }

@@ -1,124 +1,274 @@
-/**
- * 2017.11.23
- * wzh
- * sevices管理器
- */
+/*
+*2017-12-13
+*徐鸡
+*请求管理
+*/ 
 
- 'use strict';
+'use strict';
 
+import Vue from 'vue'
+import axios from 'axios'
+import qs from 'qs'
 
-import Vue from 'vue';
-import axios from 'axios';
+/*默认请求axios*/
+Vue.prototype.$http = axios
 
-/* HTTP相关,使用Axios作为http库 */
-Vue.prototype.$http = axios;
+/*默认请求地址*/ 
+axios.defaults.baseURL = 'http://192.168.1.100:8888/';
+// axios.defaults.baseURL = 'http://192.168.1.30:8080/';
 
 
 /* 默认最长响应时间 */
-axios.defaults.timeout = 500;
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-/* 默认的接口地址 */
-/* axios.defaults.baseURL = 'http://192.168.0.103/api'; */
+axios.defaults.timeout = 5000;
 
-
+/*添加请求拦截器*/
+axios.interceptors.request.use(function (config) {
+  config.data = qs.stringify(config.data);
+  // 在发送请求之前做些什么
+  config.headers = {
+    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+  };
+  return config;
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
 
 /* 返回一个Promise(发送post请求) */
-function fetch(type, url, params) {
+function fetch (type, url, params) {
+  if(localStorage.getItem('userInfo')){
+    params.adminId= JSON.parse(localStorage.getItem('userInfo')).id;
+  }
   return new Promise((resolve, reject) => {
-    if (type === "get") {
-      axios.get(url, {params:params})
-        .then(response => {
-          resolve(response.data);
-        }, err => {
-          reject(err);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+    if (type === 'get') {
+      axios.get(url, {
+          params: params
+      })
+    .then(response => {
+      resolve(JSON.parse(response.data));
+    }, err => {
+      reject(err);
+    })
+    .catch((error) => {
+      reject(error);
+    });
     } else {
       axios.post(url, params)
-        .then(response => {
-          resolve(response.data);
-        }, err => {
-          reject(err);
-        })
-        .catch((error) => {
-          reject(error);
-        });
+    .then(response => {
+      resolve(JSON.parse(response.data));
+    }, err => {
+      reject(err);
+    })
+    .catch((error) => {
+      reject(error);
+    });
     }
   });
 }
 
-/* 使用 axios来做为http请求库 */
-
-export const  follow={
-  /**
-   * 获取随访结果
-   * @request data
-   * 
-   * userId //用户id
-   * page //分页
-   * pageNumber //每页显示的数量
-   * 
-   * @response data
-   * 
-   * state //状态 0：待开始 1：待处理 2：立即处理 
-   * name //病人姓名
-   * template //随访计划模板
-   * frequency //随访次数
-   * abnormal //是否指标异常 0：正常 1：异常
-   * follow //是否关注 0：未关注 1：已关注
-   * Diagnosis //诊断名称
-   * id //数据id或者用户id
-   * @returns 
-   */
-  result(data){
-    return fetch("get",'/follow/getResult',data);
-  },
-  /**
-   * 获取随访计划
-   * @request data
-   * 
-   * userId //用户id
-   * page //分页
-   * pageNumber //每页显示的数量
-   * 
-   * @response data
-   * 
-   * name //病人姓名
-   * template //随访计划模板
-   * time //随访计划生成时间
-   * Diagnosis //诊断名称
-   * id //数据id或者用户id
-   * countDown //倒计时
-   * @returns 
-   */
-  plan(data){
-    return fetch("get",'/follow/getPlan',data);
-  },
+/* 通用相关相关接口 *****/
+export const common ={
+    /*
+    *登录
+    *username
+    *password
+    */ 
+    login (data) {
+      return fetch('post', '/wechat/login/check', data);
+    },
+    /*
+    *获取验证码
+    *phoneNum
+    */ 
+    regPhone (data) {
+      return fetch('post', '/wechat/login/getSmsCode', data);
+    },
+    /*
+    *绑定手机号
+    *phoneNum
+    *smsCode
+    *userName
+    */ 
+    bindingPhone (data) {
+      return fetch('post', '/wechat/login/bindingPhone', data);
+    },
+    /*
+    *绑定AI头像
+    *userId//医生的iD
+    **aiPictureCode:AiPicture_qlm //ai助手头像对应的code 
+    */ 
+    bindAiPicture (data) {
+      return fetch('post', '/wechat/center/bindAiPicture', data);
+    }, 
+    /*
+    *获取12生肖
+    */ 
+    findAiPictureList (data) {
+      return fetch('post', '/wechat/center/findAiPictureList', data);
+    },
+    /*
+    *取消/添加关注
+    */ 
+    updateGz (data) {
+      return fetch('post', '/wechat/center/updateGz', data);
+    },
+    /*
+    *修改密码/找回密码
+    */ 
+    editPassword (data) {
+      return fetch('post', '/wechat/login/editPassword', data);
+    },
+    /*
+    *随访结果model获取病人信息
+    *phoneNum
+    */ 
+    getPatientRecord (data) {
+      return fetch('post', '/wechat/patientRecord/getPatientRecord', data);
+    },
+    /*
+    *修改密码
+    */ 
+    pceditPassword (data) {
+      return fetch('post', '/wechat/login/pceditPassword', data);
+    },
+    /*
+    *医生反馈意见
+    */ 
+    sendMessage (data) {
+      return fetch('post', '/wechat/center/sendMessage', data);
+    },
 };
+/********首页********/ 
+export const homePage ={
+    /*
+    *查询顶部信息
+    */ 
+    adminInfo (data) {
+      return fetch('post', '/wechat/index/adminInfo', data);
+    },
+    /*
+    *我关注的患者
+    */ 
+    getSpecialLike (data) {
+      return fetch('post', '/wechat/center/getSpecialLike', data);
+    },
+    /*
+    *用药依从性统计
+    */ 
+    getUseEatInfo (data) {
+      return fetch('post', '/wechat/index/getUseEatInfo', data);
+    },
+    /*
+    *疾病分类信息统计
+    */ 
+    diagnoseInfo (data) {
+      return fetch('post', '/wechat/index/diagnoseInfo', data);
+    },
+    /*
+    *随访结果处理结果统计
+    */ 
+    visitOrderInfo (data) {
+      return fetch('post', '/wechat/index/visitOrderInfo', data);
+    },
+    /*
+    *随访次数统计
+    */ 
+    visitCountInfo (data) {
+      return fetch('post', '/wechat/index/visitCountInfo', data);
+    },
+};
+/* 随访结果 *****/
+export const followway ={
+    /*
+    *获取列表
+    */ 
+    list (data) {
+      return fetch('post', '/wechat/VisitResult/getVisistOrder', data);
+    },
+    /*
+    *随访结果model获取病人信息
+    *phoneNum
+    */ 
+    getPatientRecord (data) {
+      return fetch('post', '/wechat/patientRecord/getPatientRecord', data);
+    },
+    /*
+    *获取模态框随访结果
+    */ 
+    getVisistOrderResult (data) {
+      return fetch('post', '/wechat/VisitResult/getVisistOrderResult', data);
+    },
+    /*
+    *指标折线图
+    */ 
+    getChartData (data) {
+      return fetch('post', '/wechat/VisitResult/getChartData', data);
+    },
+    /*
+    *处理意见
+    */ 
+    updateDiseaseInfo (data) {
+      return fetch('post', '/wechat/VisitResult/updateDiseaseInfo', data);
+    },
 
-
-export const  mine={
-  /**
-   * 获取随访结果
-   * @request data
-   * 
-   * userId //用户id
-   * page //分页
-   * pageNumber //每页显示的数量
-   * 
-   * @response data
-   * 
-   * name //病人姓名
-   * age//病人年龄
-   * sex//病人性别
-   * Diagnosis //诊断名称
-   * id //数据id或者用户id
-   * @returns 
-   */
-  result(data){
-    return fetch("get",'/mine/patient',data);
+};
+/* 随访计划 *****/
+export const followplan ={
+    /*
+    *获取列表
+    */ 
+    list (data) {
+      return fetch('post', '/wechat/flowUp/visitProject', data);
+    },
+    /*
+    *随访计划审核
+    */ 
+    editVisitProjectStatus (data) {
+      return fetch('post', '/wechat/flowUp/editVisitProjectStatus', data);
+    },
+    /*
+    *获取模态框随访结果
+    */ 
+    getVisitOrderDetail (data) {
+      return fetch('post', '/wechat/flowUp/getVisitOrderDetail', data);
+    },
+    /*
+    *获取
+    */
+};
+/* 患者列表 *****/
+export const patientList ={
+  /*
+  *获取列表
+  */ 
+  list (data) {
+    return fetch('post', '/wechat/center/getMyPatient', data);
   },
- 
+  /*
+  *获取模态框住院/门诊/随访信息
+  */ 
+  // getVisistOrderResult (data) {
+  //   return fetch('post', '/wechat/VisitResult/getVisistOrderResult', data);
+  // },
+  /*
+  *获取诊断档案时间
+  */ 
+  getRecordDate (data) {
+    return fetch('post', '/wechat/patientRecord/getRecordDate', data);
+  },
+  /*
+  *获取诊断档案时间对应的就诊信息
+  */ 
+  getRecordByDate (data) {
+    return fetch('post', '/wechat/patientRecord/getRecordByDate', data);
+  },
+
+};/* 活动通知 *****/
+export const activityTo ={
+  /*
+  *获取列表
+  */ 
+  list (data) {
+    return fetch('post', '/wechat/center/myActivity', data);
+  }
 };

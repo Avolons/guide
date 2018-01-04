@@ -4,15 +4,16 @@
  * wzh
  * 找回密码第一步
  */
- .rsFor{
-   &_main{
-     padding: 0 30px;
-     box-sizing: border-box;
-     background-color: #fff;
-     height: 100%;
-     overflow: hidden;
-     &_group{
-       input {
+
+.rsFor {
+  &_main {
+    padding: 0 30px;
+    box-sizing: border-box;
+    background-color: #fff;
+    height: 100%;
+    overflow: hidden;
+    &_group {
+      input {
         font-size: 14px;
         color: #999;
         background: transparent;
@@ -30,7 +31,7 @@
         font-size: 20px;
         color: #999;
       }
-       .weui-cells {
+      .weui-cells {
          :after {
           display: none;
         }
@@ -46,40 +47,39 @@
           display: none;
         }
       }
-     }
-     &_codeList{
-       display: flex; 
-       justify-content: space-between;
-     }
-     .rsFor_main_btn{
-        height: 45px;
-        box-sizing: border-box;
-        width: 100%;
-        border-radius: 4px;
-        background-color: #f36837;
-        border-radius: 8px;
-        color: #fff;
-        text-align: center;
-        line-height: 45px;
-        font-size: 16px;
-        display: block;
-        margin: 0;
-        margin-top: 35px;
-     }
-      &_code{
-        width: 55% !important;
-     }
-      .rsFor_main_getCode{
-        width: 42% !important;
-        border: solid 1px #969696;
-        background: transparent;
-        color: #333;
-        font-size: 16px;
-        margin-top: 15px;
-     }
-      
-   }
- }
+    }
+    &_codeList {
+      display: flex;
+      justify-content: space-between;
+    }
+    .rsFor_main_btn {
+      height: 45px;
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 4px;
+      background-color: #f36837;
+      border-radius: 8px;
+      color: #fff;
+      text-align: center;
+      line-height: 45px;
+      font-size: 16px;
+      display: block;
+      margin: 0;
+      margin-top: 35px;
+    }
+    &_code {
+      width: 55% !important;
+    }
+    .rsFor_main_getCode {
+      width: 42% !important;
+      border: solid 1px #969696;
+      background: transparent;
+      color: #333;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+  }
+}
 </style>
 <template lang="pug">
   .rsFor
@@ -92,7 +92,8 @@
         x-button(class="rsFor_main_btn" @click.native="nextStep") 下一步
 </template>
 <script>
-import { XInput, Group, XButton } from 'vux'
+import { XInput, Group, XButton } from 'vux';
+import { API } from '@/services';
 export default {
   data() {
     return {
@@ -120,13 +121,31 @@ export default {
     getcode() {
       /* 判断手机号是否有值 */
       if (!this.form.user_phone) {
-        this.confrim = "请输入手机号码";
-        this.toast = true;
+        this.$vux.toast.show({
+          text: '请输入手机号码',
+          type: "cancel"
+        });
         return false;
       }
       if (!this.isDisable) {
-        
+        this.isDisable = true;
+        this.codeText = 60;
+        let inter = setInterval(() => {
+          this.codeText--;
+          if (this.codeText == 1) {
+            clearInterval(inter);
+            this.isDisable = false;
+            this.codeText = "获取验证码";
+          }
+        }, 1000);
       }
+      API.common.regPhone({
+        phoneNum: this.form.user_phone,
+      }).then((res) => {
+        
+      }).catch((err) => {
+
+      });
     },
     /**@argument
      * 进入下一步
@@ -136,19 +155,21 @@ export default {
       if (!this.form.user_phone) {
         this.$vux.toast.show({
           text: '请输入手机号码',
-          type:"text",
-          time:2000,
+          type: "text",
+          time: 500,
         });
         return false;
       }
       if (!this.form.code) {
         this.$vux.toast.show({
           text: '请输入验证码',
-          type:"text",
-          time:2000,
+          type: "text",
+          time: 500,
         });
         return false;
       }
+
+      
     },
 
   }
