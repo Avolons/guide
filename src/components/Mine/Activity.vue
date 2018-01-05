@@ -26,11 +26,11 @@
         display: flex;
         flex-direction: column;
         >time{
-            color: #000;
-            font-size: 17px;
+            color: #333;
+            font-size: 15px;
         }
         >span{
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
         }
     }
@@ -57,10 +57,10 @@
                     :swiper_nodata="swiper_nodata"
                 )
                     ul.rsAct_main_actList
-                        li.rsAct_main_actSingle.elementAct
+                        li(@click="enterInfo(item.id)",v-for="item,index in list",:key="index").rsAct_main_actSingle.elementAct
                             h3.rsAct_main_singleTitle
-                                time 2017-11-18
-                                span.nowarp 关于二形糖尿病公益活动的通知
+                                time {{item.visitStartTime}}
+                                span.nowarp {{item.taskName}}
                             i.iconfont &#xe633;
                        
 </template>         
@@ -73,12 +73,12 @@ export default {
     components: {
         BScroll,
     },
-    computed: {
+    /* computed: {
         ...mapGetters([
             'getUserInfoUserId',
             'getUserInfoToken',
         ]),
-    },
+    }, */
     data() {
         return {
             autoFixed: true,
@@ -97,6 +97,14 @@ export default {
         },
     },
     methods: {
+        enterInfo(id){
+            this.$router.push({
+                path:'/main/main/mine/actInfo',
+                query:{
+                    id:id
+                }
+            });
+        },
         /**@argument
          * 列表刷新
          */
@@ -109,16 +117,15 @@ export default {
          * 获取列表数据
          */
         getList() {
-            if (this.list.length >= 10) {
+            if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            API.follow.result(
-                /* {
-                page: this.page,
-                pageNumber: 10,
-                userId: this.getUserInfoUserId,
-                 } */
+            API.activityTo.list(
+                {
+                    pager: this.page,
+                    limit:20,
+                 }
             ).then((res) => {
                 let time = 0;
                 if (this.list.length != 0) {
@@ -131,7 +138,7 @@ export default {
                         this.page++;
                     } else {
                         this.swiper_pullUp = false;
-                        if (this.list.length >= 10) {
+                        if (this.list.length >= 20) {
                             this.swiper_nodata = true;
                         }
                     }

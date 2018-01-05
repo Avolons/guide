@@ -68,9 +68,9 @@ const store = new Vuex.Store({
 			return getters.getUserInfo.token;
 		},
 		/* 返回用户姓名 */
-		getNamePhone(state){
+		/* getNamePhone(state){
 			return state.addressData.address_name+" "+state.addressData.mobile;
-		}
+		} */
 	}
 })
 

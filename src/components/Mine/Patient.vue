@@ -21,12 +21,12 @@
         height: 100%;
         background-color: #fff;
         &_list {
-           height: calc(100% - 84px); 
+           height: calc(100% - 44px); 
         }
         &_title {
             background-color: #f7f7f7;
-            height: 40px;
-            line-height: 40px;
+            height: 44px;
+            line-height: 44px;
             font-size: 13px;
             color: #666;
             display: flex;
@@ -58,7 +58,7 @@
     .rsPat
         .rsPat_main
             .rsPat_main_search
-                search(v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名")
+                search(@on-submit="searchData",v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名")
             .rsPat_main_title
                 span 姓名
                 span 性别/年龄
@@ -80,7 +80,7 @@
 import ListCompent from '../Common/Result.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
-import { API } from '../../services';
+import { API } from '@/services';
 import { Search } from 'vux';
 export default {
     components: {
@@ -100,12 +100,12 @@ export default {
             searchResult: "",
         }
     },
-    computed: {
+    /* computed: {
         ...mapGetters([
             'getUserInfoUserId',
             'getUserInfoToken',
         ]),
-    },
+    }, */
     methods: {
         /**@argument
         * 列表刷新
@@ -121,15 +121,14 @@ export default {
          * 获取列表数据
          */
         getList() {
-            if (this.list.length >= 10) {
+            if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            API.mine.result(
+            API.patientList.list(
                 {
-                    page: this.page,
-                    pageNumber: 10,
-                    userId: this.getUserInfoUserId,
+                    pager: this.page,
+                    limit: 20,
                 }
             ).then((res) => {
                 let time = 0;
@@ -144,7 +143,7 @@ export default {
                         this.page++;
                     } else {
                         this.swiper_pullUp = false;
-                        if (this.list.length >= 10) {
+                        if (this.list.length >= 20) {
                             this.swiper_nodata = true;
                         }
                     }
@@ -163,6 +162,12 @@ export default {
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();
         },
+        /** 
+         * 数据搜索
+         */
+        searchData(){
+            
+        }
     },
     mounted() {
         this.listRefresh();

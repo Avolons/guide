@@ -20,13 +20,13 @@
         height: 100%;
         background-color: #fff;
         &_list {
-           height: calc(100% - 84px); 
+           height: calc(100% - 44px); 
         }
         &_title {
             background-color: #f7f7f7;
-            height: 40px;
-            line-height: 40px;
-            font-size: 13px;
+            height: 44px;
+            line-height: 44px;
+            font-size: 12px;
             color: #666;
             display: flex;
             align-items: center;
@@ -79,7 +79,7 @@
 import ListCompent from '../Common/Result.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
-import { API } from '../../services';
+import { API } from '@/services';
 import { Search } from 'vux';
 export default {
     components: {
@@ -118,12 +118,11 @@ export default {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            API.mine.result(
-                /* {
-                page: this.page,
-                pageNumber: 10,
-                userId: this.getUserInfoUserId,
-                 } */
+            API.patientList.list(
+                {
+                    pager: this.page,
+                    limit: 20,
+                }
             ).then((res) => {
                 let time = 0;
                 if (this.list.length != 0) {
@@ -137,7 +136,7 @@ export default {
                         this.page++;
                     } else {
                         this.swiper_pullUp = false;
-                        if (this.list.length >= 10) {
+                        if (this.list.length >= 20) {
                             this.swiper_nodata = true;
                         }
                     }

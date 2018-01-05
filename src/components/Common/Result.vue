@@ -7,7 +7,7 @@
         
     }
     &_single{
-        font-size: 14px;
+        font-size: 12px;
         color: #333;
         height: 45px;
         line-height: 45px;
@@ -18,7 +18,7 @@
         >span{
             display: block;
             &:nth-of-type(1){
-                width: 60px;
+                width: 65px;
                 flex-shrink: 0;
             }
             &:nth-of-type(2){
@@ -68,10 +68,10 @@
     .common_result
         .common_result_main
             ul.common_result_list
-                li.common_result_single(v-for="item,index in list",@click="goToInfo(item.id)")
-                    span {{index+1}}.{{item.name}} 
-                    span {{item.sex}}/{{item.age}}
-                    span.nowarp {{item.diagnosis}}
+                li.common_result_single(v-for="item,index in list",:key="item.id",@click="goToInfo(item.id)")
+                    span.nowarp {{index+1}}.{{item.patientName}} 
+                    span {{item.patientSex}}/{{item.patientAge}}
+                    span.nowarp {{item.icdName}}
                     span 
                         i 医生家属人
                     i.iconfont &#xe633;

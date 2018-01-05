@@ -40,7 +40,14 @@
   url('//at.alicdn.com/t/font_486266_jj2gx189mpge3ik9.svg#iconfont') format('svg');
 }
 
+body .weui-cells{
+  font-size: 13px;
+  margin: 0;
+}
 
+body .weui-cell{
+  font-size: 13px;
+}
 .center{
   position: fixed;
   left: calc(50% - 19px);
