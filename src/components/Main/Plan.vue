@@ -181,7 +181,10 @@ export default {
             swiper_pullUp: false,//显示加载
             swiper_nodata: false,//没有更多数据
             list: [],
-            page: 1,
+            searchParams:{
+                pager: 1,
+                limit:20,
+            },
             noData: false,
             selectAll: [],//全选
             searchResult:"",
@@ -189,6 +192,44 @@ export default {
         }
     }, 
     methods: {
+        /**@argument
+         * 获取列表数据
+         */
+        getList() {
+               if (this.list.length >= 20) {
+                this.swiper_pullUp = true;
+                this.swiper_nodata = false;
+            }
+            API.followplan.list(
+               this.searchParams
+            ).then((res) => {
+                    let time = 0;
+                    if (this.list.length != 0) {
+                        time = 500;
+                    }
+                    setTimeout(() => {
+                        if (res.data.length > 0 || this.searchParams.pager == 1) {
+                            this.swiper_pullUp = false;
+                            this.list = this.list.concat(res.data);
+                            this.selectAll =[] ;
+                            this.page++;
+                        } else {
+                            this.swiper_pullUp = false;
+                            if (this.list.length >= 20) {
+                                this.swiper_nodata = true;
+                            }
+                        }
+                        this.$nextTick(() => {
+                            this.scollRefresh();
+                        });
+                        if (this.list.length == 0) {
+                            this.noData = true;
+                        } else {
+                            this.noData = false;
+                        }
+                    }, time);
+            })  
+        },
         /**@argument
          * 随访计划审核通过
          */
@@ -271,48 +312,7 @@ export default {
             this.selectAll =[] ;
             this.getList();
         },
-        /**@argument
-         * 获取列表数据
-         */
-        getList() {
-               if (this.list.length >= 10) {
-                this.swiper_pullUp = true;
-                this.swiper_nodata = false;
-            }
-            API.follow.plan(
-                /* {
-                page: this.page,
-                pageNumber: 10,
-                userId: this.getUserInfoUserId,
-                 } */
-            ).then((res) => {
-                    let time = 0;
-                    if (this.list.length != 0) {
-                        time = 500;
-                    }
-                    setTimeout(() => {
-                        if (res.data.length > 0 || this.page == 1) {
-                            this.swiper_pullUp = false;
-                            this.list = this.list.concat(res.data);
-                            this.selectAll =[] ;
-                            this.page++;
-                        } else {
-                            this.swiper_pullUp = false;
-                            if (this.list.length >= 10) {
-                                this.swiper_nodata = true;
-                            }
-                        }
-                        this.$nextTick(() => {
-                            this.scollRefresh();
-                        });
-                        if (this.list.length == 0) {
-                            this.noData = true;
-                        } else {
-                            this.noData = false;
-                        }
-                    }, time);
-            })  
-        },
+        
         /* 滚动列表重置刷新 */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();

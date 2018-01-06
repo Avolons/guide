@@ -35,7 +35,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 /* 返回一个Promise(发送post请求) */
-function fetch(type, url, params) {
+function fetch(type, url, params={}) {
   if (localStorage.getItem('userInfo')) {
     params.adminId = JSON.parse(localStorage.getItem('userInfo')).id;
   }

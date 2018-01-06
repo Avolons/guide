@@ -85,7 +85,11 @@ export default {
             swiper_pullUp: false,//显示加载
             swiper_nodata: false,//没有更多数据
             list: [],
-            page: 1,
+            //筛选字段集合
+            searchParams:{
+                pager: 1,
+                limit:20,
+            },
             noData: false,//当前页面暂无数据
             searchResult:"",
         }
@@ -108,29 +112,25 @@ export default {
          * 获取列表数据
          */
         getList() {
-            if (this.list.length >= 10) {
+            if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            API.follow.result(
-                /* {
-                page: this.page,
-                pageNumber: 10,
-                userId: this.getUserInfoUserId,
-                 } */
+            API.followway.list(
+                this.searchParams
             ).then((res) => {
                     let time = 0;
                     if (this.list.length != 0) {
                         time = 500;
                     }
                     setTimeout(() => {
-                        if (res.data.length > 0 || this.page == 1) {
+                        if (res.data.length > 0 || this.searchParams.pager == 1) {
                             this.swiper_pullUp = false;
                             this.list = this.list.concat(res.data);
                             this.page++;
                         } else {
                             this.swiper_pullUp = false;
-                            if (this.list.length >= 10) {
+                            if (this.list.length >= 20) {
                                 this.swiper_nodata = true;
                             }
                         }

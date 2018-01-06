@@ -193,9 +193,9 @@ $duration: .4s;
                 width: calc(100% - 30px);
             }
             &_title {
-                font-size: 17px;
+                font-size: 15px;
                 color: #333;
-                margin-bottom: 15px;
+                margin-bottom: 10px;
                 &--abnormal{
                    color: #fa2525; 
                 }
@@ -310,23 +310,23 @@ $duration: .4s;
             .rsCommon_single(v-for="item,index in list",:key="item.id")
                 input(@change="inputChange",v-show="type==1",type="checkbox",v-model="selectResult",:id='"check"+index',:value="item.id").mui-checkbox
                 .rsCommon_single_content
-                    h3.rsCommon_single_title(:class="{'rsCommon_single_title--abnormal':item.abnormal===1}") {{item.name}}
+                    h3.rsCommon_single_title(:class="{'rsCommon_single_title--abnormal':item.abnormal===1}") {{item.patientName}}
                         span(v-show="item.abnormal===1") 指标异常
                     .rsCommon_single_nameBox(@click="maxHeight(item,index)",:class="{'rsCommon_single_nameBox--maxHeight':!item.maxHeight}")
-                        p 诊断名称：{{item.diagnosis}}
+                        p 诊断名称：{{item.zdmc}}
                         i(v-show="overArray[index]==1").iconfont &#xe63e;
-                    p.rsCommon_single_template 随访计划：{{item.template}}
+                    p.rsCommon_single_template 随访计划：{{item.visitProjectName}}
                     p.rsCommon_single_state(v-show="type==0") 状态：第{{item.frequency}}次随访 
                         span(v-show="item.state==0",data-type=0) 待开始
                         span(v-show="item.state==1",data-type=1) 待处理
                         span(v-show="item.state==2",data-type=2) 立即处理
-                    p(v-show="type==1").rsCommon_single_planTime 随访计划生成时间：{{item.time}}
+                    p(v-show="type==1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
                     .rsCommon_single_countdown(v-show="type==1") {{item.countDown}}
                         span 后自动通过审核
-                    button(type="button",v-show="item.follow!=1&&type==0").rsCommon_single_add
+                    button(type="button",v-show="item.islike!=1&&type==0").rsCommon_single_add
                         i.iconfont &#xe61a;
                         | 关注
-                    button(type="button",v-show="item.follow==1&&type==0").rsCommon_single_add.rsCommon_single_add--haveAdd 已关注
+                    button(type="button",v-show="item.islike==1&&type==0").rsCommon_single_add.rsCommon_single_add--haveAdd 已关注
  </template>
  
  

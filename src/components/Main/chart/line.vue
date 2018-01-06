@@ -1,5 +1,9 @@
 <template>
-  <ve-line :data="lineData.data" :settings="lineData.setting"></ve-line>
+  <ve-line 
+    :legend-visible="false" 
+    :data="lineData.data"
+    :settings="lineData.setting"
+    ></ve-line>
 </template>
 
 <script>
