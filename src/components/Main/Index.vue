@@ -124,15 +124,94 @@
 			height: 200px;
 			flex-grow: 0;
 			flex-shrink: 0;
+			position: relative;
+			>h3{
+				font-size: 18px;
+				color: #666;
+				top: 50%;
+				position: absolute;
+				transform: translateY(-50%);
+				text-align: center;
+				width: 100%;
+			}
 		}
 		&_indexList {
 			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			box-sizing: border-box;
+			padding-right: 15px;			
 		}
 		&_disChartLine {
 			width: 100%;
 		}
+		&_commonTitle {
+			.weui-cell__ft{
+				font-size:13px;
+			}
+		}
+		&_indexPer{
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 10px;
+			>div{
+				width: 30%;
+				position: relative;
+				height: 53px;
+				border-radius: 2px;
+				border: solid 1px #e9e9e9;
+				>h3{
+					font-size: 15px;
+					color: #484848;
+					height: 33px;
+					line-height: 33px;
+					text-align: center;
+				}
+				>span{
+					display: block;
+					height: 20px;
+					background-color: #f8f8f8;
+					border: solid 1px #e9e9e9;
+					color: #484848;
+					font-size: 10px;
+					text-align: center;
+					line-height: 20px;
+				}
+			}
+		}
+		&_indexSingle{
+			display: flex;
+			height: 20px;
+			align-items: center;
+			margin-bottom: 5px;
+			>span{
+				height: 10px;
+				width: 10px;
+				border-radius: 50%;
+				display: block;
+				flex-shrink: 0;
+				flex-grow: 0;
+				margin-right: 5px;
+			}
+			>h4{
+				font-size: 12px;
+				color: #666;
+				flex: 1;
+				font-weight: 400;
+			}
+			>h5{
+				margin-left: 5px;
+				font-size: 12px;
+				color: #333;
+				font-weight: 400;
+				width: 40px;
+				flex-shrink: 0;
+				flex-grow: 0;
+			}
+		}
 	}
-	&_ {}
+	
 	&_ {}
 }
 </style>
@@ -171,26 +250,38 @@
 		.rsIndex_chart
 			//- 疾病分类情况
 			.rsIndex_chart_disease
-				group
+				group.rsIndex_chart_commonTitle
 					popup-radio(title="疾病分布情况" :options="timeOptions" v-model="dataList[0].timeSelect")
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChart
 						pie-example(:pieData="dataList[0].pieData")
+						h3 {{dataList[0].pieData.data.rows[0].Count}}人
 					.rsIndex_chart_indexList
-						li.rsIndex_chart_indexSingle
+						li(v-for="item,index in dataList[0].pieData.data.rows",:key="item.index").rsIndex_chart_indexSingle
+							span(:style="{'backgroundColor':dataList[0].pieData.color[index]}") 
+							h4.nowarp {{item.diagnoseName}}
+							h5 {{item.percent}}%
 					
 			//- 用药依从性
 			.rsIndex_chart_drugs
-				group
+				group.rsIndex_chart_commonTitle
 					popup-radio(title="用药依从性" :options="timeOptions" v-model="dataList[1].timeSelect")
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChart
 						pie-example(:pieData="dataList[1].pieData")
+						h3 {{dataList[1].pieData.data.rows[0].Count}}人次
 					.rsIndex_chart_indexList
-						li.rsIndex_chart_indexSingle
+						.rsIndex_chart_indexPer
+							div(v-for="item,index in dataList[1].pieData.data.rows",:key="item.index") 
+								h3 {{item.percent}}%
+								span {{item.diagnoseName}}
+						li(v-for="item,index in dataList[1].pieData.data.rows",:key="item.index").rsIndex_chart_indexSingle
+							span(:style="{'backgroundColor':dataList[1].pieData.color[index]}")  
+							h4.nowarp {{item.diagnoseName}}
+							h5 {{item.itemCount}}
 			//- 随访数量统计
 			.rsIndex_chart_drugs
-				group
+				group.rsIndex_chart_commonTitle
 					popup-radio(title="随访数量统计" :options="timeOptions" v-model="dataList[2].timeSelect")
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChartLine

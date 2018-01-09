@@ -34,10 +34,11 @@ Router.prototype.goBack = function () {
 
 /* 登录跳转判断 */
 router.beforeEach((to, from, next) => {
+	store.commit('updateLoadingStatus', {isLoading: true});
 	// 判断该路由是否需要登录权限
 	if (to.meta.requireAuth) {
 		// 通过vuex state获取当前的token是否存在
-		if(store.state.userInfo.token) {   
+		if(store.state.userInfo.id) {   
 			next();
 		}
 		else { 
@@ -58,16 +59,22 @@ router.beforeEach((to, from, next) => {
 });
 
 
+router.afterEach(function (to) {
+	store.commit('updateLoadingStatus', {isLoading: false});
+  })
+
 /* 取出本地数据，赋值到store的state中 */
 /* 主要用于赋值登录状态和认证状态 */
 const userInfo=localStorage.getItem("userInfo");
 if(userInfo){
 	store.state.userInfo= JSON.parse(userInfo);
 }
-const isCertify=localStorage.getItem("isCertify");
-if(isCertify){
-	store.state.isCertify= isCertify;
-}
+
+/**
+ * 全局loading监控
+ */
+
+
 
 
 /* 调用vuex组件相关功能 */
@@ -78,6 +85,8 @@ Vue.use(ConfirmPlugin);
 import  { ToastPlugin } from 'vux';
 Vue.use(ToastPlugin);
 import { dateFormat } from 'vux';
+import { DatetimePlugin } from 'vux';
+Vue.use(DatetimePlugin);
 Vue.prototype.dateFormat=dateFormat;
 
 
@@ -101,11 +110,7 @@ import './mock/mock.js';
 
 
 
-
-window.Vue = Vue;
-
-
-new Vue({
+window.App=new Vue({
   	template: '<App/>',
 	router,
   	store,

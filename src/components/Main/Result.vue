@@ -39,8 +39,8 @@
 <template lang="pug">
     .rsRes
         .rsRes_main
-            .rsRes_nodata(v-show="noData")
-                i(class="iconfont")  &#xe724; 
+            .common_nodata(v-show="noData")
+                i(class="iconfont")  &#xe628; 
                 h3.rsRes_nodata_title 暂无相关随访结果
             .rsRes_content(v-show="!noData")
                 .rsRes_content_search

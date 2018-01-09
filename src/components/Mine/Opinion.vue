@@ -5,6 +5,7 @@
     background-color: #fff;
     box-sizing: border-box;
     padding: 0 15px;
+    padding-top: 15px;
     .weui-cells {
         &:before {
             display: none;
@@ -40,6 +41,7 @@
         border: none;
         border: 1px solid #dadada;
         box-sizing: border-box;
+        font-size: 13px;
         padding: 5px;
         margin-top: 20px;
     }
@@ -76,7 +78,7 @@
 <script>
 import { XHeader, Group, XButton, XTextarea } from 'vux'
 import { mapGetters } from 'vuex'
-import { API } from '../../services'
+import { API } from '@/services'
 
 export default {
     components: {
@@ -91,12 +93,12 @@ export default {
             contact: ""//联系方式
         }
     },
-    computed: {
+   /*  computed: {
         ...mapGetters([
             'getUserInfoUserId',
             'getUserInfoToken',
         ])
-    },
+    }, */
     methods: {
         /**@argument
          * 提交评价
@@ -105,34 +107,35 @@ export default {
             if (!this.content) {
                 this.$vux.toast.show({
                     text: '请输入您的评价',
-                    time: 1500,
+                    time: 1000,
                 });
                 return false;
             }
             if (!this.contact) {
                 this.$vux.toast.show({
                     text: '请输入您的联系方式',
-                    time: 1500,
+                    time: 1000,
                 });
                 return false;
             }
-            API.person.feedback({
-                userId: this.getUserInfoUserId,
-                token: this.getUserInfoToken,
-                content: this.content,
-                contact: this.contact
+            API.common.sendMessage({
+                fromSys:2,
+                suggestion: this.content,
+                contactWay: this.contact
             }).then((res) => {
-                if (res.body.code == 200) {
                     this.$vux.toast.show({
                         text: '感谢您的评价',
-                        time: 1500,
+                        time: 500,
                     });
                     this.content = "";
                     this.contact = "";
-                } else {
+                    setTimeout(() =>{
+                      this.$router. back(-1);
+                    }, 800);
+               
+            }).catch((err)=>{
 
-                }
-            })
+            });
         }
     }
 }

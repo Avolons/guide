@@ -14,8 +14,11 @@
         justify-content: space-between;
         align-items: center;
         padding: 7.5px 15px;
-        margin-top: 15px;
+        margin-top: 10px;
         box-sizing: border-box;
+        &:first-of-type{
+            margin-top: 0;
+        }
         >i{
             font-size: 20px;
             color: #c7c7c7;
@@ -42,8 +45,8 @@
 <template lang="pug">
     .rsAct
         .rsAct_main
-            .rsAct_nodata(v-show="noData")
-                i(class="iconfont")  &#xe724; 
+            .common_nodata(v-show="noData")
+                i(class="iconfont")  &#xe628;
                 h3.rsAct_nodata_title 暂无相关活动通知
             .rsAct_main_list
                 b-scroll(

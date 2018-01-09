@@ -68,8 +68,15 @@ export default {
                     id : "",
                     token : "",
                 };
+            /** 
+             * 清除本地所有信息
+             */
             localStorage.setItem("userInfo",'');
             self.$store.dispatch('SignOut');
+            /** 
+             * 返回登录页面
+             */
+            self.$router.push("/login");
             }
         })
          

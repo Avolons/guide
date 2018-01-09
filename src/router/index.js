@@ -27,6 +27,8 @@ const Change = () =>
   import ( /* webpackChunkName: "login" */ '../components/Login/Change.vue'); //修改密码
 const Register = () =>
   import ( /* webpackChunkName: "login" */ '../components/Login/Register.vue'); //绑定手机号码
+const ChoseAi = () =>
+  import ( /* webpackChunkName: "login" */ '../components/Login/ChoseAi.vue'); //绑定手机号码
 
 /* 四个table页面以及其父页面 */
 const Index = () =>
@@ -120,6 +122,13 @@ const routes = [{
     component: Change,
     meta: {
       title: "修改密码"
+    }
+  },
+  {
+    path: '/choseAi',
+    component: ChoseAi,
+    meta: {
+      title: "选择AI助手"
     }
   },
   {

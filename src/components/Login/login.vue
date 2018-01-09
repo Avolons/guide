@@ -106,7 +106,7 @@
           i(class="iconfont" slot="label") &#xe65e;
         .rsLogin_main_select
           check-icon(:value.sync="remember").rsLogin_main_remember 记住密码
-          router-link(to="/forget").rsLogin_main_forget 忘记密码
+          //- router-link(to="/forget").rsLogin_main_forget 忘记密码
         x-button(@click.native="login").rsLogin_main_button 登录
 </template>
 <script>
@@ -131,7 +131,6 @@ export default {
   },
   methods: {
     login() {
-      console.log(1);
       /* 用户名格式检验 */
       if (this.form.user_phone == '') {
         this.$vux.toast.show({
@@ -159,6 +158,10 @@ export default {
         this.$store.dispatch('SetUserInfo', res.data);
         localStorage.setItem("userInfo", JSON.stringify(res.data));
         setTimeout(()=> {
+          /** 
+           *  判断是否已经选择智能ai助手
+           *  选择了之后直接转到首页，没有则让其选择ai助手
+           */
             this.$router.push('/');
         }, 500);
       }).catch((err) => {

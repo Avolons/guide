@@ -14,8 +14,8 @@ import qs from 'qs'
 Vue.prototype.$http = axios
 
 /*默认请求地址*/
-axios.defaults.baseURL = 'http://192.168.1.100:8888/';
-// axios.defaults.baseURL = 'http://192.168.1.30:8080/';
+/* axios.defaults.baseURL = 'http://192.168.1.100:8888/'; */
+axios.defaults.baseURL = 'http://192.168.1.32:8080/';
 
 
 /* 默认最长响应时间 */
@@ -35,7 +35,7 @@ axios.interceptors.request.use(function (config) {
 });
 
 /* 返回一个Promise(发送post请求) */
-function fetch(type, url, params={}) {
+function fetch(type, url, params = {}) {
   if (localStorage.getItem('userInfo')) {
     params.adminId = JSON.parse(localStorage.getItem('userInfo')).id;
   }
@@ -127,6 +127,10 @@ export const common = {
   },
   /*
    *修改密码
+   adminId:108 //医生id
+   oldPassword:123456789 
+   newPassword:123456   //新密码
+
    */
   pceditPassword(data) {
     return fetch('post', '/wechat/login/pceditPassword', data);

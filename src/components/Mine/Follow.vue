@@ -35,7 +35,7 @@
             padding: 0 15px;
             >span {
                 &:nth-of-type(1){
-                width: 60px;
+                width: 65px;
                 flex-shrink: 0;
                 text-indent: 10px;
             }
@@ -46,6 +46,7 @@
             }
             &:nth-of-type(3){
                 flex-grow: 1;
+                text-align: center;
                 flex-shrink: 1;
             }
             }
@@ -56,8 +57,9 @@
 <template lang="pug">
     .rsFollow
         .rsFollow_main
-            .rsFollow_main_search
-                search(v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名")
+            .common_nodata(v-show="noData")
+                i(class="iconfont")  &#xe628;
+                h3.rsAct_nodata_title 暂无关注患者
             .rsFollow_main_title
                 span 姓名
                 span 性别/年龄

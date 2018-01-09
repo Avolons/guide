@@ -19,6 +19,8 @@ const store = new Vuex.Store({
 		userInfo : {
 			
 		},
+		// 页面切换显示loading
+		isLoading:false,
 	},
 	actions: {
 		/* 设置用户登录信息 */
@@ -53,6 +55,18 @@ const store = new Vuex.Store({
 			state={};
 			/* window.location.href="/#/index/main"; */
 		},
+		//切换显示状态
+		updateLoadingStatus (state, payload) {
+			let times=0;
+			if(!payload.isLoading){
+				times=1000;
+			}
+			setTimeout(()=> {
+				state.isLoading = payload.isLoading;
+			}, times);
+			
+		 }
+	  
 	},
 	getters: {
 		/* 返回用户信息 */

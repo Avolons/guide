@@ -66,23 +66,39 @@
             br
             | 作为您的AI虚拟助手吧！
         ul.rsAi_main_list
-            li.rsAi_main_single(v-for="item,index in nameList",@click="chooseAi(index)",:class="{'rsAi_main_single--select':choseList[index]==1}")
+            li.rsAi_main_single(v-for="item,index in AiList",@click="chooseAi(index)",:class="{'rsAi_main_single--select':choseList[index]==1}")
                 img(src="../../assets/img/common/logo.png")
-                h4 {{item}}
+                h4 {{item.remark}}
 
         button(type="button",@click="submitAi").rsAi_main_btn 确定
 </template>
 <script>
-import { API } from '../../services';
+import { API } from '@/services';
 export default {
     data() {
         return {
-            choseIndex:-1,
+            choseIndex: -1,
             choseList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-            nameList: ["吉庆鼠", "孺子牛", "霹雳虎", "可爱兔", "旺福龙", "远足蛇", "千里马", "喜洋羊", "旋风猴", "金喜鸡", "福禄狗", "招财猪"],
+            AiList: [],
         }
     },
+    mounted() {
+        this.getAiList();
+    },
     methods: {
+        /** 
+         * 获取生肖列表
+         */
+        getAiList() {
+            API.common.findAiPictureList().then((res) => {
+                this.AiList = res.data.SysConfigLsit;
+            }).catch((err) => {
+
+            });
+        },
+        /** 
+         * 选择ai助手
+         */
         chooseAi(index) {
             let voidArry = [];
             for (let item of this.choseList) {
@@ -90,8 +106,11 @@ export default {
             }
             this.choseList = voidArry;
             Vue.set(this.choseList, index, 1);
-            this.choseIndex=index;
+            this.choseIndex = index;
         },
+        /** 
+         * 提交ai
+         */
         submitAi() {
             let flag = 0;
             for (const item of this.choseList) {
@@ -103,12 +122,26 @@ export default {
                 this.$vux.toast.show({
                     text: '请选择合适的ai助手',
                     type: "text",
-                    time: 1500
+                    time: 1000
                 });
             } else {
-                this.$store.dispatch('setAiIndex',this.choseIndex);
-                this.$router.push('/');
+                /* this.$store.dispatch('setAiIndex', this.choseIndex);
+                this.$router.push('/'); */
+                API.common.bindAiPicture({
+                    aiPictureCode:this.AiList[this.choseIndex].key
+                }).then((res) => {
+                    this.$vux.toast.show({
+                        text: '选择成功',
+                        type: "success"
+                    });
+                    setTimeout(() => {
+                        this.$router.push('/');
+                    }, 500);
+                }).catch((err) => {
+
+                });
             }
+
         }
     },
 }

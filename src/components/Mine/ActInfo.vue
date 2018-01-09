@@ -66,7 +66,19 @@
                 width: 100%;
             }
         }
-        &_textList {}
+        &_textList {
+            box-sizing: border-box;
+            padding: 0 15px;
+            >h3{
+                font-size: 14px;
+                color: #666;
+            }
+            >p{
+                font-size: 12px;
+                text-indent: 15px;
+                color: #666;
+            }
+        }
         &_single {}
     }
 }
@@ -84,7 +96,7 @@
         .rsActInfo_main
             .rsActInfo_main_content
                 b-scroll(
-                    :data="[infoData]",
+                    :data="dataList",
                     @pulldown="getData",
                     pulldown=true,
                     ref="scollView",
@@ -92,23 +104,22 @@
                     :swiper_nodata="swiper_nodata"
                 )
                     .rsActInfo_main_header
-                        h4 通知人数: {{infoData.visitCount}}
+                        h4 通知人数: {{dataList[0].visitCount}}
                         .rsActInfo_main_progress
                             span 进度
                             .rsActInfo_main_mes
-                                span {{infoData.visitCount}}
-                                i(:range="infoData.visitCount").rsActInfo_main_line
-                    ul.rsActInfo_main_textList
-                        li.rsActInfo_main_single
-                            h3  关于二型糖尿病公益活动的通知
-                            p 
+                                span {{dataList[0].visitCount}}
+                                i(:range="dataList[0].visitCount").rsActInfo_main_line
+                    .rsActInfo_main_textList
+                        h3  {{dataList[0].taskName}}
+                        p {{dataList[0].remark}}
 
 </template>         
 
 <script>
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
-import { API } from '../../services';
+import { API } from '@/services';
 export default {
     components: {
         BScroll,
@@ -124,7 +135,9 @@ export default {
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
             swiper_nodata: false,//没有更多数据
-            infoData: {},
+            dataList:[{
+
+            }],
         }
     },
     methods: {
@@ -137,7 +150,7 @@ export default {
                     taskId: this.id
                 }
             ).then((res) => {
-                this.infoData = res.data;
+                this.dataList.splice(0,1,res.data);
                 this.$nextTick(() => {
                     this.scollRefresh();
                 });
