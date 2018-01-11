@@ -168,7 +168,7 @@
                         :swiper_pullUp="swiper_pullUp",
                         :swiper_nodata="swiper_nodata"
                         )
-                        list-compent(type=1,:list="list",ref="listplan",@itemChange="itemChange") 
+                        list-compent(:type="listType",:list="list",ref="listplan",@itemChange="itemChange") 
 </template>         
 
 <script>
@@ -186,7 +186,7 @@ export default {
 
     data() {
         return {
-            listType: 1,//列表样式类型
+            listType: '1',//列表样式类型
             tableNumber: [0, 0, 0],
             currentTable: 0,//当前的table
             autoFixed: true,
@@ -221,12 +221,15 @@ export default {
             if (type == 0) {
                 this.searchParams.limit = 20;
                 this.searchParams.status = 4;
+                this.listType='1';
             } else if (type == 1) {
                 this.searchParams.limit = 20;
                 this.searchParams.status = 1;
+                this.listType='2';
             } else {
                 this.searchParams.limit = 20;
                 this.searchParams.status = 2;
+                this.listType='2';
             }
             this.list = [];
             this.getList();
@@ -254,7 +257,7 @@ export default {
                         this.tableNumber[1] = res.passCount;
                         this.tableNumber[2] = res.noPassCount;
                         this.selectAll = [];
-                        this.page++;
+                        this.searchParams.pager++;
                     } else {
                         this.swiper_pullUp = false;
                         if (this.list.length >= 20) {

@@ -1,36 +1,83 @@
 <style lang="scss">
-    .rsRes{
-        &_main{
-            height: 100%;
-            .weui-search-bar__cancel-btn{
-                color: #666;
-                font-size: 15px;
-            }
-            .weui-search-bar__box .weui-search-bar__input{
-                color: #999;
-            }
-            .weui-search-bar{
-                background-color: #f4f4f4;
-                &:after{
-                    display: none;
-                }
+.rsRes {
+    &_nodata {
+        position: fixed;
+        left: 0;
+        top: 99px;
+        width: 100%;
+        height: calc(100% - 152px);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        >i {
+            font-size: 120px;
+            color: #999;
+            width: 120px;
+            text-align: center;
+            margin-top: 50%;
+        }
+        >h3 {
+            margin-top: 10px;
+            font-size: 13px;
+            text-align: center;
+        }
+    }
+    &_main {
+        height: 100%;
+        .weui-search-bar__cancel-btn {
+            color: #666;
+            font-size: 15px;
+        }
+        .weui-search-bar__box .weui-search-bar__input {
+            color: #999;
+        }
+        .weui-search-bar {
+            background-color: #f4f4f4;
+            &:after {
+                display: none;
             }
         }
-        &_content{
-            height: 100%;
-            overflow-y: auto;
-            &_search{
-                height: 44px;
+    }
+    &_content {
+        height: 100%;
+        overflow-y: auto;
+        &_search {
+            height: 44px;
         }
-        &_list{
+        &_list {
             height: calc(100% - 44px);
         }
-        &_{
-            
+        &_table {
+            height: 45px;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            >span {
+                display: block;
+                height: 100%;
+                line-height: 45px;
+                text-align: center;
+                font-size: 14px;
+                color: #999;
+                width: calc(50% - 0.5px);
+            }
+            >.select {
+                color: #f36837;
+            }
+            >i {
+                height: 50%;
+                width: 1px;
+                background-color: #999;
+                display: block;
+                flex-shrink: 0;
+            }
+            margin-bottom: 10px;
         }
-        }
-        
     }
+}
 </style>
 
 
@@ -39,12 +86,16 @@
 <template lang="pug">
     .rsRes
         .rsRes_main
-            .common_nodata(v-show="noData")
+            .rsRes_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628; 
                 h3.rsRes_nodata_title 暂无相关随访结果
-            .rsRes_content(v-show="!noData")
+            .rsRes_content
                 .rsRes_content_search
                     search(v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名") 
+                .rsRes_content_table
+                    span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 待处理({{tableNumber[0]}})
+                    i
+                    span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 已处理({{tableNumber[1]}})
                 .rsRes_content_list
                     b-scroll(
                         :data="list",
@@ -72,40 +123,50 @@ export default {
         ListCompent,
         Search
     },
-    computed: {
-        ...mapGetters([
-            'getUserInfoUserId',
-            'getUserInfoToken',
-        ]),
-    },
     data() {
         return {
-            autoFixed:true,
+            currentTable: 0,//当前的table
+            tableNumber: [0, 0],
+            autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
             swiper_nodata: false,//没有更多数据
             list: [],
             //筛选字段集合
-            searchParams:{
-                pager: 1,
-                limit:20,
+            searchParams: {
+                patientName:'', //病人名称
+                vetStatus:1,    //1未处理，11已处理
+                pager: 1 , //默认1
+                limit: 20   //默认100
+
             },
             noData: false,//当前页面暂无数据
-            searchResult:"",
+            searchResult: "",
         }
-    }, 
+    },
     watch: {
-        "selectResult":function(){
+        "selectResult": function() {
             this.itemChange();
         },
     },
     methods: {
+        tableSwitch(type) {
+            this.currentTable = type;
+            this.searchParams.pager = 1;
+            if (type == 0) {
+                this.searchParams.vetStatus = 1;
+            } else {
+                this.searchParams.vetStatus = 11;
+            }
+            this.list = [];
+            this.getList();
+        },
         /**@argument
          * 列表刷新
          */
         listRefresh() {
-            this.list=[];
-            this.page=1;
+            this.list = [];
+            this.searchParams.pager = 1;
             this.getList();
         },
         /**@argument
@@ -119,30 +180,30 @@ export default {
             API.followway.list(
                 this.searchParams
             ).then((res) => {
-                    let time = 0;
-                    if (this.list.length != 0) {
-                        time = 500;
+                let time = 0;
+                if (this.list.length != 0) {
+                    time = 500;
+                }
+                setTimeout(() => {
+                    if (res.data.length > 0 || this.searchParams.pager == 1) {
+                        this.swiper_pullUp = false;
+                        this.list = this.list.concat(res.data);
+                        this.searchParams.pager++;
+                    } else {
+                        this.swiper_pullUp = false;
+                        if (this.list.length >= 20) {
+                            this.swiper_nodata = true;
+                        }
                     }
-                    setTimeout(() => {
-                        if (res.data.length > 0 || this.searchParams.pager == 1) {
-                            this.swiper_pullUp = false;
-                            this.list = this.list.concat(res.data);
-                            this.page++;
-                        } else {
-                            this.swiper_pullUp = false;
-                            if (this.list.length >= 20) {
-                                this.swiper_nodata = true;
-                            }
-                        }
-                        this.$nextTick(() => {
-                            this.scollRefresh();
-                        });
-                        if (this.list.length == 0) {
-                            this.noData = true;
-                        } else {
-                            this.noData = false;
-                        }
-                    }, time);
+                    this.$nextTick(() => {
+                        this.scollRefresh();
+                    });
+                    if (this.list.length == 0) {
+                        this.noData = true;
+                    } else {
+                        this.noData = false;
+                    }
+                }, time);
             })
         },
         /**@argument
@@ -156,7 +217,7 @@ export default {
         this.listRefresh();
     },
     activated() {
-       
+
     }
 }
 </script>

@@ -104,12 +104,12 @@
                     :swiper_nodata="swiper_nodata"
                 )
                     .rsActInfo_main_header
-                        h4 通知人数: {{dataList[0].visitCount}}
+                        h4 通知人数: {{all}}人
                         .rsActInfo_main_progress
                             span 进度
                             .rsActInfo_main_mes
-                                span {{dataList[0].visitCount}}
-                                i(:range="dataList[0].visitCount").rsActInfo_main_line
+                                span {{have}}/{{all}}
+                                i(:range="Math.ceil(have/all*100)").rsActInfo_main_line
                     .rsActInfo_main_textList
                         h3  {{dataList[0].taskName}}
                         p {{dataList[0].remark}}
@@ -138,6 +138,8 @@ export default {
             dataList:[{
 
             }],
+            all:0,
+            have:0
         }
     },
     methods: {
@@ -168,6 +170,8 @@ export default {
     },
     activated() {
         this.id = this.$route.query.id;
+        this.all=this.$route.query.all;
+        this.have=this.all-this.$route.query.no;
         this.getData();
     }
 }

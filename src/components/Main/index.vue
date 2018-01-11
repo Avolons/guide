@@ -1,6 +1,11 @@
 
 <style lang="scss" >
 .rsIndex {
+	&_follow_title{
+		span{
+			font-size: 13px;
+		}
+	}
 	&_header {
 		box-sizing: border-box;
 		padding: 15px;
@@ -125,7 +130,7 @@
 			flex-grow: 0;
 			flex-shrink: 0;
 			position: relative;
-			>h3{
+			>h3 {
 				font-size: 18px;
 				color: #666;
 				top: 50%;
@@ -141,34 +146,34 @@
 			flex-direction: column;
 			justify-content: center;
 			box-sizing: border-box;
-			padding-right: 15px;			
+			padding-right: 15px;
 		}
 		&_disChartLine {
 			width: 100%;
 		}
 		&_commonTitle {
-			.weui-cell__ft{
-				font-size:13px;
+			.weui-cell__ft {
+				font-size: 13px;
 			}
 		}
-		&_indexPer{
+		&_indexPer {
 			display: flex;
 			justify-content: space-between;
 			margin-bottom: 10px;
-			>div{
+			>div {
 				width: 30%;
 				position: relative;
 				height: 53px;
 				border-radius: 2px;
 				border: solid 1px #e9e9e9;
-				>h3{
+				>h3 {
 					font-size: 15px;
 					color: #484848;
 					height: 33px;
 					line-height: 33px;
 					text-align: center;
 				}
-				>span{
+				>span {
 					display: block;
 					height: 20px;
 					background-color: #f8f8f8;
@@ -180,12 +185,12 @@
 				}
 			}
 		}
-		&_indexSingle{
+		&_indexSingle {
 			display: flex;
 			height: 20px;
 			align-items: center;
 			margin-bottom: 5px;
-			>span{
+			>span {
 				height: 10px;
 				width: 10px;
 				border-radius: 50%;
@@ -194,13 +199,13 @@
 				flex-grow: 0;
 				margin-right: 5px;
 			}
-			>h4{
+			>h4 {
 				font-size: 12px;
 				color: #666;
 				flex: 1;
 				font-weight: 400;
 			}
-			>h5{
+			>h5 {
 				margin-left: 5px;
 				font-size: 12px;
 				color: #333;
@@ -211,7 +216,7 @@
 			}
 		}
 	}
-	
+
 	&_ {}
 }
 </style>
@@ -241,17 +246,17 @@
 				.rsIndex_middle_single
 					h4.rsIndex_middle_number {{baseData.needShCount}}
 					span 随访计划
-						router-link(to="") 待审核
+						router-link(to="/main/main/plan") 待审核
 				.rsIndex_middle_single
 					h4.rsIndex_middle_number {{baseData.needClCount}}
 					span 随访结果
-						router-link(to="") 待处理
+						router-link(to="/main/main/result") 待处理
 		//- 图表插件 两个图表 ，折线图和环状图
 		.rsIndex_chart
 			//- 疾病分类情况
 			.rsIndex_chart_disease
 				group.rsIndex_chart_commonTitle
-					popup-radio(title="疾病分布情况" :options="timeOptions" v-model="dataList[0].timeSelect")
+					popup-radio(title="疾病分布情况", :options="timeOptions",@on-change="getDisease", v-model="dataList[0].timeSelect")
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChart
 						pie-example(:pieData="dataList[0].pieData")
@@ -265,7 +270,7 @@
 			//- 用药依从性
 			.rsIndex_chart_drugs
 				group.rsIndex_chart_commonTitle
-					popup-radio(title="用药依从性" :options="timeOptions" v-model="dataList[1].timeSelect")
+					popup-radio(title="用药依从性", :options="timeOptions",@on-change="getDrugs", v-model="dataList[1].timeSelect")
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChart
 						pie-example(:pieData="dataList[1].pieData")
@@ -282,17 +287,21 @@
 			//- 随访数量统计
 			.rsIndex_chart_drugs
 				group.rsIndex_chart_commonTitle
-					popup-radio(title="随访数量统计" :options="timeOptions" v-model="dataList[2].timeSelect")
+					popup-radio(title="随访数量统计" ,:options="timeOptions_simple",@on-change="getFollowData", v-model="dataList[2].timeSelect")
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChartLine
 						line-example(:lineData="dataList[2].lineData")
 			
-          
+		group.rsIndex_follow_title
+			cell( title="特别关注" ,link="/main/main/mine/follow")
+				span(slots="default") 更多
+		list-compent(:list="list") 
 </template>
 
 <script>
 import { API } from '@/services';
-import { ButtonTab, ButtonTabItem, Group, PopupRadio } from 'vux';
+import { ButtonTab, ButtonTabItem, Group, PopupRadio,Cell } from 'vux';
+import ListCompent from '../Common/Result.vue';
 import BScroll from '../Common/scrollView.vue';
 import LineExample from './chart/line.vue';
 import PieExample from './chart/pie.vue';
@@ -304,7 +313,9 @@ export default {
 		PopupRadio,
 		BScroll,
 		LineExample,
-		PieExample
+		PieExample,
+		ListCompent,
+		Cell
 	},
 	data() {
 		return {
@@ -312,12 +323,13 @@ export default {
 			swiper_pullUp: false,//显示加载
 			swiper_nodata: false,//没有更多数据
 			page: 1,
+			list: [],//我的特别关注
 			loading: false,
 			timeOptions: [
 				{
 					value: "全部",
 					key: 0,
-				},{
+				}, {
 					value: "7天",
 					key: 1,
 				}, {
@@ -333,6 +345,15 @@ export default {
 					value: "1年",
 					key: 5,
 				}],
+			timeOptions_simple: [
+				{
+					value: "7天",
+					key: 1,
+				}, {
+					value: "30天",
+					key: 2,
+				},
+			],
 			baseData: {},//基础数据
 			dataList: [
 				//疾病分布情况
@@ -340,9 +361,11 @@ export default {
 					timeSelect: 0,
 					pieData: {
 						data: {
-							columns: ['diagnoseName','itemCount'],
+							columns: ['diagnoseName', 'itemCount'],
 							rows: [
-								
+								{
+									Count: 0,
+								}
 							]
 						},
 						setting: {
@@ -365,9 +388,11 @@ export default {
 					timeSelect: 0,
 					pieData: {
 						data: {
-							columns: ['diagnoseName','itemCount'],
+							columns: ['diagnoseName', 'itemCount'],
 							rows: [
-								
+								{
+									Count: 0,
+								}
 							]
 						},
 						setting: {
@@ -388,12 +413,12 @@ export default {
 				},
 				//随访数量统计
 				{
-					timeSelect: 0,
+					timeSelect: 1,
 					lineData: {
 						data: {
 							columns: ['diagnoseName', 'itemCount'],
 							rows: [
-								
+
 							]
 						},
 						setting: {
@@ -418,6 +443,7 @@ export default {
 			this.getDrugs();
 			this.getDisease();
 			this.getFollowData();
+			this.getList();
 		},
 		/** 
 		 * 获取基础数据
@@ -434,7 +460,7 @@ export default {
 		 */
 		getDrugs() {
 			API.homePage.getUseEatInfo({
-				dateType: this.dataList[1].timeSelect
+				dateType: this.dataList[0].timeSelect
 			}).then((res) => {
 				this.dataList[1].pieData.data.rows = res.data;
 			}).catch((err) => {
@@ -444,7 +470,7 @@ export default {
 		/** 
 		 * 获取疾病信息
 		 */
-		getDisease(){
+		getDisease() {
 			API.homePage.diagnoseInfo({
 				dateType: this.dataList[1].timeSelect
 			}).then((res) => {
@@ -456,11 +482,26 @@ export default {
 		/** 
 		 * 获取随访数量统计
 		 */
-		getFollowData(){
+		getFollowData() {
 			API.homePage.visitCountInfo({
-				dateType: 2
+				dateType: this.dataList[2].timeSelect
 			}).then((res) => {
 				this.dataList[2].lineData.data.rows = res.data;
+			}).catch((err) => {
+
+			});
+		},
+		/**@argument
+         * 获取特别关注
+         */
+		getList() {
+			API.patientList.list(
+				{
+					pager: 1,
+					limit: 3,
+				}
+			).then((res) => {
+				this.list = res.data
 			}).catch((err) => {
 
 			});

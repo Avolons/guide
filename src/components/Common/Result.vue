@@ -68,7 +68,7 @@
     .common_result
         .common_result_main
             ul.common_result_list
-                li.common_result_single(v-for="item,index in list",:key="item.id",@click="goToInfo(item.id)")
+                li.common_result_single(v-for="item,index in list",:key="item.id",@click="goToInfo(item.hzxxId)")
                     span.nowarp {{index+1}}.{{item.patientName}} 
                     span {{item.patientSex}}/{{item.patientAge}}
                     span.nowarp {{item.icdName}}
@@ -92,7 +92,12 @@ export default {
          * 进入患者详情
          */
         goToInfo(id){
-
+            this.$router.push({
+                path:'/main/main/mine/patInfo',
+                query:{
+                    id:id
+                }
+            })
         }
     },
     mounted () {

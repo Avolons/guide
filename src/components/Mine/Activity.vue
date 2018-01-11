@@ -60,7 +60,7 @@
                     :swiper_nodata="swiper_nodata"
                 )
                     ul.rsAct_main_actList
-                        li(@click="enterInfo(item.id)",v-for="item,index in list",:key="index").rsAct_main_actSingle.elementAct
+                        li(@click="enterInfo(item)",v-for="item,index in list",:key="index").rsAct_main_actSingle.elementAct
                             h3.rsAct_main_singleTitle
                                 time {{item.visitStartTime}}
                                 span.nowarp {{item.taskName}}
@@ -100,11 +100,13 @@ export default {
         },
     },
     methods: {
-        enterInfo(id){
+        enterInfo(item){
             this.$router.push({
                 path:'/main/main/mine/actInfo',
                 query:{
-                    id:id
+                    id:item.id,
+                    all:item.visitCount,
+                    no:item.activityCount
                 }
             });
         },

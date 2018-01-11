@@ -385,7 +385,7 @@ export default {
                         this.swiper_pullUp = false;
                         this.list = this.list.concat(res.data);
                         this.selectAll = [];
-                        this.page++;
+                        this.searchParams.pager++;
                     } else {
                         this.swiper_pullUp = false;
                         if (this.list.length >= 20) {

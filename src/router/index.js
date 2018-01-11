@@ -58,6 +58,10 @@ const ActInfo = () =>
 const Activity = () =>
   import ( /* webpackChunkName: "mine" */ '../components/Mine/Activity.vue'); //活动通知
 
+ /* 个人中心相关页面 */ 
+const PatInfo = () =>
+  import ( /* webpackChunkName: "pat" */ '../components/Person/Index.vue'); //患者详情
+
 const routes = [{
     path: '/main/:id',
     component: Home,
@@ -178,6 +182,13 @@ const routes = [{
     component: ActInfo,
     meta: {
       title: "活动详情"
+    }
+  },
+  {
+    path: '/main/main/mine/patInfo',
+    component: PatInfo,
+    meta: {
+      title: "患者详情"
     }
   },
 ];

@@ -40,7 +40,7 @@ const store = new Vuex.Store({
 				pwd: userInfo.pwd,
 				dateLogin: userInfo.dateLogin,//登陆日期
 				ipLogin:userInfo.ipLogin,//登陆的id
-				realname: userInfo.realname,//真是姓名
+				realname: userInfo.realname,//真实姓名
 				mobile:userInfo.mobile,//手机号
 				isLock: userInfo.isLock,//是否锁定
 				type:userInfo.type,//用户类型 0管理员 1：医生

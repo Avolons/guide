@@ -301,6 +301,135 @@ $duration: .4s;
     }
 }
 
+/* 最终分类展示形式 */
+.common_type_last{
+    .rsCommon {
+        &_single {
+            margin-bottom: 10px;
+            background-color: #fff;
+            padding: 15px 12px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            >input{
+                height: 20px;
+                width: 20px;
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            &_content {
+                width: calc(100% - 30px);
+            }
+            &_title {
+                font-size: 15px;
+                color: #333;
+                margin-bottom: 10px;
+                &--abnormal{
+                   color: #fa2525; 
+                }
+                >span{
+                    color: #fa2525;
+                    margin-left: 10px;
+                }
+            }
+            &_nameBox {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                width: 100%;
+                >p {
+                    max-width: 80%;
+                    line-height: 15px;
+                    font-size: 13px;
+                    color: #666;
+                    transition: all 0.2s ease-in;
+                }
+                >i{
+                    color: #c7c7c7;
+                    font-size: 20px;
+                    transform-origin: 50% 50%;
+                    transform: rotate(180deg);
+                    transition: all 0.2s ease-in;
+                }
+                &--maxHeight{
+                    >p{
+                        height: 15px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        transition: all 0.2s ease-in;
+                        text-overflow: ellipsis;
+                    }
+                    >i{
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+            &_planTime {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &_countdown {
+                font-size: 15px;
+                color: #333;
+                line-height: 15px;
+                >span{
+                    margin-left: 20px;
+                    color: #999;
+                    font-size: 11px;
+                    line-height: 15px;
+                }
+            }
+            &_template {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &_state {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                >span{
+                    margin-left: 10px;
+                }
+                >span[data-type='0']{
+                    color: #333;
+                }
+                >span[data-type='1']{
+                    color: #1aad19;
+                }
+                >span[data-type='2']{
+                    color: #fa2525;
+                }
+            }
+           
+            &_add {
+                position: absolute;
+                right: 12px;
+                top: 15px;
+                display: flex;
+                justify-content: center;
+                width: 50px;
+                height: 23px;
+                border-radius: 2px;
+                border: solid 1px #f36837;
+                font-size: 11px;
+                color:#f36837; 
+                text-align: center;
+                line-height: 23px;
+                &--haveAdd {
+                    color: #999999;
+                    border-color: #999;
+                }
+            }
+        }
+    }
+}
 
 </style>
  <template lang="pug">
@@ -310,13 +439,14 @@ $duration: .4s;
             .rsCommon_single(v-for="item,index in list",:key="item.id")
                 input(@change="inputChange",v-show="type==1",type="checkbox",v-model="selectResult",:id='"check"+index',:value="item.id").mui-checkbox
                 .rsCommon_single_content
+                    //-患者姓名
                     h3.rsCommon_single_title(:class="{'rsCommon_single_title--abnormal':item.abnormal===1}") {{item.patientName}}
                         span(v-show="item.abnormal===1") 指标异常
                     .rsCommon_single_nameBox(@click="maxHeight(item,index)",:class="{'rsCommon_single_nameBox--maxHeight':!item.maxHeight}")
-                        p 诊断名称：{{item.zdmc}}
+                        p 诊断名称：{{item.zdmc || item.icdName}}
                         i(v-show="overArray[index]==1").iconfont &#xe63e;
-                    p.rsCommon_single_template 随访计划：{{item.visitProjectName}}
-                    p.rsCommon_single_state(v-show="type==0") 状态：第{{item.frequency}}次随访 
+                    p.rsCommon_single_template 随访计划：{{item.visitProjectName || item.schemeName}}
+                    p.rsCommon_single_state(v-show="type==0") 随访进度：{{item.frequency}}次随访 
                         span(v-show="item.state==0",data-type=0) 待开始
                         span(v-show="item.state==1",data-type=1) 待处理
                         span(v-show="item.state==2",data-type=2) 立即处理
