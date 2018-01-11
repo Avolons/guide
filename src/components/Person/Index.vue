@@ -58,8 +58,31 @@
                 margin-left: 10px;
             }
         }
+        &_box{
+
+        }
+        &_headerTitle{
+            font-size: 14px;
+            color: #f36837;
+            margin-bottom: 5px;
+        }
         &_headerContent {
-            display: none;
+            /* display: none; */
+            border: 1px solid #e6e6e6;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            box-sizing: border-box;
+            padding: 5px;
+        }
+        &_headerSingle{
+            font-size: 12px;
+            font-weight: 400;
+            margin-bottom: 5px;
+            color: #999;
+            >span{
+                font-size: 10px;
+                color: #333;
+            }
         }
         &_table {
             height: 45px;
@@ -136,9 +159,11 @@
             position: fixed;
             bottom: 0;
             left: 0;
+            z-index: 499;
             width: 100%;
             height: 45px;
             display: flex;
+            background-color: #fff;
             >button {
                 flex: 1;
                 display: block;
@@ -148,8 +173,7 @@
                 color: #fff;
                 text-align: center;
                 &:first-of-type {
-                    background-color: #f36837;
-                    opacity: 0.8;
+                    background-color: rgba(243,104,55,0.8);
                 }
                 &:last-of-type {
                     background-color: #f36837;
@@ -167,6 +191,11 @@
     .perInfo
         .perInfo_main
             .perInfo_content
+                .perInfo_content_planBtn(v-show="currentTable==0")
+                    button(type="button",@click="adopt(1)") 不通过
+                    button(type="button",@click="adopt(2)") 通过
+                actionsheet(@on-click-menu="passSelect",v-model="noPassReason" :menus="noPassList")
+                    p(slot="header") 医生审核不通过原因
                 b-scroll(
                     :data="list",
                     @pulldown="listRefresh",
@@ -177,7 +206,7 @@
                     :swiper_pullUp="swiper_pullUp",
                     :swiper_nodata="swiper_nodata"
                 )
-                    popup-picker(title="患者信息",:data="historyList", v-model="archives" ,@on-change="listRefresh" ,placeholder="查看历史就诊档案")
+                    popup-picker(title="患者信息",:data="historyList", v-model="archives" ,@on-change="getHistoryData" ,placeholder="查看历史就诊档案")
                     .perInfo_content_header
                         .perInfo_content_headerBase
                             h3 {{baseData.brxm}}
@@ -187,46 +216,66 @@
                         h4 联系电话：{{baseData.mobile}}
                         h4 就诊时间：{{baseData.diagnoseTime}}
                         //-具体就诊信息 隐藏
-                        ul.perInfo_content_headerContent
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 医师
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
-                            li.perInfo_content_headerSingle
-                                span 科室
-                                |
+                        .perInfo_content_box
+                        template(v-for="ite in archivesList")
+                            h3.perInfo_content_headerTitle 性质：{{ite.mzOrZy=="mz"?"门诊":"住院"}}
+                            h4 疾病诊断：{{ite.adminPatientDiagnose.icdName}}
+                            template(v-if="ite.mzOrZy=='zy'")
+                                ul(v-for="item,index in ite.znjqrCyxjList",:key="index").perInfo_content_headerContent
+                                    li.perInfo_content_headerSingle
+                                        span 科室：
+                                        | {{item.departname}}
+                                    li.perInfo_content_headerSingle
+                                        span 医师：
+                                        | {{item.doctorname}}
+                                    li.perInfo_content_headerSingle
+                                        span 入院诊断：
+                                        | {{item.admissiondiagnose}}
+                                    li.perInfo_content_headerSingle
+                                        span 出院诊断：
+                                        | {{item.leavediagnose}}
+                                    li.perInfo_content_headerSingle
+                                        span 入院情况：
+                                        | {{item.admissiondescription}}
+                                    li.perInfo_content_headerSingle
+                                        span 诊治经过：
+                                        | {{item.cureprocess}}
+                                    li.perInfo_content_headerSingle
+                                        span 出院情况：
+                                        | {{item.leavedescription}}
+                                    li.perInfo_content_headerSingle
+                                        span 出院医嘱 ：  
+                                        | {{item.leavedoctorcharge}}
+                                    li.perInfo_content_headerSingle
+                                        span 入院时间：
+                                        | {{item.admissiontime}}
+                                    li.perInfo_content_headerSingle
+                                        span 出院时间：
+                                        | {{item.leavetime}}
+                            template(v-else)
+                                //-ul.perInfo_content_headerContent
+                                    li.perInfo_content_headerSingle
+                                        span 科室：
+                                        | {{item.znjqrCfxx.ksmc}}
+                                    li.perInfo_content_headerSingle
+                                        span 医师：
+                                        | {{item.znjqrCfxx.ysxm}}
+                                    li.perInfo_content_headerSingle
+                                        span 用药类型：
+                                        | {{item.znjqrCfxx.cflx}}
+                                    li.perInfo_content_headerSingle
+                                        span 具体药品：
+                                        //-template(v-for="ite in item.znjqrCfmxList")
+                                            | {{ite.ypmc}}
+                                    
+                                        
+                                   
                     .perInfo_content_table
                         span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访方案
                         i
                         span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访结果
                         //-随访方案
-                    .perInfo_content_plan
+                    .perInfo_content_plan(v-show="currentTable==0")
                         .perInfo_content_planHeader
                             h3 随访方案：糖尿病稳定一
                             span 随访计划生成时间：2017年11月6日
@@ -240,14 +289,36 @@
                                 h4 第一次随访
                                 span 计划随访时间：2017年11月6日
                                 p 采集指标 
-                        .perInfo_content_planBtn
-                            button(type="button") 不通过
-                            button(type="button") 通过
+                        
                         //- 随访结果
-                    .perInfo_content_result
+                    .perInfo_content_result(v-show="currentTable==1")
+                        h3 随访结果
+                        h4 结果正常
+                        h5 完成时间：2017-09-10 9：00
+                        ul.perInfo_content_resultList
+                            li(v-for="item,index in resultList",:key="index").perInfo_content_resultSingle
+                                h6 {{item.fieldName}}
+                                | {{item.fieldValue}}
+                        //- 随访记录详情
+                        .perInfo_content_resultInfo
+                            h4 记录详情
+                            ul.perInfo_content_resultInfoList
+                                template(v-for="item,index in resultList")
+                                    li.perInfo_content_resultInfoAi
+                                        i.iconfont &#xe607;
+                                        span {{item.question}}
+                                    li.perInfo_content_resultInfoUser
+                                        i.iconfont &#xe601;
+                                        audio(:src="basesrc+item.audio")
+                                        .perInfo_content_resultInfoUser_text
+                                            //- 记得加上class判断
+                                            h4 指标{{item.isNormal?"正常":"不正常"}}
+                                            h5 
+                                             span {{item.fieldName}}
+                                             | {{item.fieldValue}}
 
 
-                    
+
 
                     
 </template>         
@@ -255,23 +326,34 @@
 <script>
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
-import { Search, PopupPicker, Group } from 'vux'
+import { Search, PopupPicker,Group,Actionsheet } from 'vux'
 import { mapGetters } from 'vuex';
-import { API } from '../../services';
+import { API } from '@/services';
 export default {
     components: {
+        Actionsheet,
         Group,
         PopupPicker,
         BScroll,
         ListCompent,
         Search
     },
+    computed: {
+        ...mapGetters([
+
+        ])
+    },
     data() {
         return {
+            basesrc:"",//基础语音前缀
+            noPassReason:false,//不通过原因
+            noPassList:["患者已死亡","方案重复","方案不匹配","不需要随访"],
             baseData:{},//用户基础数据
             currentTable: 0,
+            archivesList:[],//患者就诊历史数据
             archives: [],//当前已经选择的就诊档案
             historyList: [],//患者档案历史
+            copyHistory:[],//用于对比的历史数据
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -283,31 +365,81 @@ export default {
                 limit: 20,
             },
             noData: false,//当前页面暂无数据
-            searchResult: "",
+            planList:{},//随访计划列表
+            resultList:[],//随访结果列表
         }
     },
     methods: {
+        /** 
+         * 获取历史诊断数据
+         */
+        getHistoryData(value){
+            let taskId;
+            for (const item of this.copyHistory) {
+                if(item.diagnosetime==value){
+                    taskId=item.taskIds[0];
+                    break;
+                }
+            }  
+            /** 
+             * 获取数据
+             */
+            this.getList(value);
+            this.getPlanList(taskId);
+            this.getPlanResult(taskId);
+        },
+        /** 
+         * 不通过计划
+         */
+        passSelect(menuKey,menuItem){
+            let self = this;
+            this.$vux.confirm.show({
+                content:"是否确定不通过该计划",
+                onConfirm() {
+                    API.followplan.editVisitProjectStatus({
+                        operateType:1 , //操作类型（1：不通过 2：通过）   
+                        isAll: 2,  //是否全部提交（(1:是 2：否)）
+                        ids: "",   //要修改的随访方案Id （逗号分隔）
+                        noPassReason:menuItem,
+                    }).then((res) => {
+                        self.$vux.toast.show({
+                            text: '不通过成功'
+                        });
+                        self.listRefresh();
+                    });
+                }
+            });
+        },
+        /**@argument
+         * 随访计划审核通过
+         */
+        adopt(type) {
+            if(type!=2){
+                this.noPassReason=true;
+                return false;
+            }
+            let self = this;
+            this.$vux.confirm.show({
+                content:"确定要通过计划吗？",
+                onConfirm() {
+                    API.followplan.editVisitProjectStatus({
+                        operateType:2, //操作类型（1：不通过 2：通过）   
+                        isAll: 2,  //是否全部提交（(1:是 2：否)）
+                        ids: "",   //要修改的随访方案Id （逗号分隔）
+                    }).then((res) => {
+                        self.$vux.toast.show({
+                            text: '成功通过'
+                        });
+                        self.listRefresh();
+                    });
+                }
+            });
+        },
         /**@argument
          * table切换
          */
         tableSwitch(type) {
             this.currentTable = type;
-            this.searchParams.pager = 1;
-            if (type == 0) {
-                this.searchParams.limit = 20;
-                this.searchParams.status = 4;
-                this.listType = '1';
-            } else if (type == 1) {
-                this.searchParams.limit = 20;
-                this.searchParams.status = 1;
-                this.listType = '2';
-            } else {
-                this.searchParams.limit = 20;
-                this.searchParams.status = 2;
-                this.listType = '2';
-            }
-            this.list = [];
-            this.getList();
         },
         /** 
          * 获取就诊历史记录时间表
@@ -318,7 +450,19 @@ export default {
                     patientId: this.id //患者的id
                 }
             ).then((res) => {
-                  this.historyList=res.data;
+                /** 
+                 * 数据格式化
+                 */
+                let arr=[];
+                for (const item of res.data) {
+                    arr.push({
+                    name:`${item.diagnosetime}/${item.mzOrzy==1?'门诊':item.mzOrzy==2?'住院':'住院和门诊'}/${item.isHasVisit==1?'有随访':'无随访'}`,
+                    value:item.diagnosetime
+                    })   
+                }
+                  this.historyList=[arr];
+                  this.archives=[res.data[0].diagnosetime];
+                  this.getHistoryData();
             }).catch((err) => {
 
             });
@@ -335,6 +479,10 @@ export default {
                 }
             ).then((res) => {
                 this.baseData=res.data;
+                if(this.baseData.taskId){
+                this.getPlanList(this.baseData.taskId)
+                    
+                }
             }).catch((err) => {
 
             });
@@ -342,15 +490,30 @@ export default {
         /**@argument
          * 获取诊断信息
          */
-        getList() {
+        getList(date) {
             API.patientList.getRecordByDate(
                 {
-                    patientId: 114850, //病人id
-                    date: '2016-09-14',//选择的日期
+                    patientId: this.id, //病人id
+                    date: date[0],//选择的日期
 
                 }
             ).then((res) => {
-                console.log(JSON.stringify(res.data));
+                this.archivesList=res.data;
+            }).catch((err) => {
+
+            });
+        },
+        /** 
+         * 根据id获取随访结果
+         */
+        getPlanResult(id){
+             API.followway.getVisistOrderResult(
+                {
+                 taskId:id //计划id
+                }
+            ).then((res) => {
+                this.resultList=res.data;
+                this.basesrc=res.AIVOICURL;
             }).catch((err) => {
 
             });
@@ -358,13 +521,13 @@ export default {
         /** 
          * 获取随访计划列表
          */
-        getPlanList(){
+        getPlanList(id){
             API.followplan.getVisitOrderDetail(
                 {
-                 taskId:"" //计划id
+                 taskId:id //计划id
                 }
             ).then((res) => {
-                console.log(res.data);
+
             }).catch((err) => {
 
             });
@@ -372,10 +535,9 @@ export default {
         /**@argument
          * 列表刷新
          */
-        listRefresh() {
+        listRefresh(date,id) {
             this.list = [];
             this.page = 1;
-            this.getList();
             this.getBaseData();
             this.getHistory();
         },

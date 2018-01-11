@@ -107,7 +107,7 @@
                         :swiper_pullUp="swiper_pullUp",
                         :swiper_nodata="swiper_nodata"
                     )
-                        list-compent(type=0,:list="list")
+                        list-compent(type=0,:list="list",@dataReload="listRefresh")
                        
 </template>         
 
