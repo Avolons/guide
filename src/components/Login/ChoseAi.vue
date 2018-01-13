@@ -67,13 +67,14 @@
             | 作为您的AI虚拟助手吧！
         ul.rsAi_main_list
             li.rsAi_main_single(v-for="item,index in AiList",@click="chooseAi(index)",:class="{'rsAi_main_single--select':choseList[index]==1}")
-                img(src="../../assets/img/common/logo.png")
+                img(:src="getApiUrl+item.value")
                 h4 {{item.remark}}
 
         button(type="button",@click="submitAi").rsAi_main_btn 确定
 </template>
 <script>
 import { API } from '@/services';
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
@@ -81,6 +82,11 @@ export default {
             choseList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             AiList: [],
         }
+    },
+    computed: {
+        ...mapGetters([
+            'getApiUrl'
+        ])
     },
     mounted() {
         this.getAiList();
@@ -90,7 +96,9 @@ export default {
          * 获取生肖列表
          */
         getAiList() {
-            API.common.findAiPictureList().then((res) => {
+            API.common.findAiPictureList({
+                fromsys:'h5'
+            }).then((res) => {
                 this.AiList = res.data.SysConfigLsit;
             }).catch((err) => {
 

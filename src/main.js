@@ -66,8 +66,9 @@ router.afterEach(function (to) {
 /* 取出本地数据，赋值到store的state中 */
 /* 主要用于赋值登录状态和认证状态 */
 const userInfo=localStorage.getItem("userInfo");
+
 if(userInfo){
-	store.state.userInfo= JSON.parse(userInfo);
+	store.dispatch('SetUserInfo', JSON.parse(userInfo));
 }
 
 /**

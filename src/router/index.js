@@ -58,9 +58,11 @@ const ActInfo = () =>
 const Activity = () =>
   import ( /* webpackChunkName: "mine" */ '../components/Mine/Activity.vue'); //活动通知
 
- /* 个人中心相关页面 */ 
+ /* 患者详情相关页面 */ 
 const PatInfo = () =>
   import ( /* webpackChunkName: "pat" */ '../components/Person/Index.vue'); //患者详情
+const PatIndex = () =>
+  import ( /* webpackChunkName: "pat" */ '../components/Person/Result.vue'); //患者详情
 
 const routes = [{
     path: '/main/:id',
@@ -75,14 +77,16 @@ const routes = [{
       {
         path: "plan",
         meta: {
-          title: "随访计划"
+          title: "随访计划",
+          keepAlive: true // 需要被缓存
         },
         component: Plan
       },
       {
         path: "result",
         meta: {
-          title: "随访结果"
+          title: "随访结果",
+          keepAlive: true // 需要被缓存
         },
         component: Result
       },
@@ -90,6 +94,7 @@ const routes = [{
         path: "mine",
         meta: {
           title: "个人中心",
+          keepAlive: true // 需要被缓存
         },
         component: Mine
       },
@@ -146,49 +151,64 @@ const routes = [{
     path: '/main/main/mine/setting',
     component: Setting,
     meta: {
-      title: "设置"
+      title: "设置",
+      keepAlive: true // 需要被缓存
     }
   },
   {
     path: '/main/main/mine/follow',
     component: Follow,
     meta: {
-      title: "特别关注"
+      title: "特别关注",
+      keepAlive: true // 需要被缓存
     }
   },
   {
     path: '/main/main/mine/setting/opinion',
     component: Opinion,
     meta: {
-      title: "意见反馈"
+      title: "意见反馈",
+      keepAlive: false // 需要被缓存
     }
   },
   {
     path: '/main/main/mine/patient',
     component: Patient,
     meta: {
-      title: "我的患者"
+      title: "我的患者",
+      keepAlive: true // 需要被缓存
     }
   },
   {
     path: '/main/main/mine/activity',
     component: Activity,
     meta: {
-      title: "活动通知"
+      title: "活动通知",
+      keepAlive: true // 需要被缓存
     }
   },
   {
     path: '/main/main/mine/actInfo',
     component: ActInfo,
     meta: {
-      title: "活动详情"
+      title: "活动详情",
+      keepAlive: false // 需要被缓存
     }
   },
   {
     path: '/main/main/mine/patInfo',
     component: PatInfo,
     meta: {
-      title: "患者详情"
+      title: "患者详情",
+      keepAlive: false // 需要被缓存
+    }
+  },
+  {
+    path: '/main/main/mine/patIndex',
+    component: PatIndex,
+    meta: {
+      title: "指标统计",
+      keepAlive: false // 需要被缓存
     }
   },
 ];

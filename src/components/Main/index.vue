@@ -1,8 +1,8 @@
 
 <style lang="scss" >
 .rsIndex {
-	&_follow_title{
-		span{
+	&_follow_title {
+		span {
 			font-size: 13px;
 		}
 	}
@@ -237,7 +237,7 @@
 			.rsIndex_header_avatar
 				img(:src="baseData.aipicTureUrl")
 				span {{baseData.AiName}}
-			p.rsIndex_header_text 早上好，{{baseData.realname}}医生，{{baseData.AiName}}已等候您{{baseData.laterhours}}小时了。以下是您需要处理的内容。
+			p.rsIndex_header_text 早上好，{{baseData.realname}}医生，{{baseData.AiName}}已等候您{{getLastHours}}小时了。以下是您需要处理的内容。
 			//- 中间部分
 		.rsIndex_middle 
 			.rsIndex_middle_content
@@ -300,11 +300,12 @@
 
 <script>
 import { API } from '@/services';
-import { ButtonTab, ButtonTabItem, Group, PopupRadio,Cell } from 'vux';
+import { ButtonTab, ButtonTabItem, Group, PopupRadio, Cell } from 'vux';
 import ListCompent from '../Common/Result.vue';
 import BScroll from '../Common/scrollView.vue';
 import LineExample from './chart/line.vue';
 import PieExample from './chart/pie.vue';
+import { mapGetters } from 'vuex';
 export default {
 	components: {
 		ButtonTab,
@@ -316,6 +317,13 @@ export default {
 		PieExample,
 		ListCompent,
 		Cell
+	},
+	computed: {
+		...mapGetters(
+			[
+				'getLastHours'
+			]
+		)
 	},
 	data() {
 		return {
@@ -422,10 +430,28 @@ export default {
 							]
 						},
 						setting: {
-							/* axisSite: {
-							  right: ['占比']
+							itemStyle: {
+								normal: {
+									color: '#f36837'
+								}
 							},
-							yAxisType: ['KMB', 'percent'], */
+							areaStyle: {
+								normal: {
+									color: {
+										type: 'linear',
+										x: 0,
+										y: 0,
+										x2: 0,
+										y2: 1,
+										colorStops: [{
+											offset: 0, color: '#f36837' // 0% 处的颜色
+										}, {
+											offset: 1, color: '#f79776' // 100% 处的颜色
+										}],
+										globalCoord: false // 缺省为 false
+									}
+								}
+							},
 							area: true
 						}
 					}

@@ -64,8 +64,8 @@
     .rsMine
         .rsMine_header
             img(src="../../assets/img/mine/asset.png")
-            h3 王大大
-            p 西溪医院 放射科
+            h3 {{getRealname}}
+            p {{getdepartment}}
         .rsMine_actionList
             group.rsMine_mine_list
                 cell(:link="{path:'/main/main/mine/follow'}").rsMine_mine_single
@@ -100,6 +100,12 @@ export default {
         Cell,
         CellFormPreview,
         CellBox,
+    },
+    computed: {
+        ...mapGetters([
+            'getdepartment',
+            'getRealname'
+        ])
     },
     data() {
         return {

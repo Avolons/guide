@@ -336,14 +336,9 @@ $duration: .4s;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            >input {
-                height: 20px;
-                width: 20px;
-                flex-shrink: 0;
-                margin-top: 2px;
-            }
+            
             &_content {
-                width: calc(100% - 30px);
+                width: 100%;
             }
             &_title {
                 font-size: 15px;
@@ -487,7 +482,7 @@ $duration: .4s;
                         b.rsCommon_single_base {{item.sex || item.patientSex}}/{{item.patientAge}}
                         span(v-show="item.currentVisitError>0") 指标异常
                         i.rsCommon_single_tag(v-show="item.gzTag") {{item.gzTag}}
-                        router-link(v-if="item.hzxxId",:to="'/main/main/mine/patInfo?id='+item.hzxxId").rsCommon_single_link 查看更多 >
+                        router-link(v-if="item.hzxxId&&type!=0",:to="'/main/main/mine/patInfo?id='+item.hzxxId").rsCommon_single_link 查看更多 >
                     .rsCommon_single_nameBox(@click="maxHeight(item,index)",:class="{'rsCommon_single_nameBox--maxHeight':!item.maxHeight}")
                         p 诊断名称：{{item.zdmc || item.icdName}}
                         i(v-show="overArray[index]==1").iconfont &#xe63e;
@@ -497,7 +492,7 @@ $duration: .4s;
                         span(v-show="item.state==1",data-type=1) 待处理
                         span(v-show="item.state==2",data-type=2) 立即处理
                     p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
-                    p(v-show="type>=1").rsCommon_single_planTime 不通过原因：{{item.visitStartTime}}
+                    p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：{{item.notPassReason}}
                     .rsCommon_single_countdown(v-show="type==1") {{item.countDown}}
                         span 后自动通过审核
                     button(type="button",@click="addLike(item.hzxxId,0)",v-show="item.islike!=1&&type==0").rsCommon_single_add

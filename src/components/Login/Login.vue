@@ -155,14 +155,18 @@ export default {
           text: '登录成功',
           type: "success"
         });
-        this.$store.dispatch('SetUserInfo', res.data);
-        localStorage.setItem("userInfo", JSON.stringify(res.data));
+        this.$store.dispatch('SetUserInfo', res);
+        localStorage.setItem("userInfo", JSON.stringify(res));
         setTimeout(()=> {
           /** 
            *  判断是否已经选择智能ai助手
            *  选择了之后直接转到首页，没有则让其选择ai助手
            */
+          if(!res.data.aiPictureCode){
+            this.$router.push('/choseAi');
+          }else{
             this.$router.push('/');
+          }
         }, 500);
       }).catch((err) => {
 

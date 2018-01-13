@@ -36,17 +36,20 @@ const store = new Vuex.Store({
 		// 设置登录用户信息
 		SETUSERINFO (state, userInfo) {
 			state.userInfo={
-				username:userInfo.username, //用户名  （需要缓存）
-				pwd: userInfo.pwd,
-				dateLogin: userInfo.dateLogin,//登陆日期
-				ipLogin:userInfo.ipLogin,//登陆的id
-				realname: userInfo.realname,//真实姓名
-				mobile:userInfo.mobile,//手机号
-				isLock: userInfo.isLock,//是否锁定
-				type:userInfo.type,//用户类型 0管理员 1：医生
-				defaultVisitTempleId: userInfo.defaultVisitTempleId,//默认随访模板
-				departmentId: userInfo.departmentId,//部门
-				id:userInfo.id,//id
+				username:userInfo.data.username, //用户名  （需要缓存）
+				pwd: userInfo.data.pwd,
+				dateLogin: userInfo.data.dateLogin,//登陆日期
+				ipLogin:userInfo.data.ipLogin,//登陆的id
+				realname: userInfo.data.realname,//真实姓名
+				mobile:userInfo.data.mobile,//手机号
+				isLock: userInfo.data.isLock,//是否锁定
+				type:userInfo.data.type,//用户类型 0管理员 1：医生
+				defaultVisitTempleId: userInfo.data.defaultVisitTempleId,//默认随访模板
+				departmentId: userInfo.data.departmentId,//部门
+				id:userInfo.data.id,//id
+				laterhours:userInfo.laterhours,//距离上次的登录时间
+				aipictureurl:userInfo.aipictureurl,//url接口前缀
+				aiPictureCode:userInfo.data.aiPictureCode,
 			}
 		},
 		// 退出登录
@@ -81,10 +84,24 @@ const store = new Vuex.Store({
 		getUserInfoToken(state, getters) {
 			return getters.getUserInfo.token;
 		},
-		/* 返回用户姓名 */
-		/* getNamePhone(state){
-			return state.addressData.address_name+" "+state.addressData.mobile;
-		} */
+		/* 返回主地址 */
+		getApiUrl(state, getters){
+			return getters.getUserInfo.aipictureurl;
+		},
+		/* 返回用户名  */
+		getRealname(state, getters){
+			return getters.getUserInfo.realname;
+		},
+		/* 返回距离上次登录时间  */
+		getLastHours(state, getters){
+			return getters.getUserInfo.laterhours;
+		},
+		/* 返回科室  */
+		getdepartment(state, getters){
+			return getters.getUserInfo.departmentId;
+		},
+		
+		
 	}
 })
 
