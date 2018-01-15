@@ -492,8 +492,11 @@ $duration: .4s;
                         span(v-show="item.state==1",data-type=1) 待处理
                         span(v-show="item.state==2",data-type=2) 立即处理
                     p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
-                    p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：{{item.notPassReason}}
-                    .rsCommon_single_countdown(v-show="type==1") {{item.countDown}}
+                    p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：
+                        span {{item.notPassReason}}
+                    p(v-show="type>=1&&item.dateUpdate").rsCommon_single_planTime 审核时间：{{item.dateUpdate}}
+                    
+                    .rsCommon_single_countdown(v-show="type==1") {{item.interTime | dataform}}
                         span 后自动通过审核
                     button(type="button",@click="addLike(item.hzxxId,0)",v-show="item.islike!=1&&type==0").rsCommon_single_add
                         i.iconfont &#xe61a;

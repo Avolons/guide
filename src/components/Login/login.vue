@@ -117,7 +117,7 @@ export default {
     return {
       /* 登录信息 */
       form: {
-        user_phone: "ddddd4444",
+        user_phone: "1932",
         user_password: "123456"
       },
       remember: true

@@ -42,7 +42,20 @@
                 font-size: 13px;
             }
             &--select {
-                border-color: #f36837;
+                position: relative;
+                border: 2px solid  #f36837;
+                &:after{
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 100%;
+                    width: 100%;
+                    z-index: inherit 999;
+                    background-color: rgba(255,255,255,.3);
+                }
+
             }
         }
         &_btn {
@@ -67,19 +80,20 @@
             | 作为您的AI虚拟助手吧！
         ul.rsAi_main_list
             li.rsAi_main_single(v-for="item,index in AiList",@click="chooseAi(index)",:class="{'rsAi_main_single--select':choseList[index]==1}")
-                img(:src="getApiUrl+item.value")
+                img(:src="'http://192.168.1.100:8888/'+item.value")
                 h4 {{item.remark}}
 
         button(type="button",@click="submitAi").rsAi_main_btn 确定
 </template>
 <script>
+import Vue from 'Vue';
 import { API } from '@/services';
 import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
             choseIndex: -1,
-            choseList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            choseList: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             AiList: [],
         }
     },

@@ -2,6 +2,9 @@
 .rsPat {
     height: 100%;
     &_main {
+        .common_nodata{
+            top:44px;
+        }
         .weui-search-bar__cancel-btn {
             color: #f36837;
             font-size: 15px;
@@ -373,6 +376,7 @@ export default {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
             API.patientList.list(
                 this.searchParams
             ).then((res) => {
@@ -386,6 +390,7 @@ export default {
                         this.list = this.list.concat(res.data);
                         this.selectAll = [];
                         this.searchParams.pager++;
+
                     } else {
                         this.swiper_pullUp = false;
                         if (this.list.length >= 20) {
@@ -394,6 +399,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {
                         this.noData = true;

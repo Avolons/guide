@@ -1,6 +1,10 @@
 <style lang="scss">
 .perInfo {
     &_main {
+        .common_nodata{
+            position: absolute;
+            top:0;
+        }
         background-color: #fff;
         height: 100%;
         .weui-search-bar__cancel-btn {
@@ -18,6 +22,9 @@
         }
     }
     &_content {
+        &_tableBox{
+            position: relative;
+        }
         height: 100%;
         overflow-y: auto;
         &_header {
@@ -151,6 +158,12 @@
         &_planHeader {
             border-bottom: 1px solid #e5e5e5;
             padding-bottom: 10px;
+            position: relative;
+            >img{
+                position: absolute;
+                right: 15px;
+                width: 50px;
+            }
             >h3 {
                 font-size: 13px;
                 color: #333;
@@ -356,7 +369,7 @@
     .perInfo
         .perInfo_main
             .perInfo_content
-                .perInfo_content_planBtn(v-show="currentTable==0")
+                .perInfo_content_planBtn(v-show="currentTable==0&&planList.taskStatus==0")
                     button(type="button",@click="adopt(1)") 不通过
                     button(type="button",@click="adopt(2)") 通过
                 actionsheet(@on-click-menu="passSelect",v-model="noPassReason" :menus="noPassList")
@@ -364,7 +377,7 @@
                 b-scroll(
                     :data="list",
                     @pulldown="listRefresh",
-                    @scrollToEnd="getList",
+                    @scrollToEnd="listRefresh",
                     pullup=true,
                     pulldown=true,
                     ref="scollView",
@@ -424,20 +437,21 @@
                                             span 出院时间：
                                             | {{item.leavetime}}
                                 template(v-else)
-                                    ul.perInfo_content_headerContent
-                                        li.perInfo_content_headerSingle
-                                            span 科室：
-                                            | {{item.znjqrCfxx.ksmc}}
-                                        li.perInfo_content_headerSingle
-                                            span 医师：
-                                            | {{item.znjqrCfxx.ysxm}}
-                                        li.perInfo_content_headerSingle
-                                            span 用药类型：
-                                            | {{item.znjqrCfxx.cflx}}
-                                        li.perInfo_content_headerSingle
-                                            span 具体药品：
-                                            template(v-for="ite in item.znjqrCfmxList")
-                                                | {{ite.ypmc}}
+                                    template(v-if="ite.znjqrCfxx")
+                                        ul.perInfo_content_headerContent
+                                            li.perInfo_content_headerSingle
+                                                span 科室：
+                                                | {{ite.znjqrCfxx.ksmc}}
+                                            li.perInfo_content_headerSingle
+                                                span 医师：
+                                                | {{ite.znjqrCfxx.ysxm}}
+                                            li.perInfo_content_headerSingle
+                                                span 用药类型：
+                                                | {{ite.znjqrCfxx.cflx}}
+                                            li.perInfo_content_headerSingle
+                                                span 具体药品：
+                                                template(v-for="ite in ite.znjqrCfmxList")
+                                                    | {{ite.ypmc}},
                                         
                                         
                                    
@@ -446,53 +460,58 @@
                         i
                         span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访结果
                             //-无数据判断 
-                    .common_nodata(v-show="noData")
-                        i(class="iconfont")  &#xe628;
-                        h3.rsAct_nodata_title 暂无患者
-                            //-随访方案
-                    .perInfo_content_plan(v-show="currentTable==0")
-                        .perInfo_content_planHeader
-                            h3 随访方案：糖尿病稳定一
-                            span 随访计划生成时间：2017年11月6日
-                            span 随访计划结束时间：2018年11月
-                            span 随访计划生成时间：10次
-                            span 
-                                b 23：59：59
-                                | 后自动通过审核
-                        .perInfo_content_planList
-                            li.perInfo_content_planSingle
-                                h4 第一次随访
-                                span 计划随访时间：2017年11月6日
-                                p 采集指标 
-                        
-                        //- 随访结果
-                    .perInfo_content_result(v-show="currentTable==1")
-                        h3 随访结果
-                        h4 结果正常
-                        h5 完成时间：2017-09-10 9：00
-                        ul.perInfo_content_resultList
-                            x-icon(@click="getMore",type="ios-arrow-right",size="30").perInfo_content_getMore
-                            li(v-for="item,index in resultList",:key="index").perInfo_content_resultSingle
-                                span {{item.fieldName}}：
-                                | {{item.fieldValue}}
-                        //- 随访记录详情
-                        .perInfo_content_resultInfo
-                            h4 记录详情
-                            ul.perInfo_content_resultInfoList
-                                template(v-for="item,index in resultList")
-                                    li.perInfo_content_resultInfoAi
-                                        i.iconfont &#xe610;
-                                        span {{item.question}}
-                                    li.perInfo_content_resultInfoUser
-                                        .perInfo_content_resultInfoUser_audio
-                                            audio(controls="controls",:src="basesrc+item.audio")
-                                            i.iconfont &#xe63d;
-                                        .perInfo_content_resultInfoUser_text
-                                            //- 记得加上class判断
-                                            h4(:class="{'normal':item.isNormal}") 指标{{item.isNormal?"正常":"不正常"}}
-                                            h5 
-                                             span {{item.fieldName}}:
-                                             | {{item.fieldValue}}
+                    .perInfo_content_tableBox
+                        .common_nodata(v-show="noData")
+                            i(class="iconfont")  &#xe628;
+                            h3.rsAct_nodata_title 暂无数据
+                                //-随访方案
+                        .perInfo_content_plan(v-show="currentTable==0")
+                            .perInfo_content_planHeader
+                                img(src="../../assets/img/common/nopass.png",v-show="planList.taskStatus==1")
+                                h3 随访方案：{{planList.questionTempleName}}
+                                span 随访计划生成时间：{{planList.visitTime}}
+                                span 随访计划结束时间：{{planList.endTime}}
+                                span 随访任务：10次
+                                span(v-show="planList.taskStatus==2") 进度：{{planList.currentTime}}/{{planList.allCount}}
+                                span(v-show="planList.taskStatus==1") 不通过原因：{{planList.notPassReason}}
+                                span(v-show="planList.taskStatus==0")
+                                    b {{planList.startDate}}
+                                    | &nbsp;后自动通过审核
+                            .perInfo_content_planList
+                                li(v-for="item,index in planList.orderList" :key="index").perInfo_content_planSingle
+                                    h4 第{{index+1}}次随访
+                                        span {{item.statusStr}}
+                                    span 计划随访时间：{{item.startDate}}
+                                    p 采集指标：{{item.CollectionIndex}}
+                            
+                            //- 随访结果
+                        .perInfo_content_result(v-show="currentTable==1")
+                            h3 随访结果
+                            h4 结果正常
+                            h5 完成时间：2017-09-10 9：00
+                            ul.perInfo_content_resultList
+                                x-icon(@click="getMore",type="ios-arrow-right",size="30").perInfo_content_getMore
+                                li(v-for="item,index in resultList",:key="index").perInfo_content_resultSingle
+                                    span {{item.fieldName}}：
+                                    | {{item.fieldValue}}
+                            //- 随访记录详情
+                            .perInfo_content_resultInfo
+                                h4 记录详情
+                                ul.perInfo_content_resultInfoList
+                                    template(v-for="item,index in resultList")
+                                        li.perInfo_content_resultInfoAi
+                                            i.iconfont &#xe610;
+                                            span {{item.question}}
+                                        li.perInfo_content_resultInfoUser
+                                            .perInfo_content_resultInfoUser_audio
+                                                audio(controls="controls",:src="basesrc+item.audio")
+                                                i.iconfont &#xe63d;
+                                            .perInfo_content_resultInfoUser_text
+                                                //- 记得加上class判断
+                                                h4(:class="{'normal':item.isNormal}") 指标{{item.isNormal?"正常":"不正常"}}
+                                                h5 
+                                                span {{item.fieldName}}:
+                                                | {{item.fieldValue}}
 
 
 
@@ -586,6 +605,10 @@ export default {
                                 type: "success"
                             });
                             _this.getBaseData();
+                            _this.$nextTick(() => {
+                                this.scollRefresh();
+                                this.$store.commit('updateLoadingStatus', {isLoading: false});
+                            });
                         }).catch((err) => {
 
                         });
@@ -628,8 +651,13 @@ export default {
                  * 获取数据
                  */
                 this.getList(value);
-                this.getPlanList(taskId);
-                this.getPlanResult(taskId);
+                if(taskId){
+                    this.getPlanList(taskId);
+                    this.getPlanResult(taskId);
+                }else{
+                    this.noData=true;
+                }
+                
             }
 
         },
@@ -685,7 +713,16 @@ export default {
          */
         tableSwitch(type) {
             this.currentTable = type;
-            this.noData=false;
+            this.noData=true;
+            if(this.currentTable==0){
+                if(this.planList.questionTempleName){
+                    this.noData=false;
+                }
+            }else{
+                if(this.resultList.length>0){
+                    this.noData=false;
+                }
+            }
         },
         /** 
          * 获取就诊历史记录时间表
@@ -746,6 +783,10 @@ export default {
                 }
             ).then((res) => {
                 this.archivesList = res.data;
+                this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    });
             }).catch((err) => {
 
             });
@@ -779,12 +820,16 @@ export default {
                     taskId: id //计划id
                 }
             ).then((res) => {
-                if(res.data.length>0){
+                if(res.data.orderList.length>0){
+                    this.planList=res.data;
                     this.noData=false;
                 }else{
                     this.noData=true;
                 }
-                console.log(res.data);
+                this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    });
             }).catch((err) => {
 
             });

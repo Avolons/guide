@@ -70,7 +70,8 @@ const routes = [{
     children: [{
         path: "",
         meta: {
-          title: "首页"
+          title: "首页",
+          requireAuth:true,
         },
         component: Index,
       },
@@ -78,6 +79,7 @@ const routes = [{
         path: "plan",
         meta: {
           title: "随访计划",
+          requireAuth:true,
           keepAlive: true // 需要被缓存
         },
         component: Plan
@@ -86,6 +88,7 @@ const routes = [{
         path: "result",
         meta: {
           title: "随访结果",
+          requireAuth:true,
           keepAlive: true // 需要被缓存
         },
         component: Result
@@ -94,6 +97,7 @@ const routes = [{
         path: "mine",
         meta: {
           title: "个人中心",
+          requireAuth:true,
           keepAlive: true // 需要被缓存
         },
         component: Mine
@@ -123,28 +127,32 @@ const routes = [{
     path: '/forget',
     component: Forget,
     meta: {
-      title: "找回密码"
+      title: "找回密码",
+      requireAuth:true,
     }
   },
   {
     path: '/change',
     component: Change,
     meta: {
-      title: "修改密码"
+      title: "修改密码",
+      requireAuth:true,
     }
   },
   {
     path: '/choseAi',
     component: ChoseAi,
     meta: {
-      title: "选择AI助手"
+      title: "选择AI助手",
+      requireAuth:true,
     }
   },
   {
     path: '/register',
     component: Register,
     meta: {
-      title: "绑定手机号码"
+      title: "绑定手机号码",
+      requireAuth:true,
     }
   },
   {
@@ -152,6 +160,7 @@ const routes = [{
     component: Setting,
     meta: {
       title: "设置",
+      requireAuth:true,
       keepAlive: true // 需要被缓存
     }
   },
@@ -160,6 +169,7 @@ const routes = [{
     component: Follow,
     meta: {
       title: "特别关注",
+      requireAuth:true,
       keepAlive: true // 需要被缓存
     }
   },
@@ -168,6 +178,7 @@ const routes = [{
     component: Opinion,
     meta: {
       title: "意见反馈",
+      requireAuth:true,
       keepAlive: false // 需要被缓存
     }
   },
@@ -176,6 +187,7 @@ const routes = [{
     component: Patient,
     meta: {
       title: "我的患者",
+      requireAuth:true,
       keepAlive: true // 需要被缓存
     }
   },
@@ -184,6 +196,7 @@ const routes = [{
     component: Activity,
     meta: {
       title: "活动通知",
+      requireAuth:true,
       keepAlive: true // 需要被缓存
     }
   },
@@ -192,6 +205,7 @@ const routes = [{
     component: ActInfo,
     meta: {
       title: "活动详情",
+      requireAuth:true,
       keepAlive: false // 需要被缓存
     }
   },
@@ -200,6 +214,7 @@ const routes = [{
     component: PatInfo,
     meta: {
       title: "患者详情",
+      requireAuth:true,
       keepAlive: false // 需要被缓存
     }
   },
@@ -208,6 +223,7 @@ const routes = [{
     component: PatIndex,
     meta: {
       title: "指标统计",
+      requireAuth:true,
       keepAlive: false // 需要被缓存
     }
   },

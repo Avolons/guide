@@ -45,7 +45,17 @@ function fetch(type, url, params = {}) {
           params: params
         })
         .then(response => {
-          resolve(JSON.parse(response.data));
+          let code = JSON.parse(response.data).code;
+          if (code === 2 || code === 21) {
+            Vue.$router.push('/login');
+          } else if (code === 0) {
+            resolve(JSON.parse(response.data));
+          } else {
+            Vue.$vux.toast.show({
+              text: JSON.parse(response.data).message,
+              type: "cancel"
+            });
+          }
         }, err => {
           reject(err);
         })
@@ -55,7 +65,17 @@ function fetch(type, url, params = {}) {
     } else {
       axios.post(url, params)
         .then(response => {
-          resolve(JSON.parse(response.data));
+          let code = JSON.parse(response.data).code;
+          if (code === 2 || code === 21) {
+            Vue.$router.push('/login');
+          } else if (code === 0) {
+            resolve(JSON.parse(response.data));
+          } else {
+            Vue.$vux.toast.show({
+              text: JSON.parse(response.data).message,
+              type: "cancel"
+            });
+          }
         }, err => {
           reject(err);
         })

@@ -9,9 +9,9 @@
 	}
 	&_single {
 		box-sizing: border-box;
-			padding: 10px;
-			border-radius: 5px;
-			background-color: #fff;
+		padding: 10px;
+		border-radius: 5px;
+		background-color: #fff;
 		font-size: 13px;
 		margin-bottom: 15px;
 		color: #999;
@@ -19,9 +19,9 @@
 			color: #f36837;
 			margin-right: 5px;
 		}
-		>div{
-			
-			div{
+		>div {
+
+			div {
 				width: 100% !important;
 			}
 		}
@@ -72,10 +72,10 @@ export default {
 					}
 				},
 				label: {
-          normal: {
-            show: true
-          }
-        },
+					normal: {
+						show: true
+					}
+				},
 				areaStyle: {
 					normal: {
 						color: {
@@ -109,7 +109,7 @@ export default {
 					show: false
 				},
 			},
-			id:"",
+			id: "",
 			taskid: "",
 			/* 上拉加载更多 */
 			swiper_pullUp: false,//显示加载
@@ -212,30 +212,30 @@ export default {
 					taskId: this.taskid,//计划id
 				}
 			).then((res) => {
-				let flag=0;
+				let flag = 0;
 				for (const item of res.data) {
 					item.chartdata = {
 						columns: ['dateAdd', 'fieldValue'],
-						rows:[]
+						rows: []
 					};
 					if (item.isNum) {
 						flag++;
 						this.getChart(item);
 					}
 				}
-				let inter=setInterval(()=>{
+				let inter = setInterval(() => {
 					for (const item of res.data) {
 						if (item.isNum) {
-							if(item.chartdata.rows.length>0){
+							if (item.chartdata.rows.length > 0) {
 								flag--;
 							}
 						}
 					}
-					if(flag==0){
+					if (flag == 0) {
 						clearInterval(inter);
 						this.resultList = res.data;
 					}
-				},10)
+				}, 10)
 			}).catch((err) => {
 
 			});
@@ -247,10 +247,10 @@ export default {
 					fieldName: item.fieldName  //指标名称
 				}
 			).then((res) => {
-				item.chartdata.rows=res.data;
-				let copy=item.chartdata;
-				item.chartdata={};
-				item.chartdata=copy;
+				item.chartdata.rows = res.data;
+				let copy = item.chartdata;
+				item.chartdata = {};
+				item.chartdata = copy;
 			}).catch((err) => {
 
 			});

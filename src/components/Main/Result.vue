@@ -93,9 +93,9 @@
                 .rsRes_content_search
                     search(v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名") 
                 .rsRes_content_table
-                    span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 待处理({{tableNumber[0]}})
+                    span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 待处理
                     i
-                    span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 已处理({{tableNumber[1]}})
+                    span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 已处理
                 .rsRes_content_list
                     b-scroll(
                         :data="list",
@@ -177,6 +177,7 @@ export default {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
             API.followway.list(
                 this.searchParams
             ).then((res) => {
@@ -197,6 +198,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {
                         this.noData = true;

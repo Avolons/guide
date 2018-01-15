@@ -58,7 +58,9 @@ body .weui-cell{
 .elementAct:active{
   background-color: #eee;
 }
-
+.weui-dialog__btn_primary{
+  color: #f36837 !important;
+}
 /* 两行超过出现点点点 */
 .twonowarp{
   overflow : hidden;

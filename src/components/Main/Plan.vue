@@ -125,7 +125,7 @@
             margin-bottom: 10px;
         }
         &_list {
-            height: calc(100% - 143px);
+            height: calc(100% - 98px);
         }
     }
 }
@@ -137,7 +137,7 @@
 <template lang="pug">
     .rsPlan
         .rsPlan_main
-            .rsPlan_fixed
+            .rsPlan_fixed(v-show="currentTable==0")
                 .rsPlan_fixed_allCheck
                     input(@change="allCheck",type="checkbox",v-model="selectAll",value=1).mui-checkbox    
                     span 全选
@@ -150,7 +150,7 @@
                 h3.rsPlan_nodata_title 没有相关随访计划
             .rsPlan_content
                 .rsPlan_content_search
-                    search(v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名")
+                    search(@on-cancel="searchData", @on-submit="searchData",v-model="searchParams.patientName",:autoFixed="autoFixed",placeholder="请输入患者姓名")
                 .rsPlan_content_table
                     span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 待审核({{tableNumber[0]}})
                     i
@@ -174,7 +174,7 @@
 <script>
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters,mapState } from 'vuex';
 import { API } from '../../services';
 import { Search } from 'vux';
 export default {
@@ -183,7 +183,11 @@ export default {
         ListCompent,
         Search
     },
-
+    computed: {
+        ...mapState({
+            isLoading: state => state.isLoading
+        })
+    },
     data() {
         return {
             listType: '1',//列表样式类型
@@ -217,6 +221,7 @@ export default {
          */
         tableSwitch(type) {
             this.currentTable = type;
+            this.$refs.listplan.selectResult=[];
             this.searchParams.pager = 1;
             if (type == 0) {
                 this.searchParams.limit = 20;
@@ -234,6 +239,11 @@ export default {
             this.list = [];
             this.getList();
         },
+        searchData(){
+            this.list = [];
+            this.searchParams.pager = 1;
+            this.getList();
+        },
         /**@argument
          * 获取列表数据
          */
@@ -242,6 +252,7 @@ export default {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
             API.followplan.list(
                 this.searchParams
             ).then((res) => {
@@ -252,6 +263,11 @@ export default {
                 setTimeout(() => {
                     if (res.data.length > 0 || this.searchParams.pager == 1) {
                         this.swiper_pullUp = false;
+                        for (const item of res.data) {
+                            let current=new Date(item.visitStartTime).getTime();
+                            let afterTime=(new Date(res.currentTime)).getTime()+24*60*60*1000;
+                            item.interTime=afterTime-current;
+                        }
                         this.list = this.list.concat(res.data);
                         this.tableNumber[0] = res.unExamineCount;
                         this.tableNumber[1] = res.passCount;
@@ -266,6 +282,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {
                         this.noData = true;

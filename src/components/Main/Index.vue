@@ -254,7 +254,7 @@
 		//- 图表插件 两个图表 ，折线图和环状图
 		.rsIndex_chart
 			//- 疾病分类情况
-			.rsIndex_chart_disease
+			.rsIndex_chart_disease(v-if="dataList[0].pieData.data.rows.length>0")
 				group.rsIndex_chart_commonTitle
 					popup-radio(title="疾病分布情况", :options="timeOptions",@on-change="getDisease", v-model="dataList[0].timeSelect")
 				.rsIndex_chart_disContent
@@ -268,7 +268,7 @@
 							h5 {{item.percent}}%
 					
 			//- 用药依从性
-			.rsIndex_chart_drugs
+			.rsIndex_chart_drugs(v-if="dataList[1].pieData.data.rows.length>0")
 				group.rsIndex_chart_commonTitle
 					popup-radio(title="用药依从性", :options="timeOptions",@on-change="getDrugs", v-model="dataList[1].timeSelect")
 				.rsIndex_chart_disContent
@@ -285,7 +285,7 @@
 							h4.nowarp {{item.diagnoseName}}
 							h5 {{item.itemCount}}
 			//- 随访数量统计
-			.rsIndex_chart_drugs
+			.rsIndex_chart_drugs(v-if="dataList[2].lineData.data.rows.length>0")
 				group.rsIndex_chart_commonTitle
 					popup-radio(title="随访数量统计" ,:options="timeOptions_simple",@on-change="getFollowData", v-model="dataList[2].timeSelect")
 				.rsIndex_chart_disContent
@@ -477,6 +477,10 @@ export default {
 		getBaseData() {
 			API.homePage.adminInfo().then((res) => {
 				this.baseData = res.data;
+				this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    });
 			}).catch((err) => {
 
 			});
@@ -489,6 +493,10 @@ export default {
 				dateType: this.dataList[0].timeSelect
 			}).then((res) => {
 				this.dataList[1].pieData.data.rows = res.data;
+				/* this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    }); */
 			}).catch((err) => {
 
 			});
@@ -501,6 +509,10 @@ export default {
 				dateType: this.dataList[1].timeSelect
 			}).then((res) => {
 				this.dataList[0].pieData.data.rows = res.data;
+				/* this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    }); */
 			}).catch((err) => {
 
 			});
@@ -513,6 +525,10 @@ export default {
 				dateType: this.dataList[2].timeSelect
 			}).then((res) => {
 				this.dataList[2].lineData.data.rows = res.data;
+				/* this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    }); */
 			}).catch((err) => {
 
 			});
@@ -527,7 +543,11 @@ export default {
 					limit: 3,
 				}
 			).then((res) => {
-				this.list = res.data
+				this.list = res.data;
+				this.$nextTick(() => {
+                        this.scollRefresh();
+                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    });
 			}).catch((err) => {
 
 			});

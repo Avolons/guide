@@ -94,12 +94,13 @@ Vue.prototype.dateFormat=dateFormat;
 
 /* 时间格式化过滤器 */
 Vue.filter('dataform', function(value) {  
-	return dateFormat(value*1000, 'YYYY.MM.DD');
+	
+	return dateFormat(value, 'HH:mm:ss');
 });
 /* 另一种时间格式化过滤器 */
 Vue.filter('orderdata', function(value) {  
 	if(value){
-		return dateFormat(value*1000, 'YYYY-MM-DD HH:mm:ss');
+		return dateFormat(value*1000, 'HH:mm:ss');
 	}
 });
 
