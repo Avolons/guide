@@ -269,9 +269,11 @@ export default {
                             item.interTime=afterTime-current;
                         }
                         this.list = this.list.concat(res.data);
-                        this.tableNumber[0] = res.unExamineCount;
-                        this.tableNumber[1] = res.passCount;
-                        this.tableNumber[2] = res.noPassCount;
+                        if(this.searchParams.pager == 1){
+                            this.tableNumber[0] = res.unExamineCount;
+                            this.tableNumber[1] = res.passCount;
+                            this.tableNumber[2] = res.noPassCount;
+                        }
                         this.selectAll = [];
                         this.searchParams.pager++;
                     } else {

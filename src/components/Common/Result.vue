@@ -72,8 +72,8 @@
                     span.nowarp {{index+1}}.{{item.patientName}} 
                     span {{item.patientSex}}/{{item.patientAge}}
                     span.nowarp {{item.icdName}}
-                    span 
-                        i 医生家属人
+                    span(v-show="item.gzTag") 
+                        i {{item.gzTag}}
                     i.iconfont &#xe633;
  </template>
  

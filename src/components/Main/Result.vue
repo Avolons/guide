@@ -88,10 +88,10 @@
         .rsRes_main
             .rsRes_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628; 
-                h3.rsRes_nodata_title 暂无相关随访结果
+                h3.rsRes_nodata_title 暂无相关随访记录
             .rsRes_content
                 .rsRes_content_search
-                    search(v-model="searchResult",:autoFixed="autoFixed",placeholder="请输入患者姓名") 
+                    search(@on-cancel="searchData", @on-submit="searchData",v-model="searchParams.patientName",:autoFixed="autoFixed",placeholder="请输入患者姓名") 
                 .rsRes_content_table
                     span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 待处理
                     i
@@ -150,6 +150,11 @@ export default {
         },
     },
     methods: {
+         searchData(){
+            this.list = [];
+            this.searchParams.pager = 1;
+            this.getList();
+        },
         tableSwitch(type) {
             this.currentTable = type;
             this.searchParams.pager = 1;

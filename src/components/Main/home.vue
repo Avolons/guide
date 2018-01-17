@@ -55,7 +55,7 @@
             </tabbar-item>
             <tabbar-item :selected="this.$route.fullPath=='/main/main/result'" :link="{path:'/main/main/result'}">
                 <i  class="iconfont" slot="icon">&#xe608;</i>
-                <span slot="label">随访结果</span>
+                <span slot="label">随访记录</span>
             </tabbar-item>
             <tabbar-item :selected="this.$route.fullPath=='/main/main/mine'" :link="{path:'/main/main/mine'}">
                 <i  class="iconfont" slot="icon">&#xe6d9;</i>

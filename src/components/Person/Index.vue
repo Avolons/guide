@@ -458,7 +458,7 @@
                     .perInfo_content_table
                         span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访方案
                         i
-                        span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访结果
+                        span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访记录
                             //-无数据判断 
                     .perInfo_content_tableBox
                         .common_nodata(v-show="noData")
@@ -484,9 +484,9 @@
                                     span 计划随访时间：{{item.startDate}}
                                     p 采集指标：{{item.CollectionIndex}}
                             
-                            //- 随访结果
+                            //- 随访记录
                         .perInfo_content_result(v-show="currentTable==1")
-                            h3 随访结果
+                            h3 随访记录
                             h4 结果正常
                             h5 完成时间：2017-09-10 9：00
                             ul.perInfo_content_resultList
@@ -567,7 +567,7 @@ export default {
             },
             noData: false,//当前页面暂无数据
             planList: {},//随访计划列表
-            resultList: [],//随访结果列表
+            resultList: [],//随访记录列表
         }
     },
     methods: {
@@ -792,7 +792,7 @@ export default {
             });
         },
         /** 
-         * 根据id获取随访结果
+         * 根据id获取随访记录
          */
         getPlanResult(id) {
             API.followway.getVisistOrderResult(

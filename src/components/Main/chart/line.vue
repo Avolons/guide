@@ -1,5 +1,11 @@
+<style lang="less">
+  .ve-line{
+    margin: 0 auto;
+  }
+</style>
+
 <template>
-  <ve-line height="230px" :legend-visible="false" :yAxis="yAxis" :data="lineData.data" :settings="lineData.setting" :grid="grid">
+  <ve-line height="230px" width="95%" :legend-visible="false" :yAxis="yAxis" :data="lineData.data" :settings="lineData.setting" :grid="grid">
   </ve-line>
 </template>
 

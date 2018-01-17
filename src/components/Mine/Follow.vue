@@ -124,6 +124,7 @@ export default {
                 {
                     pager: this.page,
                     limit: 20,
+                    gz:1,
                 }
             ).then((res) => {
                 let time = 0;

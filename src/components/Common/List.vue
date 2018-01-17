@@ -488,9 +488,10 @@ $duration: .4s;
                         i(v-show="overArray[index]==1").iconfont &#xe63e;
                     p.rsCommon_single_template 随访计划：{{item.visitProjectName || item.schemeName}}
                     p.rsCommon_single_state(v-show="type==0") 随访进度：{{item.currentVisitTime}}/{{item.visitCount}}
-                        span(v-show="item.state==0",data-type=0) 待开始
-                        span(v-show="item.state==1",data-type=1) 待处理
-                        span(v-show="item.state==2",data-type=2) 立即处理
+                        router-link(v-if="item.hzxxId&&type==0",:to="{ path: '/main/main/mine/patInfo', query: { id: 'item.hzxxId' }}").rsCommon_single_link 查看更多 >
+                        //-span(v-show="item.state==0",data-type=0) 待开始
+                        //-span(v-show="item.state==1",data-type=1) 待处理
+                        //-span(v-show="item.state==2",data-type=2) 立即处理
                     p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
                     p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：
                         span {{item.notPassReason}}

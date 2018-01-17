@@ -34,6 +34,7 @@ Router.prototype.goBack = function () {
 
 /* 登录跳转判断 */
 router.beforeEach((to, from, next) => {
+	document.title=to.meta.title;
 	store.commit('updateLoadingStatus', {isLoading: true});
 	// 判断该路由是否需要登录权限
 	if (to.meta.requireAuth) {

@@ -166,13 +166,10 @@ export default {
         },
     },
     mounted() {
-
-    },
-    activated() {
         this.id = this.$route.query.id;
         this.all=this.$route.query.all;
         this.have=this.all-this.$route.query.no;
         this.getData();
-    }
+    },
 }
 </script>

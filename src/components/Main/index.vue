@@ -41,9 +41,16 @@
 		}
 		&_text {
 			line-height: 23.5px;
-			width: calc(100% - 100px);
+			width: calc(100% - 120px);
 			font-size: 13px;
 			color: #666;
+		}
+		>i{
+			width: 20px;
+			height: 20px;
+			margin-top: 5px;
+			color: #666;
+			font-size: 20px;
 		}
 	}
 
@@ -239,6 +246,7 @@
 				span {{baseData.AiName}}
 			p.rsIndex_header_text 早上好，{{baseData.realname}}医生，{{baseData.AiName}}已等候您{{getLastHours}}小时了。以下是您需要处理的内容。
 			//- 中间部分
+			i(@click="goMypatient").iconfont &#xe639;
 		.rsIndex_middle 
 			.rsIndex_middle_content
 				.rsIndex_middle_single
@@ -471,6 +479,9 @@ export default {
 			this.getFollowData();
 			this.getList();
 		},
+		goMypatient(){
+			this.$router.push('/main/main/mine/patient')
+		},
 		/** 
 		 * 获取基础数据
 		 */
@@ -541,6 +552,7 @@ export default {
 				{
 					pager: 1,
 					limit: 3,
+					gz:1,
 				}
 			).then((res) => {
 				this.list = res.data;
