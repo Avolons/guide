@@ -252,7 +252,7 @@ export default {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            this.$store.commit('updateLoadingStatus', {isLoading: true});
+            /* this.$store.commit('updateLoadingStatus', {isLoading: true}); */
             API.followplan.list(
                 this.searchParams
             ).then((res) => {
@@ -264,9 +264,9 @@ export default {
                     if (res.data.length > 0 || this.searchParams.pager == 1) {
                         this.swiper_pullUp = false;
                         for (const item of res.data) {
-                            let current=new Date(item.visitStartTime).getTime();
-                            let afterTime=(new Date(res.currentTime)).getTime()+24*60*60*1000;
-                            item.interTime=afterTime-current;
+                            let current=new Date(item.visitStartTime).getTime()+24*60*60*1000;
+                            let afterTime=(new Date(res.currentTime)).getTime();
+                            item.interTime=current-afterTime;
                         }
                         this.list = this.list.concat(res.data);
                         if(this.searchParams.pager == 1){

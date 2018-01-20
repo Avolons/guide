@@ -80,7 +80,7 @@
             | 作为您的AI虚拟助手吧！
         ul.rsAi_main_list
             li.rsAi_main_single(v-for="item,index in AiList",@click="chooseAi(index)",:class="{'rsAi_main_single--select':choseList[index]==1}")
-                img(:src="'http://192.168.1.100:8888/'+item.value")
+                img(:src="'/'+item.value")
                 h4 {{item.remark}}
 
         button(type="button",@click="submitAi").rsAi_main_btn 确定

@@ -5,12 +5,16 @@
 </style>
 
 <template>
-  <ve-line height="230px" width="95%" :legend-visible="false" :yAxis="yAxis" :data="lineData.data" :settings="lineData.setting" :grid="grid">
+  <ve-line height="230px" width="95%" :legend-visible="false"  :yAxis="yAxis" :data="lineData.data" :settings="lineData.setting" :grid="grid">
   </ve-line>
 </template>
 
 <script>
+import VeLine from 'v-charts/lib/line';
 export default {
+  components: {
+		VeLine	
+	},
   data() {
     return {
       grid: {
@@ -22,10 +26,15 @@ export default {
         axisTick: {
             inside: true
         },
-        splitLine: {
+        /* splitLine: {
           show: false
-        },
+        }, */
       },
+      /* xAxis:{
+        type: 'time',
+        name:"日期",
+       
+      } */
     }
   },
   props: {

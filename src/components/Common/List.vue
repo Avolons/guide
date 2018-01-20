@@ -482,19 +482,19 @@ $duration: .4s;
                         b.rsCommon_single_base {{item.sex || item.patientSex}}/{{item.patientAge}}
                         span(v-show="item.currentVisitError>0") 指标异常
                         i.rsCommon_single_tag(v-show="item.gzTag") {{item.gzTag}}
-                        router-link(v-if="item.hzxxId&&type!=0",:to="'/main/main/mine/patInfo?id='+item.hzxxId").rsCommon_single_link 查看更多 >
+                        router-link(v-if="item.hzxxId&&type!=0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId }}").rsCommon_single_link 查看更多 >
                     .rsCommon_single_nameBox(@click="maxHeight(item,index)",:class="{'rsCommon_single_nameBox--maxHeight':!item.maxHeight}")
                         p 诊断名称：{{item.zdmc || item.icdName}}
                         i(v-show="overArray[index]==1").iconfont &#xe63e;
                     p.rsCommon_single_template 随访计划：{{item.visitProjectName || item.schemeName}}
                     p.rsCommon_single_state(v-show="type==0") 随访进度：{{item.currentVisitTime}}/{{item.visitCount}}
-                        router-link(v-if="item.hzxxId&&type==0",:to="{ path: '/main/main/mine/patInfo', query: { id: 'item.hzxxId' }}").rsCommon_single_link 查看更多 >
+                        router-link(v-if="item.hzxxId&&type==0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId }}").rsCommon_single_link 查看更多 >
                         //-span(v-show="item.state==0",data-type=0) 待开始
                         //-span(v-show="item.state==1",data-type=1) 待处理
                         //-span(v-show="item.state==2",data-type=2) 立即处理
                     p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
                     p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：
-                        span {{item.notPassReason}}
+                        span {{item.notPassReason==1?"患者已死亡":item.notPassReason==2?"患者不接受随访":item.notPassReason==3?"方案重复":"方案不匹配"}}
                     p(v-show="type>=1&&item.dateUpdate").rsCommon_single_planTime 审核时间：{{item.dateUpdate}}
                     
                     .rsCommon_single_countdown(v-show="type==1") {{item.interTime | dataform}}

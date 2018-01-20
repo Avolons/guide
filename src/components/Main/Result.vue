@@ -182,7 +182,7 @@ export default {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            this.$store.commit('updateLoadingStatus', {isLoading: true});
+            /* this.$store.commit('updateLoadingStatus', {isLoading: true}); */
             API.followway.list(
                 this.searchParams
             ).then((res) => {

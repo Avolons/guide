@@ -22,47 +22,47 @@ meta: {
 const Login = () =>
   import ( /* webpackChunkName: "login" */ '../components/Login/Login.vue'); //登录
 const Forget = () =>
-  import ( /* webpackChunkName: "login" */ '../components/Login/Forget.vue'); //忘记密码
+  import ( /* webpackChunkName: "Forget" */ '../components/Login/Forget.vue'); //忘记密码
 const Change = () =>
-  import ( /* webpackChunkName: "login" */ '../components/Login/Change.vue'); //修改密码
+  import ( /* webpackChunkName: "Change" */ '../components/Login/Change.vue'); //修改密码
 const Register = () =>
-  import ( /* webpackChunkName: "login" */ '../components/Login/Register.vue'); //绑定手机号码
+  import ( /* webpackChunkName: "Register" */ '../components/Login/Register.vue'); //绑定手机号码
 const ChoseAi = () =>
-  import ( /* webpackChunkName: "login" */ '../components/Login/ChoseAi.vue'); //绑定手机号码
+  import ( /* webpackChunkName: "ChoseAi" */ '../components/Login/ChoseAi.vue'); //绑定手机号码
 
 /* 四个table页面以及其父页面 */
 const Index = () =>
-  import ( /* webpackChunkName: "main" */ '../components/Main/Index.vue'); //首页
+  import ( /* webpackChunkName: "Index" */ '../components/Main/Index.vue'); //首页
 const Home = () =>
-  import ( /* webpackChunkName: "main" */ '../components/Main/Home.vue'); //父页面
+  import ( /* webpackChunkName: "Home" */ '../components/Main/Home.vue'); //父页面
 const Plan = () =>
-  import ( /* webpackChunkName: "main" */ '../components/Main/Plan.vue'); //随访计划
+  import ( /* webpackChunkName: "Plan" */ '../components/Main/Plan.vue'); //随访计划
 const Result = () =>
-  import ( /* webpackChunkName: "main" */ '../components/Main/Result.vue'); //随访结果
+  import ( /* webpackChunkName: "Result" */ '../components/Main/Result.vue'); //随访结果
 const Mine = () =>
-  import ( /* webpackChunkName: "main" */ '../components/Main/Mine.vue'); //个人中心
+  import ( /* webpackChunkName: "Mine" */ '../components/Main/Mine.vue'); //个人中心
 const Search = () =>
-  import ( /* webpackChunkName: "main" */ '../components/Main/Search.vue'); //搜索
+  import ( /* webpackChunkName: "Search" */ '../components/Main/Search.vue'); //搜索
 
 /* 个人中心相关页面 */
 const Setting = () =>
-  import ( /* webpackChunkName: "mine" */ '../components/Mine/Setting.vue'); //设置
+  import ( /* webpackChunkName: "Setting" */ '../components/Mine/Setting.vue'); //设置
 const Follow = () =>
-  import ( /* webpackChunkName: "mine" */ '../components/Mine/Follow.vue'); //特别关注
+  import ( /* webpackChunkName: "Follow" */ '../components/Mine/Follow.vue'); //特别关注
 const Opinion = () =>
-  import ( /* webpackChunkName: "mine" */ '../components/Mine/Opinion.vue'); //建议反馈
+  import ( /* webpackChunkName: "Opinion" */ '../components/Mine/Opinion.vue'); //建议反馈
 const Patient = () =>
-  import ( /* webpackChunkName: "mine" */ '../components/Mine/Patient.vue'); //我的患者
+  import ( /* webpackChunkName: "Patient" */ '../components/Mine/Patient.vue'); //我的患者
 const ActInfo = () =>
-  import ( /* webpackChunkName: "mine" */ '../components/Mine/ActInfo.vue'); //活动通知详情
+  import ( /* webpackChunkName: "ActInfo" */ '../components/Mine/ActInfo.vue'); //活动通知详情
 const Activity = () =>
-  import ( /* webpackChunkName: "mine" */ '../components/Mine/Activity.vue'); //活动通知
+  import ( /* webpackChunkName: "Activity" */ '../components/Mine/Activity.vue'); //活动通知
 
  /* 患者详情相关页面 */ 
 const PatInfo = () =>
-  import ( /* webpackChunkName: "pat" */ '../components/Person/Index.vue'); //患者详情
+  import ( /* webpackChunkName: "PatInfo" */ '../components/Person/Index.vue'); //患者详情
 const PatIndex = () =>
-  import ( /* webpackChunkName: "pat" */ '../components/Person/Result.vue'); //患者详情
+  import ( /* webpackChunkName: "PatIndex" */ '../components/Person/Result.vue'); //患者详情
 
 const routes = [{
     path: '/main/:id',
@@ -70,7 +70,7 @@ const routes = [{
     children: [{
         path: "",
         meta: {
-          title: "首页",
+          title: "认识医生",
           requireAuth:true,
         },
         component: Index,
@@ -87,7 +87,7 @@ const routes = [{
       {
         path: "result",
         meta: {
-          title: "随访结果",
+          title: "随访记录",
           requireAuth:true,
           keepAlive: true // 需要被缓存
         },

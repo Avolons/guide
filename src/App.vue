@@ -71,8 +71,8 @@
 </template>
 
 <script>
-import { Spinner } from 'vux'
-import { mapState } from 'vuex'
+import { Spinner } from 'vux';
+import { mapState } from 'vuex';
 export default {
     data() {
         return {
@@ -99,8 +99,46 @@ export default {
         }
     },
     mounted() {
+        function isWeiXin() {
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        if (isWeiXin()) {
+            function getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = location.search.substr(1).match(reg);
+                if (r != null)
+                    return unescape(decodeURI(r[2]));
+                return null;
+            }
 
-    }
+            let openId = localStorage.getItem("openId");
+            var access_code = getQueryString('code');
+
+            if (!openId) {
+                if (access_code == null) {
+                    var fromurl = location.href;//获取授权code的回调地址，获取到code，直接返回到当前页  
+                    var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe67019703f582d76&redirect_uri=' + encodeURIComponent(location.href) + '&response_type=code&scope=snsapi_base&state=0#wechat_redirect';
+                    location.href = url;
+                } else {
+                    if (!openId) {
+                        /* 调用接口获取openid */
+                        API.order.getOpenId({
+                            code: access_code,
+                        }).then((res) => {
+                            let openid = res.body.data;
+                            localStorage.setItem("openId", openid);
+                        }, (res) => {
+                        });
+                    }
+
+                }
+            }
+    }}
 }
 
 

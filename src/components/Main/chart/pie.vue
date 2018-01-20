@@ -4,11 +4,15 @@
 </template>
 
 <script>
+import VeRing from 'v-charts/lib/ring'
 export default {
 	props: {
 		pieData: {
 			type: Object
 		}
+	},
+	components: {
+		VeRing	
 	},
 	created: function() {
 

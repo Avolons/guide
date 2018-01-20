@@ -1,9 +1,9 @@
 <style lang="scss">
 .perInfo {
     &_main {
-        .common_nodata{
+        .common_nodata {
             position: absolute;
-            top:0;
+            top: 0;
         }
         background-color: #fff;
         height: 100%;
@@ -22,7 +22,7 @@
         }
     }
     &_content {
-        &_tableBox{
+        &_tableBox {
             position: relative;
         }
         height: 100%;
@@ -92,10 +92,10 @@
             }
         }
         &_box {
-            >h4{
+            >h4 {
                 font-size: 12px;
-            color: #f36837;
-            margin-bottom: 5px; 
+                color: #f36837;
+                margin-bottom: 5px;
             }
         }
         &_headerTitle {
@@ -159,7 +159,7 @@
             border-bottom: 1px solid #e5e5e5;
             padding-bottom: 10px;
             position: relative;
-            >img{
+            >img {
                 position: absolute;
                 right: 15px;
                 width: 50px;
@@ -298,7 +298,7 @@
                 background-color: #fff;
             }
         }
-        &_getMore{
+        &_getMore {
             position: absolute;
             top: 50%;
             right: 15px;
@@ -332,7 +332,7 @@
                     background-color: #fff;
                 }
             }
-            &_text{
+            &_text {
                 background-color: #ffffff;
                 border-radius: 3px;
                 border: solid 1px rgba(5, 5, 5, 0.08);
@@ -341,22 +341,21 @@
                 padding-right: 10px;
                 margin-right: 20px;
                 display: inline-block;
-                >h4{
+                >h4 {
                     font-size: 13px;
                     color: #fa2525;
                 }
-                >.normal{
+                >.normal {
                     color: #333;
                 }
-                >h5{
+                >h5 {
                     font-size: 12px;
                     color: #333;
-                    >span{
+                    >span {
                         color: #999;
                     }
                 }
             }
-            
         }
     }
 }
@@ -522,7 +521,7 @@
 <script>
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
-import { Search, PopupPicker, Group, Actionsheet } from 'vux'
+import { Search, PopupPicker, Group, Actionsheet } from 'vux';
 import { mapGetters } from 'vuex';
 import { API } from '@/services';
 export default {
@@ -541,14 +540,14 @@ export default {
     },
     data() {
         return {
-            noData:false,
-            taskId:'',
+            noData: false,
+            taskId: '',
             detailShow: false,//是否显示患者诊断详情
             id: "",//患者id
             visitOrderId: "",
             basesrc: "",//基础语音前缀
             noPassReason: false,//不通过原因
-            noPassList: ["患者已死亡", "方案重复", "方案不匹配", "不需要随访"],
+            noPassList: [{ label: "患者已死亡", value: 1 }, { label: "患者不接受随访", value: 2 }, { label: "方案重复", value: 3 }, { label: "方案不匹配", value: 4 },],
             baseData: {},//用户基础数据
             currentTable: 0,
             archivesList: [],//患者就诊历史数据
@@ -574,12 +573,12 @@ export default {
         /** 
          * 进入指标详情页面
          */
-        getMore(){
+        getMore() {
             this.$router.push({
-                path:'/main/main/mine/patIndex',
-                query:{
-                    id:this.taskId,
-                    hzxxId:this.id
+                path: '/main/main/mine/patIndex',
+                query: {
+                    id: this.taskId,
+                    hzxxId: this.id
                 }
             })
         },
@@ -607,7 +606,7 @@ export default {
                             _this.getBaseData();
                             _this.$nextTick(() => {
                                 this.scollRefresh();
-                                this.$store.commit('updateLoadingStatus', {isLoading: false});
+                                this.$store.commit('updateLoadingStatus', { isLoading: false });
                             });
                         }).catch((err) => {
 
@@ -641,23 +640,22 @@ export default {
                 let taskId;
                 for (const item of this.copyHistory) {
                     if (item.diagnosetime == value) {
-                        console.log(item.diagnosetime)
                         taskId = item.taskIds[0];
                         break;
                     }
                 }
-                this.taskId=taskId;
+                this.taskId = taskId;
                 /** 
                  * 获取数据
                  */
                 this.getList(value);
-                if(taskId){
+                if (taskId) {
                     this.getPlanList(taskId);
                     this.getPlanResult(taskId);
-                }else{
-                    this.noData=true;
+                } else {
+                    this.noData = true;
                 }
-                
+
             }
 
         },
@@ -672,8 +670,8 @@ export default {
                     API.followplan.editVisitProjectStatus({
                         operateType: 1, //操作类型（1：不通过 2：通过）   
                         isAll: 2,  //是否全部提交（(1:是 2：否)）
-                        ids: "",   //要修改的随访方案Id （逗号分隔）
-                        noPassReason: menuItem,
+                        ids: self.taskId,   //要修改的随访方案Id （逗号分隔）
+                        noPassReason: menuKey,
                     }).then((res) => {
                         self.$vux.toast.show({
                             text: '不通过成功'
@@ -713,14 +711,14 @@ export default {
          */
         tableSwitch(type) {
             this.currentTable = type;
-            this.noData=true;
-            if(this.currentTable==0){
-                if(this.planList.questionTempleName){
-                    this.noData=false;
+            this.noData = true;
+            if (this.currentTable == 0) {
+                if (this.planList.questionTempleName) {
+                    this.noData = false;
                 }
-            }else{
-                if(this.resultList.length>0){
-                    this.noData=false;
+            } else {
+                if (this.resultList.length > 0) {
+                    this.noData = false;
                 }
             }
         },
@@ -784,9 +782,9 @@ export default {
             ).then((res) => {
                 this.archivesList = res.data;
                 this.$nextTick(() => {
-                        this.scollRefresh();
-                        this.$store.commit('updateLoadingStatus', {isLoading: false});
-                    });
+                    this.scollRefresh();
+                    this.$store.commit('updateLoadingStatus', { isLoading: false });
+                });
             }).catch((err) => {
 
             });
@@ -801,10 +799,10 @@ export default {
                 }
             ).then((res) => {
                 this.resultList = res.data;
-                if(resultList.length>0){
-                    this.noData=false;
-                }else{
-                    this.noData=true;
+                if (resultList.length > 0) {
+                    this.noData = false;
+                } else {
+                    this.noData = true;
                 }
                 this.basesrc = res.AIVOICURL;
             }).catch((err) => {
@@ -820,16 +818,16 @@ export default {
                     taskId: id //计划id
                 }
             ).then((res) => {
-                if(res.data.orderList.length>0){
-                    this.planList=res.data;
-                    this.noData=false;
-                }else{
-                    this.noData=true;
+                if (res.data.orderList.length > 0) {
+                    this.planList = res.data;
+                    this.noData = false;
+                } else {
+                    this.noData = true;
                 }
                 this.$nextTick(() => {
-                        this.scollRefresh();
-                        this.$store.commit('updateLoadingStatus', {isLoading: false});
-                    });
+                    this.scollRefresh();
+                    this.$store.commit('updateLoadingStatus', { isLoading: false });
+                });
             }).catch((err) => {
 
             });

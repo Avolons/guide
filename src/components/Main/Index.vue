@@ -257,7 +257,7 @@
 						router-link(to="/main/main/plan") 待审核
 				.rsIndex_middle_single
 					h4.rsIndex_middle_number {{baseData.needClCount}}
-					span 随访结果
+					span 随访记录
 						router-link(to="/main/main/result") 待处理
 		//- 图表插件 两个图表 ，折线图和环状图
 		.rsIndex_chart
@@ -438,11 +438,16 @@ export default {
 							]
 						},
 						setting: {
+							labelMap: {
+								itemCount: '随访数量',
+								diagnoseName:'日期'
+							},
 							itemStyle: {
 								normal: {
 									color: '#f36837'
 								}
 							},
+							/* xAxisType:'time', */
 							areaStyle: {
 								normal: {
 									color: {
