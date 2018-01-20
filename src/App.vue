@@ -99,7 +99,7 @@ export default {
         }
     },
     mounted() {
-        function isWeiXin() {
+       /*  function isWeiXin() {
             var ua = window.navigator.userAgent.toLowerCase();
             if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                 return true;
@@ -126,7 +126,6 @@ export default {
                     location.href = url;
                 } else {
                     if (!openId) {
-                        /* 调用接口获取openid */
                         API.order.getOpenId({
                             code: access_code,
                         }).then((res) => {
@@ -138,7 +137,10 @@ export default {
 
                 }
             }
-    }}
+   
+   } */
+
+    }
 }
 
 

@@ -105,7 +105,7 @@
         x-input(placeholder="请输入密码",type="password",v-model="form.user_password",required)
           i(class="iconfont" slot="label") &#xe65e;
         .rsLogin_main_select
-          check-icon(:value.sync="remember").rsLogin_main_remember 记住密码
+          //- check-icon(:value.sync="remember").rsLogin_main_remember 记住密码
           //- router-link(to="/forget").rsLogin_main_forget 忘记密码
         x-button(@click.native="login").rsLogin_main_button 登录
 </template>
@@ -117,8 +117,8 @@ export default {
     return {
       /* 登录信息 */
       form: {
-        user_phone: "1932",
-        user_password: "123456"
+        user_phone: "",
+        user_password: ""
       },
       remember: true
     }

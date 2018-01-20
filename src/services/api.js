@@ -14,7 +14,7 @@ import qs from 'qs';
 Vue.prototype.$http = axios;
 
 /* 默认请求地址 */
-/* axios.defaults.baseURL = 'http://192.168.1.100:8888/'; */
+axios.defaults.baseURL = 'http://192.168.1.100:8888/';
 /* axios.defaults.baseURL = 'http://192.168.1.32:8080/'; */
 
 /* 默认最长响应时间 */

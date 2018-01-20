@@ -79,7 +79,7 @@
       group.rsChange_main_group
         x-input(placeholder="请输入旧密码",type="text",required,v-model="form.oldPassword")
         x-input(placeholder="请输入新密码",type="text",required,v-model="form.newPassword")
-        x-input(placeholder="请确认新密码",required,type="text",v-model="form.checkPassWord")
+        x-input(placeholder="请确认新密码",required,type="text",v-model="checkPassWord")
         p.rsChange_main_confrim 提示：密码可由数字和字母组成，长度不少于6位字符，不超过16位字符
         x-button(class="rsChange_main_btn" @click.native="nextStep") 确认
 </template>
