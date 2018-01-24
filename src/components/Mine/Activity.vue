@@ -2,8 +2,11 @@
 .rsAct {
     &_main {
         height: 100%;
+        .common_nodata{
+            top: 50px;
+        }
         &_list {
-            height: 100%;
+            height: calc(100% - 50px);
         }
         &_actList{
         overflow: hidden;
@@ -45,6 +48,7 @@
 <template lang="pug">
     .rsAct
         .rsAct_main
+            header-cop(:heder_title="title")
             .common_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628;
                 h3.rsAct_nodata_title 暂无相关活动通知
@@ -69,12 +73,14 @@
 </template>         
 
 <script>
+import HeaderCop from '../Common/Header.vue';
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
 import { API } from '../../services';
 export default {
     components: {
         BScroll,
+        HeaderCop
     },
     /* computed: {
         ...mapGetters([
@@ -84,6 +90,7 @@ export default {
     }, */
     data() {
         return {
+            title:'活动列表',
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -92,6 +99,7 @@ export default {
             page: 1,
             noData: false,//当前页面暂无数据
             searchResult: "",
+            loading:false
         }
     },
     watch: {
@@ -122,6 +130,10 @@ export default {
          * 获取列表数据
          */
         getList() {
+            if(this.loading){
+                return false;      
+            }
+            this.loading=true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
@@ -149,6 +161,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.loading=false;
                     });
                     if (this.list.length == 0) {
                         this.noData = true;

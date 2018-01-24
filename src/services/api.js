@@ -14,11 +14,15 @@ import qs from 'qs';
 Vue.prototype.$http = axios;
 
 /* 默认请求地址 */
-axios.defaults.baseURL = 'http://192.168.1.100:8888/';
+axios.defaults.baseURL = 'http://61.153.232.58:19999/';
+
+/* axios.defaults.baseURL = 'http://192.168.1.52:8080/'; */
+
+/* axios.defaults.baseURL = 'http://192.168.1.100:8888/'; */
 /* axios.defaults.baseURL = 'http://192.168.1.32:8080/'; */
 
 /* 默认最长响应时间 */
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 35000;
 
 /* 添加请求拦截器 */
 axios.interceptors.request.use(function (config) {
@@ -294,6 +298,13 @@ export const patientList = {
    */
     getRecordByDate (data) {
         return fetch('post', '/wechat/patientRecord/getRecordByDate', data);
+    },
+    /*
+   * 获取所有taskid
+   * patient:'af9338f6-138d-4d43-8fa6-2d86038fc11c' //患者id
+   */
+    getTaskByHzId (data) {
+        return fetch('post', '/wechat/flowUp/getTaskByHzId', data);
     }
 
 }; /* 活动通知 *****/

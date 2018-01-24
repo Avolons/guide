@@ -213,6 +213,7 @@ export default {
             selectAll: [],//全选
             searchResult: "",
             selectNumber: 0,
+            loading:false,
         }
     },
     methods: {
@@ -237,6 +238,7 @@ export default {
                 this.listType='2';
             }
             this.list = [];
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
             this.getList();
         },
         searchData(){
@@ -248,11 +250,14 @@ export default {
          * 获取列表数据
          */
         getList() {
+            if(this.loading){
+                return false;      
+            }
+            this.loading=true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            /* this.$store.commit('updateLoadingStatus', {isLoading: true}); */
             API.followplan.list(
                 this.searchParams
             ).then((res) => {
@@ -284,6 +289,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.loading=false;
                         this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {

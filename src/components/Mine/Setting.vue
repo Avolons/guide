@@ -35,6 +35,7 @@
     
     .rsSetting
         .rsSetting_actionList
+            header-cop(:heder_title="title")
             group.rsSetting_mine_list
                 cell(:link="{path:'/change'}",title="修改密码").rsSetting_mine_single
                    
@@ -45,15 +46,17 @@
 </template>
 
 <script>
+import HeaderCop from '../Common/Header.vue';
 import { Cell,Group} from 'vux';
 export default {
     components: {
         Group,
         Cell,
+        HeaderCop
     },
     data() {
         return {
-
+            title:"设置"
         }
     },
     methods: {

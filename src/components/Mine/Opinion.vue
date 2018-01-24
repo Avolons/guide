@@ -3,9 +3,6 @@
     overflow: hidden;
     height: 100%;
     background-color: #fff;
-    box-sizing: border-box;
-    padding: 0 15px;
-    padding-top: 15px;
     .weui-cells {
         &:before {
             display: none;
@@ -21,6 +18,11 @@
         &:after {
             display: none;
         }  
+    }
+    &_content{
+        box-sizing: border-box;
+        padding: 0 15px;
+        padding-top: 15px;
     }
     &_textarea {
         border: 1px solid #dadada;
@@ -64,18 +66,20 @@
 <template lang="pug">
   .rsOpin
     .rsOpin_main
-        group
-        x-textarea.rsOpin_main_textarea(:max='100', v-model='content')
-        input.rsOpin_main_input(v-model='contact', type='text', placeholder='您的邮箱或者手机号')
-        h3.rsOpin_main_title 或通过以下方式联系我们:
-            br
-            |微信公众号：集医智能
-            br
-            |邮箱：renshi@myaidoctor.com
-        button.rsOpin_main_btn(@click='sendOption', type='button') 提交
+        header-cop(:heder_title="title")
+        group.rsOpin_main_content
+            x-textarea.rsOpin_main_textarea(:max='100', v-model='content')
+            input.rsOpin_main_input(v-model='contact', type='text', placeholder='您的邮箱或者手机号')
+            h3.rsOpin_main_title 或通过以下方式联系我们:
+                br
+                |微信公众号：集医智能
+                br
+                |邮箱：renshi@myaidoctor.com
+            button.rsOpin_main_btn(@click='sendOption', type='button') 提交
 
 </template>
 <script>
+import HeaderCop from '../Common/Header.vue';
 import { XHeader, Group, XButton, XTextarea } from 'vux'
 import { mapGetters } from 'vuex'
 import { API } from '@/services'
@@ -86,9 +90,11 @@ export default {
         Group,
         XButton,
         XTextarea,
+        HeaderCop
     },
     data() {
         return {
+            title:"意见反馈",
             content: "",//内容
             contact: ""//联系方式
         }

@@ -1,4 +1,15 @@
 <style lang="scss">
+.weui-cell {
+    padding: 10px 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.vux-popup-header-right {
+    color: #f36837 !important;
+}
+
 .perInfo {
     &_main {
         .common_nodata {
@@ -22,11 +33,31 @@
         }
     }
     &_content {
+        /* &_planGress{
+            width: 100%;
+            height: 10px;
+            background-color: #d7d7d7;
+            border-radius: 10px;
+            display: block;
+            border: solid 1px rgba(51, 51, 51, 0.09);
+            position: relative;
+            &:after {
+                content: "";
+                display: block;
+                height: 100%;
+                background-color: #10caff;
+                border-radius: 10px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        } */
+        height: calc(100% - 50px);
+        overflow-y: auto;
         &_tableBox {
             position: relative;
         }
-        height: 100%;
-        overflow-y: auto;
         &_header {
             font-size: 14px;
             color: #666;
@@ -47,6 +78,7 @@
         &_headerBase {
             display: flex;
             margin: 15px 0;
+            margin-top: 0px;
             align-items: center;
             position: relative;
             >h3 {
@@ -367,6 +399,7 @@
 <template lang="pug">
     .perInfo
         .perInfo_main
+            header-cop(:heder_title="title")
             .perInfo_content
                 .perInfo_content_planBtn(v-show="currentTable==0&&planList.taskStatus==0")
                     button(type="button",@click="adopt(1)") 不通过
@@ -375,12 +408,10 @@
                     p(slot="header") 医生审核不通过原因
                 b-scroll(
                     :data="list",
-                    @pulldown="listRefresh",
                     @scrollToEnd="listRefresh",
-                    pullup=true,
-                    pulldown=true,
+                    pullup=false,
+                    pulldown=false,
                     ref="scollView",
-                    :swiper_pullUp="swiper_pullUp",
                     :swiper_nodata="swiper_nodata"
                 )
                     popup-picker(title="患者信息",:data="historyList", v-model="archives" ,@on-change="getHistoryData" ,placeholder="查看历史就诊档案")
@@ -455,7 +486,7 @@
                                         
                                    
                     .perInfo_content_table
-                        span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访方案
+                        span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访计划
                         i
                         span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访记录
                             //-无数据判断 
@@ -471,8 +502,8 @@
                                 span 随访计划生成时间：{{planList.visitTime}}
                                 span 随访计划结束时间：{{planList.endTime}}
                                 span 随访任务：10次
-                                span(v-show="planList.taskStatus==2") 进度：{{planList.currentTime}}/{{planList.allCount}}
-                                span(v-show="planList.taskStatus==1") 不通过原因：{{planList.notPassReason}}
+                                span(v-show="planList.taskStatus==2").perInfo_content_planGress 进度：{{planList.currentTime}}/{{planList.allCount}}
+                                span(v-show="planList.taskStatus==1") 不通过原因：{{planList.notPassReason==1?"患者已死亡":planList.notPassReason==2?"患者不接受随访":planList.notPassReason==3?"方案重复":"方案不匹配"}}
                                 span(v-show="planList.taskStatus==0")
                                     b {{planList.startDate}}
                                     | &nbsp;后自动通过审核
@@ -519,6 +550,7 @@
 </template>         
 
 <script>
+import HeaderCop from '../Common/Header.vue';
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { Search, PopupPicker, Group, Actionsheet } from 'vux';
@@ -531,7 +563,8 @@ export default {
         PopupPicker,
         BScroll,
         ListCompent,
-        Search
+        Search,
+        HeaderCop
     },
     computed: {
         ...mapGetters([
@@ -540,6 +573,7 @@ export default {
     },
     data() {
         return {
+            title:"患者详情",
             noData: false,
             taskId: '',
             detailShow: false,//是否显示患者诊断详情
@@ -637,21 +671,37 @@ export default {
          */
         getHistoryData(value) {
             if (value) {
-                let taskId;
-                for (const item of this.copyHistory) {
-                    if (item.diagnosetime == value) {
-                        taskId = item.taskIds[0];
-                        break;
+                /** 
+                 * 日期判断
+                 */
+                let val = value[0];
+                if (val.indexOf('临时随访') == -1) {
+                    let taskId;
+                    for (const item of this.copyHistory) {
+                        if (item.diagnosetime == val) {
+                            taskId = item.taskIds[0];
+                            break;
+                        }
                     }
+                    this.taskId = taskId;
+                    this.getList(val);
+                } else {
+                    this.archivesList = [];
+                    let i = val.substring(1, 2);
+                    console.log(i);
+                    this.copyCurrent.forEach((vals, index) => {
+                        if ((i-1) == index) {
+                            this.taskId = vals.id;
+                        }
+                    });
                 }
-                this.taskId = taskId;
+
                 /** 
                  * 获取数据
                  */
-                this.getList(value);
-                if (taskId) {
-                    this.getPlanList(taskId);
-                    this.getPlanResult(taskId);
+                if (this.taskId) {
+                    this.getPlanList(this.taskId);
+                    this.getPlanResult(this.taskId);
                 } else {
                     this.noData = true;
                 }
@@ -743,8 +793,56 @@ export default {
                 }
                 this.copyHistory = res.data;
                 this.historyList = [arr];
-                this.archives = [res.data[0].diagnosetime];
-                this.getHistoryData();
+
+                /** 
+                 * 合并历史数据
+                 */
+                this.getTaskByHzId();
+
+            }).catch((err) => {
+
+            });
+        },
+        /** 
+         * 获取所有的taskid
+         */
+        getTaskByHzId() {
+            API.patientList.getTaskByHzId(
+                {
+                    patient: this.id //计划id
+                }
+            ).then((res) => {
+                this.copyCurrent = res.data;
+                (res.data).forEach((val, index) => {
+                    let flag = 0;
+                    for (const item of this.copyHistory) {
+                        if (item.taskIds[0] == val.id) {
+                            flag++;
+                        }
+                    }
+                    if (flag == 0) {
+                        this.historyList[0].push({
+                            name: val.dateAdd + '/临时随访',
+                            value: "第" + (index+1) + "临时随访"
+                        });
+                    }
+                });
+                if (this.$route.query.taskId) {
+                    let id = this.$route.query.taskId;
+                    this.copyCurrent.forEach((val, index) => {
+                        if (id == val.id) {
+                            this.archives = ["第" + (index+1) + "临时随访"];
+                        }
+                    });
+                    for (const item of this.copyHistory) {
+                        if (id == item.taskIds[0]) {
+                            this.archives = [item.diagnosetime];
+                        }
+                    }
+                } else {
+                    this.archives = [this.historyList[0][0].value];
+                }
+                this.getHistoryData(this.archives);
             }).catch((err) => {
 
             });
@@ -776,7 +874,7 @@ export default {
             API.patientList.getRecordByDate(
                 {
                     patientId: this.id, //病人id
-                    date: date[0],//选择的日期
+                    date: date,//选择的日期
 
                 }
             ).then((res) => {
@@ -798,7 +896,7 @@ export default {
                     taskId: id //计划id
                 }
             ).then((res) => {
-                this.resultList = res.data;
+                this.resultList = res.data || [];
                 if (resultList.length > 0) {
                     this.noData = false;
                 } else {
@@ -809,6 +907,7 @@ export default {
 
             });
         },
+
         /** 
          * 获取随访计划列表
          */

@@ -58,6 +58,13 @@
 }
 </style>
 
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+</style>
+
 <template>
     <div>
         <transition :name="transitionName" class="router">

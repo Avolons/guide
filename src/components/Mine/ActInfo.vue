@@ -5,7 +5,7 @@
         background-color: #fff;
         &_content {
             overflow: hidden;
-            height: 100%;
+            height: calc(100% - 50px);
         }
         &_header {
             margin: 15px auto;
@@ -94,6 +94,7 @@
 <template lang="pug">
     .rsActInfo
         .rsActInfo_main
+            header-cop(:heder_title="title")
             .rsActInfo_main_content
                 b-scroll(
                     :data="dataList",
@@ -117,12 +118,14 @@
 </template>         
 
 <script>
+import HeaderCop from '../Common/Header.vue';
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
 import { API } from '@/services';
 export default {
     components: {
         BScroll,
+        HeaderCop
     },
     /* computed: {
         ...mapGetters([
@@ -132,6 +135,7 @@ export default {
     }, */
     data() {
         return {
+            title:"通知详情",
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
             swiper_nodata: false,//没有更多数据
@@ -168,7 +172,7 @@ export default {
     mounted() {
         this.id = this.$route.query.id;
         this.all=this.$route.query.all;
-        this.have=this.all-this.$route.query.no;
+        this.have=this.$route.query.no;
         this.getData();
     },
 }

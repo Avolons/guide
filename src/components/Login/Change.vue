@@ -7,12 +7,13 @@
 
 .rsChange {
   &_main {
-    padding: 0 30px;
-    box-sizing: border-box;
     background-color: #fff;
     height: 100%;
     overflow: hidden;
     &_group {
+      padding: 0 30px;
+      padding-top: 2px;
+      box-sizing: border-box;
       input {
         font-size: 13px;
         color: #999;
@@ -76,6 +77,7 @@
 <template lang="pug">
   .rsChange
     .rsChange_main
+      header-cop(:heder_title="title")
       group.rsChange_main_group
         x-input(placeholder="请输入旧密码",type="text",required,v-model="form.oldPassword")
         x-input(placeholder="请输入新密码",type="text",required,v-model="form.newPassword")
@@ -84,6 +86,7 @@
         x-button(class="rsChange_main_btn" @click.native="nextStep") 确认
 </template>
 <script>
+import HeaderCop from '../Common/Header.vue';
 import { XInput, Group, XButton } from 'vux';
 import { API } from '@/services'
 export default {
@@ -96,6 +99,7 @@ export default {
         oldPassword: "",
         newPassword: "",
       },
+      title:"修改密码",
       checkPassWord: '',
     }
   },
@@ -103,6 +107,7 @@ export default {
     XInput,
     Group,
     XButton,
+    HeaderCop
   },
   mounted: function() {
   },

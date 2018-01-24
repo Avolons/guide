@@ -1,7 +1,9 @@
 
 <style lang="scss" >
 .resultData {
-	height: 100%;
+	&_main{
+		height: 100%;
+	}
 	&_list {
 		box-sizing: border-box;
 		padding: 15px;
@@ -33,38 +35,43 @@
 <template lang="pug">
 //- 首页主体
 .resultData
-	b-scroll(
-		:data="dataList",
-		pulldown=true,
-		@pulldown="listRefresh",
-		@scrollToEnd="listRefresh",
-		ref="scollView",
-		)
-		ul.resultData_list
-			template(v-for="item,index in resultList")
-				li(v-if='item.isNum').resultData_single
-					span {{item.fieldName}}:
-					| {{item.fieldValue}}
-					div
-						ve-line(height="230px",:legend-visible="false",:yAxis="yAxis",:data="item.chartdata",:settings="setting",:grid="grid")
-				li(v-else).resultData_single
-					span {{item.fieldName}}:
-					| {{item.fieldValue}}
-					//-line-example(:lineData="")
+	.resultData_main
+		header-cop(:heder_title="title")
+		b-scroll(
+			:data="dataList",
+			pulldown=true,
+			@pulldown="listRefresh",
+			@scrollToEnd="listRefresh",
+			ref="scollView",
+			)
+			ul.resultData_list
+				template(v-for="item,index in resultList")
+					li(v-if='item.isNum').resultData_single
+						span {{item.fieldName}}:
+						| {{item.fieldValue}}
+						div
+							ve-line(height="230px",:legend-visible="false",:yAxis="yAxis",:data="item.chartdata",:settings="setting",:grid="grid")
+					li(v-else).resultData_single
+						span {{item.fieldName}}:
+						| {{item.fieldValue}}
+						//-line-example(:lineData="")
 				
 </template>
 
 <script>
+import HeaderCop from '../Common/Header.vue';
+import VeLine from 'v-charts/lib/line';
 import { API } from '@/services';
 import BScroll from '../Common/scrollView.vue';
-import LineExample from '../Main/chart/line.vue';
 export default {
 	components: {
 		BScroll,
-		LineExample,
+		VeLine,
+		HeaderCop
 	},
 	data() {
 		return {
+			title:"结果详情",
 			setting: {
 				itemStyle: {
 					normal: {
@@ -192,7 +199,8 @@ export default {
 					}
 				},
 			],//数据列表
-			resultList: []//统计列表
+			resultList: [],//统计列表
+			flag:0,
 		}
 	},
 	methods: {
@@ -212,26 +220,19 @@ export default {
 					taskId: this.taskid,//计划id
 				}
 			).then((res) => {
-				let flag = 0;
+				this.flag = 0;
 				for (const item of res.data) {
 					item.chartdata = {
 						columns: ['dateAdd', 'fieldValue'],
 						rows: []
 					};
 					if (item.isNum) {
-						flag++;
+						this.flag++;
 						this.getChart(item);
 					}
 				}
 				let inter = setInterval(() => {
-					for (const item of res.data) {
-						if (item.isNum) {
-							if (item.chartdata.rows.length > 0) {
-								flag--;
-							}
-						}
-					}
-					if (flag == 0) {
+					if (this.flag == 0) {
 						clearInterval(inter);
 						this.resultList = res.data;
 					}
@@ -251,6 +252,7 @@ export default {
 				let copy = item.chartdata;
 				item.chartdata = {};
 				item.chartdata = copy;
+				this.flag--;
 			}).catch((err) => {
 
 			});

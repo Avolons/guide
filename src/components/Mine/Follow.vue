@@ -1,6 +1,9 @@
 <style lang="scss">
 .rsFollow {
     &_main {
+        .common_nodata{
+            top: 50px;
+        }
         .weui-search-bar__cancel-btn{
                 color: #f36837;
                 font-size: 15px;
@@ -16,6 +19,7 @@
         .vux-search-box{
             position: fixed !important;
             width: 100%;
+            top: 50px !important;
         }
         height: 100%;
         background-color: #fff;
@@ -57,6 +61,7 @@
 <template lang="pug">
     .rsFollow
         .rsFollow_main
+            header-cop(:heder_title="title")
             .common_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628;
                 h3.rsAct_nodata_title 暂无关注患者
@@ -78,6 +83,7 @@
                     list-compent(:list="list") 
 </template>
 <script>
+import HeaderCop from '../Common/Header.vue';
 import ListCompent from '../Common/Result.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
@@ -87,10 +93,12 @@ export default {
     components: {
         BScroll,
         ListCompent,
-        Search
+        Search,
+        HeaderCop
     },
     data() {
         return {
+            title:"特别关注",
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -99,6 +107,7 @@ export default {
             page: 1,
             noData: false,
             searchResult: "",
+            loading:false
         }
     },
     methods: {
@@ -116,7 +125,11 @@ export default {
          * 获取列表数据
          */
         getList() {
-            if (this.list.length >= 10) {
+            if(this.loading){
+                return false;      
+            }
+            this.loading=true;
+            if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
@@ -145,6 +158,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.loading=false;
                     });
                     if (this.list.length == 0) {
                         this.noData = true;

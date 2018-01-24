@@ -138,10 +138,10 @@ export default {
                 vetStatus:1,    //1未处理，11已处理
                 pager: 1 , //默认1
                 limit: 20   //默认100
-
             },
             noData: false,//当前页面暂无数据
             searchResult: "",
+            loading:false,
         }
     },
     watch: {
@@ -156,6 +156,9 @@ export default {
             this.getList();
         },
         tableSwitch(type) {
+            if(this.loading){
+                return false;      
+            }
             this.currentTable = type;
             this.searchParams.pager = 1;
             if (type == 0) {
@@ -164,6 +167,7 @@ export default {
                 this.searchParams.vetStatus = 11;
             }
             this.list = [];
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
             this.getList();
         },
         /**@argument
@@ -178,22 +182,24 @@ export default {
          * 获取列表数据
          */
         getList() {
+            if(this.loading){
+                return false;      
+            }
+            this.loading=true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            /* this.$store.commit('updateLoadingStatus', {isLoading: true}); */
             API.followway.list(
                 this.searchParams
             ).then((res) => {
                 let time = 0;
-                if (this.list.length != 0) {
-                    time = 500;
-                }
+                
                 setTimeout(() => {
                     if (res.data.length > 0 || this.searchParams.pager == 1) {
                         this.swiper_pullUp = false;
                         this.list = this.list.concat(res.data);
+                        this.loading=false;
                         this.searchParams.pager++;
                     } else {
                         this.swiper_pullUp = false;
@@ -203,6 +209,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        
                         this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {

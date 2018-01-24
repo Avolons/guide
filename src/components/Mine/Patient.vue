@@ -3,7 +3,7 @@
     height: 100%;
     &_main {
         .common_nodata{
-            top:44px;
+            top:149px;
         }
         .weui-search-bar__cancel-btn {
             color: #f36837;
@@ -20,6 +20,7 @@
         .vux-search-box {
             position: fixed !important;
             width: 100%;
+            top: 50px !important;
         }
         height: 100%;
         background-color: #fff;
@@ -28,12 +29,12 @@
             margin-bottom: 45px;
         }
         &_list {
-            height: calc(100% - 99px);
+            height: calc(100% - 149px);
         }
         &_check {
             /* height: calc(100% - 44px); */
             position: fixed;
-            top: 44px;
+            top: 94px;
             width: 100%;
             background-color: rgba(0, 0, 0, 0.3);
             z-index: 998;
@@ -176,11 +177,12 @@
 <template lang="pug">
     .rsPat
         .rsPat_main
+            header-cop(:heder_title="title")
             .common_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628;
                 h3.rsAct_nodata_title 暂无患者
             .rsPat_main_search
-                search(@on-submit="searchData",v-model="searchParams.patientName",:autoFixed="autoFixed",placeholder="请输入患者姓名")
+                search(@on-submit="searchData",v-model="searchParams.patientName",placeholder="请输入患者姓名")
             //-.rsPat_main_title
                 span 姓名
                 span 性别/年龄
@@ -226,6 +228,7 @@
                     list-compent(:list="list") 
 </template>
 <script>
+import HeaderCop from '../Common/Header.vue';
 import ListCompent from '../Common/Result.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
@@ -237,10 +240,12 @@ export default {
         ListCompent,
         Search,
         Group,
-        Selector
+        Selector,
+        HeaderCop
     },
     data() {
         return {
+            title:"我的患者",
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -274,6 +279,7 @@ export default {
             },
             noData: false,
             searchResult: "",
+            loading:false,
         }
     },
     /* computed: {
@@ -372,11 +378,15 @@ export default {
          * 获取列表数据
          */
         getList() {
+            if(this.loading){
+                return false;      
+            }
+            this.loading=true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
             }
-            this.$store.commit('updateLoadingStatus', {isLoading: true});
+            /* this.$store.commit('updateLoadingStatus', {isLoading: true}); */
             API.patientList.list(
                 this.searchParams
             ).then((res) => {
@@ -399,6 +409,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
+                        this.loading=false;
                         this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {
