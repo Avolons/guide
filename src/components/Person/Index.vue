@@ -33,6 +33,31 @@
         }
     }
     &_content {
+        &_seeHistory{
+            .weui-cell__hd{
+                .weui-label{
+                    font-size: 15px;
+                    color: #333
+                }
+            }
+            .vux-popup-picker-value{
+                font-size: 12px;
+                color: #666;
+            }
+
+        }
+        &_resultHistory{
+            &:before{
+                display: none;
+            }
+            .weui-cell{
+                padding: 0;
+            }
+            .vux-popup-picker-value{
+                color: #999;
+                font-size: 12px;
+            }
+        }
         /* &_planGress{
             width: 100%;
             height: 10px;
@@ -53,7 +78,7 @@
                 width: 100%;
             }
         } */
-        height: calc(100% - 50px);
+        height: 100%;
         overflow-y: auto;
         &_tableBox {
             position: relative;
@@ -72,8 +97,9 @@
         }
         &_show {
             position: absolute;
-            top: 45px;
-            right: 35px;
+            top: 90px;
+            right: 15px;
+            color: #999
         }
         &_headerBase {
             display: flex;
@@ -82,19 +108,19 @@
             align-items: center;
             position: relative;
             >h3 {
-                font-size: 16px;
+                font-size: 17px;
                 color: #333;
                 margin-right: 10px;
             }
             >h5 {
                 color: #999;
-                font-size: 10px;
+                font-size: 11px;
             }
             span {
                 display: inline-block;
                 padding: 0 5px;
-                height: 22.5px;
-                line-height: 22.5px;
+                height: 17.5px;
+                line-height: 17.5px;
                 background-color: #e5e5e5;
                 border-radius: 4px;
                 border: solid 1px rgba(5, 5, 5, 0.1);
@@ -105,15 +131,15 @@
             }
             >button {
                 position: absolute;
-                right: 12px;
+                right: 0px;
                 top: 0;
                 display: flex;
                 justify-content: center;
                 width: 50px;
                 height: 23px;
-                border-radius: 2px;
+                border-radius: 5px;
                 border: solid 1px #f36837;
-                font-size: 11px;
+                font-size: 10px;
                 color: #f36837;
                 text-align: center;
                 line-height: 23px;
@@ -389,6 +415,27 @@
                 }
             }
         }
+        &_resultAction {
+            height: 30px;
+            margin-top: 10px;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            >span {
+                width: 22%;
+                line-height: 30px;
+            }
+            >button {
+                line-height: 30px;
+                height: 30px;
+                text-align: center;
+                width: 22%;
+                border-radius: 5px;
+                background-color: #f36837;
+                color: #fff;
+                font-size: 13px;
+            }
+        }
     }
 }
 </style>
@@ -399,7 +446,7 @@
 <template lang="pug">
     .perInfo
         .perInfo_main
-            header-cop(:heder_title="title")
+            //-header-cop(:heder_title="title")
             .perInfo_content
                 .perInfo_content_planBtn(v-show="currentTable==0&&planList.taskStatus==0")
                     button(type="button",@click="adopt(1)") 不通过
@@ -414,7 +461,7 @@
                     ref="scollView",
                     :swiper_nodata="swiper_nodata"
                 )
-                    popup-picker(title="患者信息",:data="historyList", v-model="archives" ,@on-change="getHistoryData" ,placeholder="查看历史就诊档案")
+                    popup-picker(title="就诊档案",:data="historyList", v-model="archives" ,@on-change="getHistoryData" ,placeholder="查看历史就诊档案").perInfo_content_seeHistory
                     .perInfo_content_header
                         x-icon(v-show="detailShow",@click="detailShow=!detailShow",type="ios-arrow-up",size="20").perInfo_content_show
                         x-icon(v-show="!detailShow",@click="detailShow=!detailShow",type="ios-arrow-down",size="20").perInfo_content_show
@@ -426,7 +473,7 @@
                                 i.iconfont &#xe61a;
                                 | 关注
                             button(type="button",@click="addLike(1)",v-show="baseData.GzTag").haveAdd  已关注
-                        h4 疾病类型：{{baseData.icdName}}
+                        h4 疾病诊断：{{baseData.icdName}}
                         h4 联系电话：{{baseData.mobile}}
                         h4 就诊时间：{{baseData.diagnoseTime}}
                         //-具体就诊信息 隐藏
@@ -486,7 +533,7 @@
                                         
                                    
                     .perInfo_content_table
-                        span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访计划
+                        span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访计划详情
                         i
                         span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访记录
                             //-无数据判断 
@@ -501,7 +548,7 @@
                                 h3 随访方案：{{planList.questionTempleName}}
                                 span 随访计划生成时间：{{planList.visitTime}}
                                 span 随访计划结束时间：{{planList.endTime}}
-                                span 随访任务：10次
+                                span 随访任务：{{planList.orderList.length}}次
                                 span(v-show="planList.taskStatus==2").perInfo_content_planGress 进度：{{planList.currentTime}}/{{planList.allCount}}
                                 span(v-show="planList.taskStatus==1") 不通过原因：{{planList.notPassReason==1?"患者已死亡":planList.notPassReason==2?"患者不接受随访":planList.notPassReason==3?"方案重复":"方案不匹配"}}
                                 span(v-show="planList.taskStatus==0")
@@ -516,9 +563,11 @@
                             
                             //- 随访记录
                         .perInfo_content_result(v-show="currentTable==1")
-                            h3 随访记录
+                            //-h3 随访记录
+                            popup-picker(title="随访记录",:data="allCount", v-model="currentCount" ,@on-change="getPlanResult(taskId)" ,placeholder="查看历史随访结果").perInfo_content_resultHistory
                             h4 结果正常
-                            h5 完成时间：2017-09-10 9：00
+                            h4(v-show="diseaseInfo!=10") 处理意见：{{diseaseInfo==0?"病情稳定":diseaseInfo==1?"通知就诊":"暂不处理"}}
+                            h5 完成时间：{{dateEnd}}
                             ul.perInfo_content_resultList
                                 x-icon(@click="getMore",type="ios-arrow-right",size="30").perInfo_content_getMore
                                 li(v-for="item,index in resultList",:key="index").perInfo_content_resultSingle
@@ -542,6 +591,12 @@
                                                 h5 
                                                 span {{item.fieldName}}:
                                                 | {{item.fieldValue}}
+                                .perInfo_content_resultAction(v-show="diseaseInfo==10")
+                                    span 处理意见：
+                                    button(@click="creatAction(0)") 病情稳定
+                                    button(@click="creatAction(1)") 通知就诊
+                                    button(@click="creatAction(2)") 暂不处理
+
 
 
 
@@ -573,8 +628,7 @@ export default {
     },
     data() {
         return {
-            title:"患者详情",
-            noData: false,
+            title: "患者详情",
             taskId: '',
             detailShow: false,//是否显示患者诊断详情
             id: "",//患者id
@@ -599,20 +653,41 @@ export default {
                 limit: 20,
             },
             noData: false,//当前页面暂无数据
-            planList: {},//随访计划列表
+            planList: {
+                orderList: []
+            },//随访计划列表
             resultList: [],//随访记录列表
+            diseaseInfo: 10,
+            allCount: [[]], //总次数
+            currentCount: ['第1次记录'],//当前次数
+            dateEnd: "",
+            type: "",//路由类型
         }
     },
     methods: {
+        creatAction(type) {
+            API.followway.updateDiseaseInfo(
+                {
+                    visitOrderId: this.resultList[0].orderId, //患者的id （必填）
+                    diseaseInfo: type, //(操作类型 1:关注 0：取消关注) （必填）
+                }
+            ).then((res) => {
+                this.getPlanResult(this.taskId);
+            }).catch((err) => {
+
+            });
+        },
         /** 
          * 进入指标详情页面
          */
         getMore() {
+            let count=this.currentCount[0].substring(1,2);
             this.$router.push({
                 path: '/main/main/mine/patIndex',
                 query: {
                     id: this.taskId,
-                    hzxxId: this.id
+                    hzxxId: this.id,
+                    num:count,
                 }
             })
         },
@@ -688,9 +763,8 @@ export default {
                 } else {
                     this.archivesList = [];
                     let i = val.substring(1, 2);
-                    console.log(i);
                     this.copyCurrent.forEach((vals, index) => {
-                        if ((i-1) == index) {
+                        if ((i - 1) == index) {
                             this.taskId = vals.id;
                         }
                     });
@@ -823,7 +897,7 @@ export default {
                     if (flag == 0) {
                         this.historyList[0].push({
                             name: val.dateAdd + '/临时随访',
-                            value: "第" + (index+1) + "临时随访"
+                            value: "第" + (index + 1) + "临时随访"
                         });
                     }
                 });
@@ -831,7 +905,7 @@ export default {
                     let id = this.$route.query.taskId;
                     this.copyCurrent.forEach((val, index) => {
                         if (id == val.id) {
-                            this.archives = ["第" + (index+1) + "临时随访"];
+                            this.archives = ["第" + (index + 1) + "临时随访"];
                         }
                     });
                     for (const item of this.copyHistory) {
@@ -891,19 +965,49 @@ export default {
          * 根据id获取随访记录
          */
         getPlanResult(id) {
+            let count=this.currentCount[0].substring(1,2);
             API.followway.getVisistOrderResult(
                 {
-                    taskId: id //计划id
+                    taskId: id, //计划id
+                    num:count
                 }
             ).then((res) => {
+
                 this.resultList = res.data || [];
-                if (resultList.length > 0) {
-                    this.noData = false;
-                } else {
+                if (this.resultList.length == 0 && this.currentTable == 1) {
                     this.noData = true;
+                } else {
+                    this.noData = false;
                 }
                 this.basesrc = res.AIVOICURL;
+                if (this.allCount[0].length == 0) {
+                    for (var index = 0; index < (res.count - 1); index++) {
+                        this.allCount[0].push({
+                            name: '第' + (index + 1) + '次',
+                            value: '第' + (index + 1) + '次记录',
+                        })
+                    }
+                }
+
+                /** 
+                 * 判断是否已经
+                 */
+
             }).catch((err) => {
+
+            }).then(() => {
+                if (this.resultList[0]) {
+                    API.followway.DiseaseType(
+                        {
+                            visitOrderId: this.resultList[0].orderId //计划id
+                        }
+                    ).then((res) => {
+                        this.diseaseInfo = res.data.diseaseInfo;
+                        this.dateEnd = res.data.dateEnd;
+                    }).catch((err) => {
+
+                    });
+                }
 
             });
         },
@@ -948,15 +1052,15 @@ export default {
         },
     },
     mounted() {
+
+    },
+    activated() {
         /** 
          * 获取id
          */
         this.id = this.$route.query.id;
         this.visitOrderId = this.$route.query.visitOrderId;
         this.listRefresh();
-    },
-    activated() {
-
     }
 }
 </script>

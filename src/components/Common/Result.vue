@@ -4,16 +4,18 @@
         background-color: #fff;
     }
     &_list{
-        
+        box-sizing: border-box;
+        padding-left: 12px; 
     }
     &_single{
-        font-size: 12px;
+        font-size: 14px;
         color: #333;
         height: 45px;
         line-height: 45px;
         display: flex;
         box-sizing: border-box;
         padding: 0 15px;
+        padding-left: 0;
         border-bottom: 1px solid #e5e5e5;
         >span{
             display: block;

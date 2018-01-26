@@ -215,7 +215,7 @@ const routes = [{
     meta: {
       title: "患者详情",
       requireAuth:true,
-      keepAlive: false // 需要被缓存
+      keepAlive: true // 需要被缓存
     }
   },
   {

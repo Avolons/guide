@@ -35,7 +35,7 @@
     
     .rsSetting
         .rsSetting_actionList
-            header-cop(:heder_title="title")
+            //-header-cop(:heder_title="title")
             group.rsSetting_mine_list
                 cell(:link="{path:'/change'}",title="修改密码").rsSetting_mine_single
                    

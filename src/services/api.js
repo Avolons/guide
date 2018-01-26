@@ -236,6 +236,12 @@ export const followway = {
    */
     updateDiseaseInfo (data) {
         return fetch('post', '/wechat/VisitResult/updateDiseaseInfo', data);
+    },
+    /*
+   *处理意见
+   */
+    DiseaseType (data) {
+        return fetch('post', '/wechat/VisitResult/getDiseaseInfo', data);
     }
 
 };

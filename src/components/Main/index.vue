@@ -22,7 +22,6 @@
 			border: solid 1px rgba(255, 255, 255, 0.51);
 			>img {
 				display: block;
-				height: 100%;
 				width: 100%;
 			}
 			>span {
@@ -104,6 +103,9 @@
 			}
 			>h4 {
 				text-align: center;
+				font-weight: 700;
+				font-size: 24px;
+				color: #555;
 			}
 			>span {
 				display: block;
@@ -242,7 +244,7 @@
 		//- 头部
 		.rsIndex_header
 			.rsIndex_header_avatar
-				img(:src="baseData.aipicTureUrl")
+				img(:src="'http://61.164.223.42:6080/'+baseData.aipicTureUrl")
 				span {{baseData.AiName}}
 			p.rsIndex_header_text 早上好，{{baseData.realname}}医生，{{baseData.AiName}}已等候您{{getLastHours}}小时了。以下是您需要处理的内容。
 			//- 中间部分
@@ -448,9 +450,16 @@ export default {
 								}
 							},
 							/* xAxisType:'time', */
+							lineStyle:{
+								normal:{
+									color:"#dedede"
+								}
+							},
 							areaStyle: {
 								normal: {
-									color: {
+									/* color:'rgba(243,104,55,0.5)'  */
+									color:
+									{
 										type: 'linear',
 										x: 0,
 										y: 0,
@@ -459,7 +468,7 @@ export default {
 										colorStops: [{
 											offset: 0, color: '#f36837' // 0% 处的颜色
 										}, {
-											offset: 1, color: '#f79776' // 100% 处的颜色
+											offset: 1, color: '#fff' // 100% 处的颜色
 										}],
 										globalCoord: false // 缺省为 false
 									}
@@ -506,7 +515,7 @@ export default {
 		 */
 		getDrugs() {
 			API.homePage.getUseEatInfo({
-				dateType: this.dataList[0].timeSelect
+				dateType: this.dataList[1].timeSelect
 			}).then((res) => {
 				this.dataList[1].pieData.data.rows = res.data;
 				/* this.$nextTick(() => {
@@ -522,7 +531,7 @@ export default {
 		 */
 		getDisease() {
 			API.homePage.diagnoseInfo({
-				dateType: this.dataList[1].timeSelect
+				dateType: this.dataList[0].timeSelect
 			}).then((res) => {
 				this.dataList[0].pieData.data.rows = res.data;
 				/* this.$nextTick(() => {
@@ -556,7 +565,7 @@ export default {
 			API.patientList.list(
 				{
 					pager: 1,
-					limit: 3,
+					limit: 5,
 					gz:1,
 				}
 			).then((res) => {

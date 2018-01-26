@@ -77,7 +77,7 @@
 <template lang="pug">
   .rsChange
     .rsChange_main
-      header-cop(:heder_title="title")
+      //-header-cop(:heder_title="title")
       group.rsChange_main_group
         x-input(placeholder="请输入旧密码",type="text",required,v-model="form.oldPassword")
         x-input(placeholder="请输入新密码",type="text",required,v-model="form.newPassword")
@@ -133,7 +133,7 @@ export default {
         });
         return false;
       }
-      if (!this.form.newPassword != this.checkPassWord) {
+      if (this.form.newPassword != this.checkPassWord) {
         this.$vux.toast.show({
           text: '两次密码输入不同',
           type: "text",

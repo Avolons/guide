@@ -10,7 +10,7 @@
 		min-height: calc(100% + 1px);
 	}
 	.swiper_pulldown {
-		color: #2176f2;
+		color: #FFAC74;
 		top: -60px;
 		position: absolute;
 		left: calc(50% - 15px);
@@ -36,7 +36,7 @@
 		height: 60px;
 		overflow: hidden;
 		line-height: 60px;
-		color: #2176f2;
+		color: #FFAC74;
 		animation: loading 1s linear infinite;
 		&--text {
 			display: block;

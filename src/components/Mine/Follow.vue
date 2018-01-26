@@ -2,7 +2,7 @@
 .rsFollow {
     &_main {
         .common_nodata{
-            top: 50px;
+            top: 44px;
         }
         .weui-search-bar__cancel-btn{
                 color: #f36837;
@@ -19,12 +19,12 @@
         .vux-search-box{
             position: fixed !important;
             width: 100%;
-            top: 50px !important;
+            /* top: 50px !important; */
         }
         height: 100%;
         background-color: #fff;
         &_list {
-           height: calc(100% - 44px); 
+           height: 100%; 
         }
         &_title {
             background-color: #f7f7f7;
@@ -61,14 +61,14 @@
 <template lang="pug">
     .rsFollow
         .rsFollow_main
-            header-cop(:heder_title="title")
+            //-header-cop(:heder_title="title")
             .common_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628;
                 h3.rsAct_nodata_title 暂无关注患者
             .rsFollow_main_title
                 span 姓名
                 span 性别/年龄
-                span 诊断名称
+                span 疾病诊断
             .rsFollow_main_list
                 b-scroll(
                     :data="list",

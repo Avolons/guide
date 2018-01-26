@@ -66,7 +66,7 @@
 <template lang="pug">
   .rsOpin
     .rsOpin_main
-        header-cop(:heder_title="title")
+        //-header-cop(:heder_title="title")
         group.rsOpin_main_content
             x-textarea.rsOpin_main_textarea(:max='100', v-model='content')
             input.rsOpin_main_input(v-model='contact', type='text', placeholder='您的邮箱或者手机号')

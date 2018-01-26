@@ -3,7 +3,7 @@
     height: 100%;
     &_main {
         .common_nodata{
-            top:149px;
+            top:99px;
         }
         .weui-search-bar__cancel-btn {
             color: #f36837;
@@ -20,7 +20,7 @@
         .vux-search-box {
             position: fixed !important;
             width: 100%;
-            top: 50px !important;
+            /* top: 50px !important; */
         }
         height: 100%;
         background-color: #fff;
@@ -29,12 +29,12 @@
             margin-bottom: 45px;
         }
         &_list {
-            height: calc(100% - 149px);
+            height: calc(100% - 99px);
         }
         &_check {
             /* height: calc(100% - 44px); */
             position: fixed;
-            top: 94px;
+            top: 44px;
             width: 100%;
             background-color: rgba(0, 0, 0, 0.3);
             z-index: 998;
@@ -64,7 +64,7 @@
         &_checkTitle {
             position: relative;
             height: 45px;
-            background-color: #e6e6e6;
+            background-color: #f7f7f7;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -177,7 +177,7 @@
 <template lang="pug">
     .rsPat
         .rsPat_main
-            header-cop(:heder_title="title")
+            //-header-cop(:heder_title="title")
             .common_nodata(v-show="noData")
                 i(class="iconfont")  &#xe628;
                 h3.rsAct_nodata_title 暂无患者

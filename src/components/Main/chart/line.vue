@@ -5,7 +5,7 @@
 </style>
 
 <template>
-  <ve-line height="230px" width="95%" :legend-visible="false"  :yAxis="yAxis" :data="lineData.data" :settings="lineData.setting" :grid="grid">
+  <ve-line height="230px" width="100%" :legend-visible="false"  :yAxis="yAxis" :data="lineData.data" :settings="lineData.setting" :grid="grid">
   </ve-line>
 </template>
 
@@ -18,7 +18,13 @@ export default {
   data() {
     return {
       grid: {
-        height: "150px"
+        height: "150px",
+        show: true,
+        top: 50,
+        left: 20,
+        right:30,
+        backgroundColor: '#f36837',
+        borderColor: '#fff'
       },
       yAxis: {
         type: 'value',
@@ -26,9 +32,28 @@ export default {
         axisTick: {
             inside: true
         },
-        /* splitLine: {
-          show: false
-        }, */
+        axisLine:{
+          lineStyle:{
+            type:"dashed",
+            color:"#666"
+          }
+        },
+        axisTick:{
+          lineStyle:{
+            type:"dashed",
+            color:"rgba(255,255,255,0.4)"
+          }
+        },
+        nameTextStyle:{
+          color:"#333"
+        },
+        splitLine: {
+          lineStyle:{
+            type:"dashed",
+            color:"rgba(255,255,255,0.4)"
+          }
+          /* show: false */
+        },
       },
       /* xAxis:{
         type: 'time',

@@ -39,8 +39,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    stroke: #4b8bf4 !important;
-    fill: #4b8bf4 !important
+    stroke: #FFAC74 !important;
+    fill: #FFAC74 !important
 }
 
 .slide-left-enter,

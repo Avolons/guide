@@ -214,6 +214,7 @@ export default {
             searchResult: "",
             selectNumber: 0,
             loading:false,
+            inter:null,
         }
     },
     methods: {
@@ -290,7 +291,8 @@ export default {
                     this.$nextTick(() => {
                         this.scollRefresh();
                         this.loading=false;
-                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                         clearTimeout(this.inter);
+                    this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {
                         this.noData = true;
@@ -304,6 +306,9 @@ export default {
          * 随访计划审核通过
          */
         adopt() {
+            if(this.$refs.listplan.selectResult.length==0){
+                return false;
+            }
             let ids = JSON.parse(JSON.stringify(this.$refs.listplan.selectResult)).join(",");
             let self = this;
             this.$vux.confirm.show({
@@ -363,6 +368,9 @@ export default {
         },
     },
     mounted() {
+        this.inter=setTimeout(()=> {
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
+        }, 1500);
         this.listRefresh();
     },
     activated() {

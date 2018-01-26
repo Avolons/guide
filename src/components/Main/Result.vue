@@ -142,6 +142,7 @@ export default {
             noData: false,//当前页面暂无数据
             searchResult: "",
             loading:false,
+            inter:null
         }
     },
     watch: {
@@ -201,16 +202,17 @@ export default {
                         this.list = this.list.concat(res.data);
                         this.loading=false;
                         this.searchParams.pager++;
+                        
                     } else {
                         this.swiper_pullUp = false;
                         if (this.list.length >= 20) {
                             this.swiper_nodata = true;
                         }
                     }
+                    clearTimeout(this.inter);
+                    this.$store.commit('updateLoadingStatus', {isLoading: false});
                     this.$nextTick(() => {
                         this.scollRefresh();
-                        
-                        this.$store.commit('updateLoadingStatus', {isLoading: false});
                     });
                     if (this.list.length == 0) {
                         this.noData = true;
@@ -228,6 +230,9 @@ export default {
         },
     },
     mounted() {
+        this.inter=setTimeout(()=> {
+            this.$store.commit('updateLoadingStatus', {isLoading: true});
+        }, 1500);
         this.listRefresh();
     },
     activated() {

@@ -1,7 +1,7 @@
 
 <style lang="scss" >
 .resultData {
-	&_main{
+	&_main {
 		height: 100%;
 	}
 	&_list {
@@ -36,7 +36,7 @@
 //- 首页主体
 .resultData
 	.resultData_main
-		header-cop(:heder_title="title")
+		//-header-cop(:heder_title="title")
 		b-scroll(
 			:data="dataList",
 			pulldown=true,
@@ -71,7 +71,7 @@ export default {
 	},
 	data() {
 		return {
-			title:"结果详情",
+			title: "结果详情",
 			setting: {
 				itemStyle: {
 					normal: {
@@ -81,6 +81,11 @@ export default {
 				label: {
 					normal: {
 						show: true
+					}
+				},
+				lineStyle:{
+					normal:{
+						color:"#dedede"
 					}
 				},
 				areaStyle: {
@@ -94,7 +99,7 @@ export default {
 							colorStops: [{
 								offset: 0, color: '#f36837' // 0% 处的颜色
 							}, {
-								offset: 1, color: '#f79776' // 100% 处的颜色
+								offset: 1, color: '#FFF' // 100% 处的颜色
 							}],
 							globalCoord: true // 缺省为 false
 						}
@@ -103,7 +108,13 @@ export default {
 				area: true
 			},
 			grid: {
-				height: "150px"
+				height: "150px",
+				show: true,
+				top: 50,
+				left: 20,
+				right: 30,
+				backgroundColor: '#f36837',
+				borderColor: '#fff'
 			},
 			xAxisType: 'value',
 			yAxis: {
@@ -112,12 +123,32 @@ export default {
 				axisTick: {
 					inside: true
 				},
+				axisLine: {
+					lineStyle: {
+						type: "dashed",
+						color: "#666"
+					}
+				},
+				axisTick: {
+					lineStyle: {
+						type: "dashed",
+						color: "rgba(255,255,255,0.4)"
+					}
+				},
+				nameTextStyle: {
+					color: "#333"
+				},
 				splitLine: {
-					show: false
+					lineStyle: {
+						type: "dashed",
+						color: "rgba(255,255,255,0.4)"
+					}
+					/* show: false */
 				},
 			},
 			id: "",
 			taskid: "",
+			num: 1,
 			/* 上拉加载更多 */
 			swiper_pullUp: false,//显示加载
 			swiper_nodata: false,//没有更多数据
@@ -200,7 +231,7 @@ export default {
 				},
 			],//数据列表
 			resultList: [],//统计列表
-			flag:0,
+			flag: 0,
 		}
 	},
 	methods: {
@@ -218,6 +249,7 @@ export default {
 			API.followway.getVisistOrderResult(
 				{
 					taskId: this.taskid,//计划id
+					num: this.num
 				}
 			).then((res) => {
 				this.flag = 0;
@@ -268,6 +300,7 @@ export default {
 		//获取任务id
 		this.taskid = this.$route.query.id;
 		this.id = this.$route.query.hzxxId;
+		this.num = this.$route.query.num;
 		this.listRefresh();
 	},
 	activated() {
