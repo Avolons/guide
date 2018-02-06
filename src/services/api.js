@@ -37,10 +37,27 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
+let eventObj = {
+    '/wechat/login/check': '登录',
+    '/wechat/login/getSmsCode': '获取验证码',
+    '/wechat/center/bindAiPicture': '绑定AI头像',
+    '/wechat/center/updateGz': '取消/添加关注',
+    '/wechat/login/editPassword': '修改密码/找回密码',
+    '/wechat/login/pceditPassword': '修改密码',
+    '/wechat/patientRecord/getPatientRecord': '随访结果model获取病人信息',
+    '/wechat/center/sendMessage': '医生反馈意见',
+    '/wechat/VisitResult/updateDiseaseInfo': '随访记录处理',
+    '/wechat/flowUp/editVisitProjectStatus': '随访计划审核',
+    '/wechat/patientRecord/getRecordByDate': '切换就诊档案'
+};
+
 /* 返回一个Promise(发送post请求) */
 function fetch (type, url, params = {}) {
     if (localStorage.getItem('userInfo')) {
         params.adminId = JSON.parse(localStorage.getItem('userInfo')).data.id;
+    }
+    if (eventObj[url]) {
+        TDAPP.onEvent('功能使用-' + eventObj[url]);
     }
     return new Promise((resolve, reject) => {
         if (type === 'get') {

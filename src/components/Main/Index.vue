@@ -253,11 +253,11 @@
 			.rsIndex_middle_content
 				.rsIndex_middle_single
 					p 已随访{{baseData.hadVisitCount}}次共{{baseData.hadVisitPeopleCount}}位患者
-				.rsIndex_middle_single
+				.rsIndex_middle_single(@click="$router.push('/main/main/plan')")
 					h4.rsIndex_middle_number {{baseData.needShCount}}
 					span 随访计划
 						router-link(to="/main/main/plan") 待审核
-				.rsIndex_middle_single
+				.rsIndex_middle_single(@click="$router.push('/main/main/result')")
 					h4.rsIndex_middle_number {{baseData.needClCount}}
 					span 随访记录
 						router-link(to="/main/main/result") 待处理

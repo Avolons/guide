@@ -70,7 +70,7 @@
     .common_result
         .common_result_main
             ul.common_result_list
-                li.common_result_single(v-for="item,index in list",:key="item.id",@click="goToInfo(item.hzxxId)")
+                li.common_result_single(v-for="item,index in list",:key="index",@click="goToInfo(item.hzxxId)")
                     span.nowarp {{index+1}}.{{item.patientName}} 
                     span {{item.patientSex}}/{{item.patientAge}}
                     span.nowarp {{item.icdName}}

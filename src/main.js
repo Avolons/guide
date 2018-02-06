@@ -56,6 +56,7 @@ router.beforeEach((to, from, next) => {
 /* title重新赋值 */
     if (to.meta.title) {
         document.title = to.meta.title;
+        TDAPP.onEvent('访问页面-' + to.meta.title);
         next();
     }
 });

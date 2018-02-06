@@ -69,8 +69,8 @@
         //-header-cop(:heder_title="title")
         group.rsOpin_main_content
             x-textarea.rsOpin_main_textarea(:max='100', v-model='content')
-            input.rsOpin_main_input(v-model='contact', type='text', placeholder='您的邮箱或者手机号')
-            h3.rsOpin_main_title 或通过以下方式联系我们:
+            //-input.rsOpin_main_input(v-model='contact', type='text', placeholder='您的邮箱或者手机号')
+            //-h3.rsOpin_main_title 或通过以下方式联系我们:
                 br
                 |微信公众号：集医智能
                 br
@@ -114,20 +114,22 @@ export default {
                 this.$vux.toast.show({
                     text: '请输入您的评价',
                     time: 1000,
+                    type:"cancel"
                 });
                 return false;
             }
-            if (!this.contact) {
+           /*  if (!this.contact) {
                 this.$vux.toast.show({
                     text: '请输入您的联系方式',
                     time: 1000,
+                    type:"cancel"
                 });
                 return false;
-            }
+            } */
             API.common.sendMessage({
                 fromSys:2,
                 suggestion: this.content,
-                contactWay: this.contact
+               /*  contactWay: this.contact */
             }).then((res) => {
                     this.$vux.toast.show({
                         text: '感谢您的评价',

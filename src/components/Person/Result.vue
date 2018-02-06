@@ -62,12 +62,18 @@
 import HeaderCop from '../Common/Header.vue';
 import VeLine from 'v-charts/lib/line';
 import { API } from '@/services';
+import {mapGetters} from 'vuex';
 import BScroll from '../Common/scrollView.vue';
 export default {
 	components: {
 		BScroll,
 		VeLine,
 		HeaderCop
+	},
+	computed: {
+		 ...mapGetters([
+            'getReload'
+        ])
 	},
 	data() {
 		return {
@@ -297,6 +303,7 @@ export default {
 		},
 	},
 	mounted() {
+		this.$store.commit('updateIsReload');
 		//获取任务id
 		this.taskid = this.$route.query.id;
 		this.id = this.$route.query.hzxxId;

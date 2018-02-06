@@ -53,6 +53,11 @@
                 text-align: center;
                 flex-shrink: 1;
             }
+            &:nth-of-type(4){
+                width: 80px;
+                text-align: center;
+                flex-shrink: 0;
+            }
             }
         }
     }
@@ -69,6 +74,7 @@
                 span 姓名
                 span 性别/年龄
                 span 疾病诊断
+                span 关注原因
             .rsFollow_main_list
                 b-scroll(
                     :data="list",
