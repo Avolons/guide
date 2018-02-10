@@ -14,7 +14,9 @@ import qs from 'qs';
 Vue.prototype.$http = axios;
 
 /* 默认请求地址 */
-axios.defaults.baseURL = 'http://61.153.232.58:19999/';
+
+axios.defaults.baseURL = 'http://192.168.1.215:8088/';
+/* axios.defaults.baseURL = 'http://61.153.232.58:19999/'; */
 
 /* axios.defaults.baseURL = 'http://192.168.1.52:8080/'; */
 
@@ -53,11 +55,13 @@ let eventObj = {
 
 /* 返回一个Promise(发送post请求) */
 function fetch (type, url, params = {}) {
+    let adminNmae = '';
     if (localStorage.getItem('userInfo')) {
         params.adminId = JSON.parse(localStorage.getItem('userInfo')).data.id;
+        adminNmae = JSON.parse(localStorage.getItem('userInfo')).data.username;
     }
-    if (eventObj[url]) {
-        TDAPP.onEvent('功能使用-' + eventObj[url]);
+    if (eventObj[url] && adminNmae) {
+        TDAPP.onEvent(adminNmae, '功能使用_' + eventObj[url]);
     }
     return new Promise((resolve, reject) => {
         if (type === 'get') {

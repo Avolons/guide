@@ -582,7 +582,10 @@
                             h5 完成时间：{{dateEnd}}
                             ul.perInfo_content_resultList
                                 x-icon(@click="getMore",type="ios-arrow-right",size="30").perInfo_content_getMore
-                                li(v-for="item,index in resultList",:key="index").perInfo_content_resultSingle
+                                li(v-for="item,index in resultList",:key="index",v-if="item.isNum").perInfo_content_resultSingle
+                                    span {{item.fieldName}}：
+                                    | {{item.fieldValue}}
+                                li(v-for="item,index in resultList",:key="index",v-if="!item.isNum").perInfo_content_resultSingle
                                     span {{item.fieldName}}：
                                     | {{item.fieldValue}}
                             //- 随访记录详情

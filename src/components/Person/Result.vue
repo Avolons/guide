@@ -24,7 +24,7 @@
 		>div {
 
 			div {
-				width: 100% !important;
+				//width: 100% !important;
 			}
 		}
 	}
@@ -38,20 +38,21 @@
 	.resultData_main
 		//-header-cop(:heder_title="title")
 		b-scroll(
-			:data="dataList",
+			:data="resultList",
 			pulldown=true,
 			@pulldown="listRefresh",
 			@scrollToEnd="listRefresh",
 			ref="scollView",
 			)
 			ul.resultData_list
-				template(v-for="item,index in resultList")
-					li(v-if='item.isNum').resultData_single
+				template(v-for="item,index in resultList",v-if='item.isNum')
+					li.resultData_single
 						span {{item.fieldName}}:
 						| {{item.fieldValue}}
 						div
-							ve-line(height="230px",:legend-visible="false",:yAxis="yAxis",:data="item.chartdata",:settings="setting",:grid="grid")
-					li(v-else).resultData_single
+							ve-line(height="230px",:legend-visible="false",:yAxis="yAxis",:data="item.chartdata",:settings="item.setting",:grid="grid")
+				template(v-for="item,index in resultList",v-if='!item.isNum')
+					li.resultData_single
 						span {{item.fieldName}}:
 						| {{item.fieldValue}}
 						//-line-example(:lineData="")
@@ -62,7 +63,7 @@
 import HeaderCop from '../Common/Header.vue';
 import VeLine from 'v-charts/lib/line';
 import { API } from '@/services';
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
 import BScroll from '../Common/scrollView.vue';
 export default {
 	components: {
@@ -71,9 +72,9 @@ export default {
 		HeaderCop
 	},
 	computed: {
-		 ...mapGetters([
-            'getReload'
-        ])
+		...mapGetters([
+			'getReload'
+		])
 	},
 	data() {
 		return {
@@ -81,7 +82,7 @@ export default {
 			setting: {
 				itemStyle: {
 					normal: {
-						color: '#f36837'
+						color: '#333'
 					}
 				},
 				label: {
@@ -89,12 +90,12 @@ export default {
 						show: true
 					}
 				},
-				lineStyle:{
-					normal:{
-						color:"#dedede"
+				lineStyle: {
+					normal: {
+						color: "#fff"
 					}
 				},
-				areaStyle: {
+				/* areaStyle: {
 					normal: {
 						color: {
 							type: 'linear',
@@ -110,8 +111,8 @@ export default {
 							globalCoord: true // 缺省为 false
 						}
 					}
-				},
-				area: true
+				}, */
+				/* area: true */
 			},
 			grid: {
 				height: "150px",
@@ -160,82 +161,7 @@ export default {
 			swiper_nodata: false,//没有更多数据
 			loading: false,
 			baseData: {},//基础数据
-			dataList: [
-				//疾病分布情况
-				{
-					timeSelect: 0,
-					pieData: {
-						data: {
-							columns: ['diagnoseName', 'itemCount'],
-							rows: [
-								{
-									Count: 0,
-								}
-							]
-						},
-						setting: {
-							offsetY: 100,
-							radius: ['55', '70'],
-							label: {
-								normal: {
-									show: false
-								},
-								emphasis: {
-									show: false
-								}
-							}
-						},
-						color: ['#f36837', '#59d0bd', '#f8df94', '#5d98e3', '#5d64e3']
-					}
-				},
-				//用药依从性
-				{
-					timeSelect: 0,
-					pieData: {
-						data: {
-							columns: ['diagnoseName', 'itemCount'],
-							rows: [
-								{
-									Count: 0,
-								}
-							]
-						},
-						setting: {
-							/* roseType: 'radius', */
-							offsetY: 100,
-							radius: ['45', '70'],
-							label: {
-								normal: {
-									show: false
-								},
-								emphasis: {
-									show: false
-								}
-							}
-						},
-						color: ['#fe6262', '#74d477', '#f2b52e', '#5d98e3', '#5d64e3']
-					}
-				},
-				//随访数量统计
-				{
-					timeSelect: 1,
-					lineData: {
-						data: {
-							columns: ['diagnoseName', 'itemCount'],
-							rows: [
 
-							]
-						},
-						setting: {
-							/* axisSite: {
-							  right: ['占比']
-							},
-							yAxisType: ['KMB', 'percent'], */
-							area: true
-						}
-					}
-				},
-			],//数据列表
 			resultList: [],//统计列表
 			flag: 0,
 		}
@@ -260,10 +186,31 @@ export default {
 			).then((res) => {
 				this.flag = 0;
 				for (const item of res.data) {
-					item.chartdata = {
-						columns: ['dateAdd', 'fieldValue'],
-						rows: []
-					};
+					let self = this;
+					let setting = JSON.parse(JSON.stringify(self.setting));
+					if (item.fieldName.indexOf('血压') > -1) {
+						item.chartdata = {
+							columns: ['dateAdd', 'fieldValue', 'fieldValueElse'],
+							rows: []
+						};
+						setting.labelMap = {
+							dateAdd: '日期',
+							fieldValue: '高压',
+							fieldValueElse: '低压'
+						};
+					} else {
+						item.chartdata = {
+							columns: ['dateAdd', 'fieldValue'],
+							rows: []
+						};
+						setting.labelMap = {
+							dateAdd: '日期',
+							fieldValue: item.fieldName
+						};
+					}
+
+
+					item.setting = setting;
 					if (item.isNum) {
 						this.flag++;
 						this.getChart(item);
@@ -286,7 +233,15 @@ export default {
 					fieldName: item.fieldName  //指标名称
 				}
 			).then((res) => {
+				for (const ite of res.data) {
+					if (ite.fieldValue.indexOf('/') > -1) {
+						let arr = ite.fieldValue.split('/');
+						ite.fieldValueElse = arr[1];
+						ite.fieldValue = arr[0];
+					}
+				}
 				item.chartdata.rows = res.data;
+
 				let copy = item.chartdata;
 				item.chartdata = {};
 				item.chartdata = copy;

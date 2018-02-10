@@ -56,7 +56,13 @@ router.beforeEach((to, from, next) => {
 /* title重新赋值 */
     if (to.meta.title) {
         document.title = to.meta.title;
-        TDAPP.onEvent('访问页面-' + to.meta.title);
+        let adminNmae = '';
+        if (localStorage.getItem('userInfo')) {
+            adminNmae = JSON.parse(localStorage.getItem('userInfo')).data.username;
+        }
+        if (adminNmae) {
+            TDAPP.onEvent(adminNmae, '访问页面_' + to.meta.title);
+        }
         next();
     }
 });

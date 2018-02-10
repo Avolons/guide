@@ -149,7 +149,8 @@ export default {
       }
       API.common.login({
         username: this.form.user_phone,
-        password: this.form.user_password
+        password: this.form.user_password,
+        openid:localStorage.getItem("openId")
       }).then((res) => {
         this.$vux.toast.show({
           text: '登录成功',
