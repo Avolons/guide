@@ -3,7 +3,12 @@
 	</ve-ring>
 </template>
 
+
 <script>
+/** 
+ * 饼图组件
+ * @module pie
+ */
 import VeRing from 'v-charts/lib/ring'
 export default {
 	props: {

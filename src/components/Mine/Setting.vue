@@ -14,7 +14,7 @@
     }
 }
 
-.rsSetting_mine_singout{
+.rsSetting_mine_singout {
     margin: 30px 0;
     display: block;
     height: 50px;
@@ -25,29 +25,34 @@
     background-color: #fff;
     width: 100%;
 }
-.weui-dialog__btn_primary{
+
+.weui-dialog__btn_primary {
     color: #f36837;
 }
 </style>
 
 
 <template lang="pug">
-    
+
     .rsSetting
         .rsSetting_actionList
             //-header-cop(:heder_title="title")
             group.rsSetting_mine_list
                 cell(:link="{path:'/change'}",title="修改密码").rsSetting_mine_single
-                   
+
             group.rsSetting_mine_list
                 cell(:link="{path:'/main/main/mine/setting/opinion'}",title="意见反馈").rsSetting_mine_single
-                   
+
             button(type="button",@click="signOut").rsSetting_mine_singout 退出登录
 </template>
 
 <script>
+/** 
+ * 个人设置组件
+ * @module Setting
+ */
 import HeaderCop from '../Common/Header.vue';
-import { Cell,Group} from 'vux';
+import { Cell, Group } from 'vux';
 export default {
     components: {
         Group,
@@ -56,34 +61,38 @@ export default {
     },
     data() {
         return {
-            title:"设置"
+            title: "设置"
         }
     },
     methods: {
-        signOut(){
-          let self=this;
-          this.$vux.confirm.show({
-            content: '确定要退出吗',
-            onConfirm () {
-                let userInfo={
-                    loginname : "",
-                    avatar : "",
-                    id : "",
-                    token : "",
-                };
-            /** 
-             * 清除本地所有信息
-             */
-            localStorage.setItem("userInfo",'');
-            self.$store.dispatch('SignOut');
-            /** 
-             * 返回登录页面
-             */
-            self.$router.push("/login");
-            }
-        })
-         
-      }
+        /**
+         * 注销登录
+         * @function  signOut
+         */
+        signOut() {
+            let self = this;
+            this.$vux.confirm.show({
+                content: '确定要退出吗',
+                onConfirm() {
+                    let userInfo = {
+                        loginname: "",
+                        avatar: "",
+                        id: "",
+                        token: "",
+                    };
+                    /**
+                     * 清除本地所有信息
+                     */
+                    localStorage.setItem("userInfo", '');
+                    self.$store.dispatch('SignOut');
+                    /**
+                     * 返回登录页面
+                     */
+                    self.$router.push("/login");
+                }
+            })
+
+        }
     },
 
 }

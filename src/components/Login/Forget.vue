@@ -92,6 +92,10 @@
 			x-button(class="rsFor_main_btn" @click.native="nextStep") 下一步
 </template>
 <script>
+/** 
+ * 忘记密码组件（冻结使用）
+ * @module Forget
+ */
 import { XInput, Group, XButton } from 'vux';
 import { API } from '@/services';
 export default {
@@ -117,7 +121,10 @@ export default {
 	mounted: function() {
 	},
 	methods: {
-		/* 获取验证码 */
+		/**
+		 * 获取验证码
+		 * @function getcode
+		 */
 		getcode() {
 			/* 判断手机号是否有值 */
 			if (!this.form.user_phone) {
@@ -147,8 +154,9 @@ export default {
 
 			});
 		},
-		/**@argument
+		/**
 		 * 进入下一步
+		 * @function nextStep
 		 */
 		nextStep() {
 			/* 值判断 */
@@ -168,10 +176,7 @@ export default {
 				});
 				return false;
 			}
-
-
 		},
-
 	}
 }
 </script>

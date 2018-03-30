@@ -2,8 +2,8 @@
 .rsPat {
     height: 100%;
     &_main {
-        .common_nodata{
-            top:99px;
+        .common_nodata {
+            top: 99px;
         }
         .weui-search-bar__cancel-btn {
             color: #f36837;
@@ -225,9 +225,13 @@
                     :swiper_pullUp="swiper_pullUp",
                     :swiper_nodata="swiper_nodata"
                     )
-                    list-compent(:list="list") 
+                    list-compent(:list="list")
 </template>
 <script>
+/** 
+ * 我的患者组件
+ * @module Patient
+ */
 import HeaderCop from '../Common/Header.vue';
 import ListCompent from '../Common/Result.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
@@ -245,7 +249,7 @@ export default {
     },
     data() {
         return {
-            title:"我的患者",
+            title: "我的患者",
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -272,14 +276,14 @@ export default {
                 sex: '',         //男 or 女
                 fromAge: '',     //起始年龄
                 endAge: '',     //结束年龄
-                gz: '',     //0:不关注 1：关注 
+                gz: '',     //0:不关注 1：关注
                 startDate: '',   //就诊时间的开始时间
                 endDate: '',//就诊时间的结束时间
-                sort: -1//0:就诊时间从最近到以前; 1:就诊时间从晚到早 
+                sort: -1//0:就诊时间从最近到以前; 1:就诊时间从晚到早
             },
             noData: false,
             searchResult: "",
-            loading:false,
+            loading: false,
         }
     },
     /* computed: {
@@ -289,8 +293,10 @@ export default {
         ]),
     }, */
     methods: {
-        /** 
-         * 切换显示
+        /**
+         * 切换显示状态
+         * @function checkShow
+         * @param  {number} type 筛选条件左右切换显示
          */
         checkShow(type) {
             if (type == 0) {
@@ -301,8 +307,10 @@ export default {
             this.sortShow = false;
             this.doubleShow = !this.doubleShow;
         },
-        /** 
+
+        /**
          * 重置所有属性
+         * @function reset
          */
         reset() {
             this.searchParams.sex = "";
@@ -311,50 +319,56 @@ export default {
             this.searchParams.startDate = "";
             this.searchParams.endDate = "";
         },
-        /** 
+        /**
          * 选择排序
+         * @function chooseSort
+         * @param  {number} val 所选中的值
          */
         chooseSort(val) {
             this.searchParams.sort = val;
             this.searchData();
         },
-        /** 
+        /**
          * 选择时间
+         * @param  {number} type 判断是开始时间还是结束时间
+         * @function chooseTime
          */
         chooseTime(type) {
             let flag;
-            let self=this;
-            if(type==0){
-                if(this.searchParams.endDate){
-                    flag=this.searchParams.endDate;
+            let self = this;
+            if (type == 0) {
+                if (this.searchParams.endDate) {
+                    flag = this.searchParams.endDate;
                 }
-                else{
-                    flag="2020-12-30";
+                else {
+                    flag = "2020-12-30";
                 }
-            }else{
-                if(this.searchParams.startDate){
-                    flag=this.searchParams.startDate;
+            } else {
+                if (this.searchParams.startDate) {
+                    flag = this.searchParams.startDate;
                 }
-                else{
-                    flag="2000-01-01";
+                else {
+                    flag = "2000-01-01";
                 }
             }
             this.$vux.datetime.show({
                 value: '', // 其他参数同 props
-                minYear:2000,
-                maxYear:2020,
-                confirmText:'确定',
-                cancelText:'取消',
-                startDate:type==1?flag:'2000-01-01',
-                endDate:type==0?flag:'2020-12-30',
-                onConfirm(){
-                    let value=this.value;
-                    type==0?self.searchParams.startDate=value:self.searchParams.endDate=value ;
+                minYear: 2000,
+                maxYear: 2020,
+                confirmText: '确定',
+                cancelText: '取消',
+                startDate: type == 1 ? flag : '2000-01-01',
+                endDate: type == 0 ? flag : '2020-12-30',
+                onConfirm() {
+                    let value = this.value;
+                    type == 0 ? self.searchParams.startDate = value : self.searchParams.endDate = value;
                 }
             })
         },
-        /** 
+        /**
          * 选择性别
+         * @function chooseSex
+         * @param  {number} type 性别参数
          */
         chooseSex(type) {
             if (this.searchParams.sex == type) {
@@ -363,25 +377,27 @@ export default {
                 this.searchParams.sex = type;
             }
         },
-        /**@argument
-        * 列表刷新
-        */
+        /**
+         * 列表刷新
+         * @function listRefresh
+         */
         listRefresh() {
             this.list = [];
             this.searchParams.pager = 1;
-            /** 
+            /**
              * 分页置为1
              */
             this.getList();
         },
-        /**@argument
+        /**
          * 获取列表数据
+         * @function getList
          */
         getList() {
-            if(this.loading){
-                return false;      
+            if (this.loading) {
+                return false;
             }
-            this.loading=true;
+            this.loading = true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
@@ -409,8 +425,8 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
-                        this.loading=false;
-                        this.$store.commit('updateLoadingStatus', {isLoading: false});
+                        this.loading = false;
+                        this.$store.commit('updateLoadingStatus', { isLoading: false });
                     });
                     if (this.list.length == 0) {
                         this.noData = true;
@@ -420,22 +436,26 @@ export default {
                 }, time);
             })
         },
-        /* 滚动列表重置刷新 */
+        /**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
+         */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();
         },
-        /** 
+        /**
          * 数据搜索
+         * @function searchData
          */
         searchData() {
             this.searchParams.pager = 1;
-            this.list=[];
+            this.list = [];
             this.doubleShow = false;
             this.sortShow = false;
             this.getList();
         }
     },
-    activated () {
+    activated() {
         this.$vux.datetime.hide();
     },
     mounted() {

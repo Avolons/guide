@@ -115,9 +115,13 @@
                         h3  {{dataList[0].taskName}}
                         p {{dataList[0].remark}}
 
-</template>         
+</template>
 
 <script>
+/** 
+ * 活动详情组件
+ * @module ActInfo
+ */
 import HeaderCop from '../Common/Header.vue';
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
@@ -147,8 +151,9 @@ export default {
         }
     },
     methods: {
-        /**@argument
+        /**
          * 获取列表数据
+         * @function getData
          */
         getData() {
             API.activityTo.info(
@@ -162,8 +167,9 @@ export default {
                 });
             })
         },
-        /**@argument
-         * 滚动列表重置刷新
+        /**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
          */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();

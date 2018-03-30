@@ -87,11 +87,11 @@
     .rsRes
         .rsRes_main
             .rsRes_nodata(v-show="noData")
-                i(class="iconfont")  &#xe628; 
+                i(class="iconfont")  &#xe628;
                 h3.rsRes_nodata_title 暂无相关随访记录
             .rsRes_content
                 .rsRes_content_search
-                    search(@on-cancel="searchData", @on-submit="searchData",v-model="searchParams.patientName",:autoFixed="autoFixed",placeholder="请输入患者姓名") 
+                    search(@on-cancel="searchData", @on-submit="searchData",v-model="searchParams.patientName",:autoFixed="autoFixed",placeholder="请输入患者姓名")
                 .rsRes_content_table
                     span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 待处理
                     i
@@ -108,10 +108,14 @@
                         :swiper_nodata="swiper_nodata"
                     )
                         list-compent(type=0,:list="list",@dataReload="listRefresh")
-                       
-</template>         
+
+</template>
 
 <script>
+/** 
+ * 随访记录组件
+ * @module Result
+ */
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { Search } from 'vux'
@@ -134,15 +138,15 @@ export default {
             list: [],
             //筛选字段集合
             searchParams: {
-                patientName:'', //病人名称
-                vetStatus:1,    //1未处理，11已处理
-                pager: 1 , //默认1
+                patientName: '', //病人名称
+                vetStatus: 1,    //1未处理，11已处理
+                pager: 1, //默认1
                 limit: 20   //默认100
             },
             noData: false,//当前页面暂无数据
             searchResult: "",
-            loading:false,
-            inter:null
+            loading: false,
+            inter: null
         }
     },
     watch: {
@@ -151,14 +155,23 @@ export default {
         },
     },
     methods: {
-         searchData(){
+        /**
+         * 随访记录搜索函数
+         * @function searchData
+         */
+        searchData() {
             this.list = [];
             this.searchParams.pager = 1;
             this.getList();
         },
+        /**
+         * table切换函数
+         * @param  {number} type table切换的类型
+         * @function tableSwitch
+         */
         tableSwitch(type) {
-            if(this.loading){
-                return false;      
+            if (this.loading) {
+                return false;
             }
             this.currentTable = type;
             this.searchParams.pager = 1;
@@ -168,25 +181,27 @@ export default {
                 this.searchParams.vetStatus = 11;
             }
             this.list = [];
-            this.$store.commit('updateLoadingStatus', {isLoading: true});
+            this.$store.commit('updateLoadingStatus', { isLoading: true });
             this.getList();
         },
-        /**@argument
+        /**
          * 列表刷新
+         * @function listRefresh
          */
         listRefresh() {
             this.list = [];
             this.searchParams.pager = 1;
             this.getList();
         },
-        /**@argument
+        /**
          * 获取列表数据
+         * @function getList
          */
         getList() {
-            if(this.loading){
-                return false;      
+            if (this.loading) {
+                return false;
             }
-            this.loading=true;
+            this.loading = true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
@@ -195,14 +210,14 @@ export default {
                 this.searchParams
             ).then((res) => {
                 let time = 0;
-                
+
                 setTimeout(() => {
                     if (res.data.length > 0 || this.searchParams.pager == 1) {
                         this.swiper_pullUp = false;
                         this.list = this.list.concat(res.data);
-                        this.loading=false;
+                        this.loading = false;
                         this.searchParams.pager++;
-                        
+
                     } else {
                         this.swiper_pullUp = false;
                         if (this.list.length >= 20) {
@@ -210,7 +225,7 @@ export default {
                         }
                     }
                     clearTimeout(this.inter);
-                    this.$store.commit('updateLoadingStatus', {isLoading: false});
+                    this.$store.commit('updateLoadingStatus', { isLoading: false });
                     this.$nextTick(() => {
                         this.scollRefresh();
                     });
@@ -222,16 +237,17 @@ export default {
                 }, time);
             })
         },
-        /**@argument
-         * 滚动列表重置刷新
+        /**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
          */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();
         },
     },
     mounted() {
-        this.inter=setTimeout(()=> {
-            this.$store.commit('updateLoadingStatus', {isLoading: true});
+        this.inter = setTimeout(() => {
+            this.$store.commit('updateLoadingStatus', { isLoading: true });
         }, 1500);
         this.listRefresh();
     },

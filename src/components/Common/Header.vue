@@ -42,10 +42,14 @@ body {
         </x-header>
             <div v-transfer-dom>
                 <actionsheet @on-click-menu="goHome" :menus="menus" v-model="showMenus" show-cancel></actionsheet>
-            </div>    
+            </div>
 </template>
 
 <script>
+/**
+ * 通用头部组件
+ * @module Header
+ */
 import { XHeader, Actionsheet, TransferDom, ButtonTab, ButtonTabItem } from 'vux';
 export default {
     directives: {
@@ -69,9 +73,20 @@ export default {
         }
     },
     methods: {
+        /** 
+         * 路由回退 
+         * @function goBack
+         */
         goBack() {
             this.$router.goBack();
         },
+        /**
+         * 跳转到首页
+         * @function goHome
+         * @param  {string} key  组件返回去的key值
+         * @param  {object} item 组件返回的item值
+         * @return {}      无返回值
+         */
         goHome(key, item) {
             this.$router.push({
                 path: "/"

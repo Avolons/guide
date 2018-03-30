@@ -336,7 +336,7 @@ $duration: .4s;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            
+
             &_content {
                 width: 100%;
             }
@@ -500,13 +500,13 @@ $duration: .4s;
                         b.rsCommon_single_base {{item.sex || item.patientSex}}/{{item.patientAge}}
                         span(v-show="item.currentVisitError>0") 指标异常
                         i.rsCommon_single_tag(v-show="item.gzTag") {{item.gzTag}}
-                        router-link(v-if="item.hzxxId&&type!=0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId,taskId:item.id }}").rsCommon_single_link 查看更多&nbsp;&nbsp;&nbsp;  
+                        router-link(v-if="item.hzxxId&&type!=0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId,taskId:item.id }}").rsCommon_single_link 查看更多&nbsp;&nbsp;&nbsp;
                     .rsCommon_single_nameBox(@click="maxHeight(item,index)",:class="{'rsCommon_single_nameBox--maxHeight':!item.maxHeight}")
                         p 疾病诊断：{{item.zdmc || item.icdName}}
                         i(v-show="overArray[index]==1").iconfont &#xe63e;
                     p.rsCommon_single_template 随访计划：{{item.visitProjectName || item.schemeName}}
                     p.rsCommon_single_state(v-show="type==0") 随访进度：{{item.currentVisitTime}}/{{item.visitCount}}
-                        router-link(v-if="item.hzxxId&&type==0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId,taskId:item.taskId }}").rsCommon_single_link 查看更多&nbsp;&nbsp;&nbsp;   
+                        router-link(v-if="item.hzxxId&&type==0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId,taskId:item.taskId }}").rsCommon_single_link 查看更多&nbsp;&nbsp;&nbsp;
                         //-span(v-show="item.state==0",data-type=0) 待开始
                         //-span(v-show="item.state==1",data-type=1) 待处理
                         //-span(v-show="item.state==2",data-type=2) 立即处理
@@ -514,7 +514,7 @@ $duration: .4s;
                     p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：
                         span {{item.notPassReason==1?"患者已死亡":item.notPassReason==2?"患者不接受随访":item.notPassReason==3?"方案重复":"方案不匹配"}}
                     p(v-show="type>=1&&item.dateUpdate").rsCommon_single_planTime 审核时间：{{item.dateUpdate}}
-                    
+
                     .rsCommon_single_countdown(v-show="type==1") {{item.interTime | dataform}}
                         span 后自动通过审核
                     button(type="button",@click="addLike(item.hzxxId,0)",v-show="item.islike!=1&&type==0").rsCommon_single_add
@@ -522,9 +522,13 @@ $duration: .4s;
                         | 关注
                     button(type="button",@click="addLike(item.hzxxId,1)",v-show="item.islike==1&&type==0").rsCommon_single_add.rsCommon_single_add--haveAdd 已关注
  </template>
- 
- 
+
+
  <script>
+ /**
+  * 通用列表组件（三种状态,随访计划两种，随访结果一种）
+  * @module List
+  */
 import { API } from '@/services';
 import { mapGetters } from 'vuex';
 export default {
@@ -572,14 +576,18 @@ export default {
         }
     },
     methods: {
-        /**@argument
-         * input触发change触发自定义事件
+        /**
+         * input触发change自定义事件
+         * @function inputChange
          */
         inputChange() {
             this.$emit('itemChange');
         },
-        /**@argument
-         * 点击展开更多
+        /**
+         * 展开收缩的切换（已取消使用）
+         * @function maxHeight
+         * @param  {object} ite   具体展开收缩的对象
+         * @param  {number} index 对象存在于父对象中的位置
          */
         maxHeight(ite, index) {
             let item = JSON.parse(JSON.stringify(ite));
@@ -587,8 +595,11 @@ export default {
             item.maxHeight = 1 - item.maxHeight;
             Vue.set(this.list, index, item);
         },
-        /** 
-         * 添加关注
+        /**
+         * 添加关注/取消关注
+         * @function addLike
+         * @param {string} id   患者身份标识id
+         * @param {number} type 区别关注类型（0：添加关注，1：取消关注）
          */
         addLike(id, type) {
             if (type == 0) {
@@ -630,18 +641,7 @@ export default {
 
                 });
             }
-
-
         },
-        /**@argument
-         * 判断当前single是否超过了单行，用于控制单行显示的效果
-         */
-        isOver() {
-
-        },
-        getBaseWidth() {
-
-        }
     },
     mounted() {
 
@@ -651,5 +651,3 @@ export default {
     }
 }
 </script>
- 
- 

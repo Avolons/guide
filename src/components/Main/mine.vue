@@ -91,6 +91,10 @@
 </template>
 
 <script>
+/** 
+ * 个人中心组件
+ * @module Mine
+ */
 import { mapGetters } from 'vuex'
 import { API } from '../../services';
 import { Cell, CellBox, CellFormPreview, Group } from 'vux';

@@ -56,10 +56,14 @@
 						span {{item.fieldName}}:
 						| {{item.fieldValue}}
 						//-line-example(:lineData="")
-				
+
 </template>
 
 <script>
+/** 
+ * 指标详情组件
+ * @module Pat_result
+ */
 import HeaderCop from '../Common/Header.vue';
 import VeLine from 'v-charts/lib/line';
 import { API } from '@/services';
@@ -167,16 +171,18 @@ export default {
 		}
 	},
 	methods: {
-		/** 
+		/**
 		 * 页面刷新，获取所有数据
+		 * @function listRefresh
 		 */
 		listRefresh() {
 			/** 获取基础数据 */
 			this.getPlanResult();
 		},
-		/** 
-         * 根据id获取随访结果
-         */
+	    /**
+	     * 根据id获取随访结果
+		 * @function getPlanResult
+	     */
 		getPlanResult() {
 			API.followway.getVisistOrderResult(
 				{
@@ -226,6 +232,11 @@ export default {
 
 			});
 		},
+		/**
+		 * 获取图形数据
+		 * @function getChart
+		 * @param  {object} item 具体图形对象
+		 */
 		getChart(item) {
 			API.followway.getChartData(
 				{
@@ -250,9 +261,10 @@ export default {
 
 			});
 		},
-		/**@argument
-		 * 滚动刷新
-		 */
+		/**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
+         */
 		scollRefresh() {
 			this.$refs.scollView.scroll.refresh();
 		},

@@ -139,7 +139,7 @@
         .rsPlan_main
             .rsPlan_fixed(v-show="currentTable==0")
                 .rsPlan_fixed_allCheck
-                    input(@change="allCheck",type="checkbox",v-model="selectAll",value=1).mui-checkbox    
+                    input(@change="allCheck",type="checkbox",v-model="selectAll",value=1).mui-checkbox
                     span 全选
                 .rsPlan_fixed_haveSel 条数
                     span （{{selectNumber}}/{{list.length}}）
@@ -168,10 +168,14 @@
                         :swiper_pullUp="swiper_pullUp",
                         :swiper_nodata="swiper_nodata"
                         )
-                        list-compent(:type="listType",:list="list",ref="listplan",@itemChange="itemChange") 
-</template>         
+                        list-compent(:type="listType",:list="list",ref="listplan",@itemChange="itemChange")
+</template>
 
 <script>
+/** 
+ * 随访计划组件
+ * @module Plan
+ */
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters,mapState } from 'vuex';
@@ -218,8 +222,10 @@ export default {
         }
     },
     methods: {
-        /**@argument
-         * table切换
+        /**
+         * table切换（待审核，已通过，未通过）
+         * @function tableSwitch
+         * @param  {number} type table切换类型
          */
         tableSwitch(type) {
             this.currentTable = type;
@@ -242,17 +248,22 @@ export default {
             this.$store.commit('updateLoadingStatus', {isLoading: true});
             this.getList();
         },
+        /**
+         * 搜索函数
+         * @function searchData
+         */
         searchData(){
             this.list = [];
             this.searchParams.pager = 1;
             this.getList();
         },
-        /**@argument
+        /**
          * 获取列表数据
+         * @function getList
          */
         getList() {
             if(this.loading){
-                return false;      
+                return false;
             }
             this.loading=true;
             if (this.list.length >= 20) {
@@ -302,8 +313,9 @@ export default {
                 }, time);
             })
         },
-        /**@argument
-         * 随访计划审核通过
+        /**
+         * 随访计划审核
+         * @function adopt
          */
         adopt() {
             if(this.$refs.listplan.selectResult.length==0){
@@ -315,7 +327,7 @@ export default {
                 content: '确定要通过这些计划吗？',
                 onConfirm() {
                     API.followplan.editVisitProjectStatus({
-                        operateType: 2, //操作类型（1：不通过 2：通过）   
+                        operateType: 2, //操作类型（1：不通过 2：通过）
                         isAll: 2,  //是否全部提交（(1:是 2：否)）
                         ids: ids   //要修改的随访方案Id （逗号分隔）
                     }).then((res) => {
@@ -328,7 +340,10 @@ export default {
                 }
             });
         },
-        /* checkbox变化 */
+        /**
+         * checkbox变化触发选择数组变动
+         * @function itemChange
+         */
         itemChange() {
             setTimeout(() => {
                 if (this.$refs.listplan.selectResult.length == this.list.length && this.$refs.listplan.selectResult.length != 0) {
@@ -339,7 +354,10 @@ export default {
             }, 20);
             this.selectNumber = this.$refs.listplan.selectResult.length;
         },
-        /* 全选 */
+        /**
+         * 随访计划全选函数
+         * @function allCheck
+         */
         allCheck() {
             if (this.selectAll.length == 0) {
                 this.$refs.listplan.selectResult = [];
@@ -351,8 +369,9 @@ export default {
             }
             this.selectNumber = this.$refs.listplan.selectResult.length;
         },
-        /**@argument
+        /**
          * 列表刷新
+         * @function listRefresh
          */
         listRefresh() {
             this.list = [];
@@ -361,8 +380,10 @@ export default {
             this.selectAll = [];
             this.getList();
         },
-
-        /* 滚动列表重置刷新 */
+        /**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
+         */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();
         },

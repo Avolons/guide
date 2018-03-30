@@ -17,7 +17,7 @@
         }
         &:after {
             display: none;
-        }  
+        }
     }
     &_content{
         box-sizing: border-box;
@@ -79,6 +79,10 @@
 
 </template>
 <script>
+/** 
+ * 用户建议组件
+ * @module Opinion
+ */
 import HeaderCop from '../Common/Header.vue';
 import { XHeader, Group, XButton, XTextarea } from 'vux'
 import { mapGetters } from 'vuex'
@@ -106,8 +110,9 @@ export default {
         ])
     }, */
     methods: {
-        /**@argument
+        /**
          * 提交评价
+         * @function sendOption
          */
         sendOption() {
             if (!this.content) {
@@ -140,7 +145,7 @@ export default {
                     setTimeout(() =>{
                       this.$router. back(-1);
                     }, 800);
-               
+
             }).catch((err)=>{
 
             });

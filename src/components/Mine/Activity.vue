@@ -2,44 +2,43 @@
 .rsAct {
     &_main {
         height: 100%;
-        .common_nodata{
+        .common_nodata {
             top: 50px;
         }
         &_list {
             height: calc(100% - 50px);
         }
-        &_actList{
-        overflow: hidden;
-    }
-    &_actSingle{
-        background-color: #fff;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 7.5px 15px;
-        margin-top: 10px;
-        box-sizing: border-box;
-        &:first-of-type{
-            margin-top: 0;
+        &_actList {
+            overflow: hidden;
         }
-        >i{
-            font-size: 20px;
-            color: #c7c7c7;
+        &_actSingle {
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7.5px 15px;
+            margin-top: 10px;
+            box-sizing: border-box;
+            &:first-of-type {
+                margin-top: 0;
+            }
+            >i {
+                font-size: 20px;
+                color: #c7c7c7;
+            }
         }
-        
-    }
-    &_singleTitle{
-        display: flex;
-        flex-direction: column;
-        >time{
-            color: #333;
-            font-size: 15px;
+        &_singleTitle {
+            display: flex;
+            flex-direction: column;
+            >time {
+                color: #333;
+                font-size: 15px;
+            }
+            >span {
+                font-size: 12px;
+                color: #888;
+            }
         }
-        >span{
-            font-size: 12px;
-            color: #888;
-        }
-    }
     }
 }
 </style>
@@ -69,10 +68,14 @@
                                 time {{item.visitStartTime}}
                                 span.nowarp {{item.taskName}}
                             i.iconfont &#xe633;
-                       
-</template>         
+
+</template>
 
 <script>
+/** 
+ * 活动列表组件
+ * @module Activity
+ */
 import HeaderCop from '../Common/Header.vue';
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
@@ -90,7 +93,7 @@ export default {
     }, */
     data() {
         return {
-            title:'活动列表',
+            title: '活动列表',
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -99,7 +102,7 @@ export default {
             page: 1,
             noData: false,//当前页面暂无数据
             searchResult: "",
-            loading:false
+            loading: false
         }
     },
     watch: {
@@ -108,32 +111,39 @@ export default {
         },
     },
     methods: {
-        enterInfo(item){
+        /**
+         * 进入活动详情
+         * @param  {object} item 具体活动对象
+         * @function enterInfo
+         */
+        enterInfo(item) {
             this.$router.push({
-                path:'/main/main/mine/actInfo',
-                query:{
-                    id:item.id,
-                    all:item.visitCount,
-                    no:item.activityCount
+                path: '/main/main/mine/actInfo',
+                query: {
+                    id: item.id,
+                    all: item.visitCount,
+                    no: item.activityCount
                 }
             });
         },
-        /**@argument
+        /**
          * 列表刷新
+         * @function listRefresh
          */
         listRefresh() {
             this.list = [];
             this.page = 1;
             this.getList();
         },
-        /**@argument
+        /**
          * 获取列表数据
+         * @function getList
          */
         getList() {
-            if(this.loading){
-                return false;      
+            if (this.loading) {
+                return false;
             }
-            this.loading=true;
+            this.loading = true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
@@ -141,8 +151,8 @@ export default {
             API.activityTo.list(
                 {
                     pager: this.page,
-                    limit:20,
-                 }
+                    limit: 20,
+                }
             ).then((res) => {
                 let time = 0;
                 if (this.list.length != 0) {
@@ -161,7 +171,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
-                        this.loading=false;
+                        this.loading = false;
                     });
                     if (this.list.length == 0) {
                         this.noData = true;
@@ -171,8 +181,9 @@ export default {
                 }, time);
             })
         },
-        /**@argument
-         * 滚动列表重置刷新
+        /**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
          */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();

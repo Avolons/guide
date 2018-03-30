@@ -5,7 +5,7 @@
     }
     &_list{
         box-sizing: border-box;
-        padding-left: 12px; 
+        padding-left: 12px;
     }
     &_single{
         font-size: 14px;
@@ -71,16 +71,20 @@
         .common_result_main
             ul.common_result_list
                 li.common_result_single(v-for="item,index in list",:key="index",@click="goToInfo(item.hzxxId)")
-                    span.nowarp {{index+1}}.{{item.patientName}} 
+                    span.nowarp {{index+1}}.{{item.patientName}}
                     span {{item.patientSex}}/{{item.patientAge}}
                     span.nowarp {{item.icdName}}
-                    span(v-show="item.gzTag") 
+                    span(v-show="item.gzTag")
                         i {{item.gzTag}}
                     i.iconfont &#xe633;
  </template>
- 
- 
+
+
  <script>
+ /**
+  * 患者列表组件
+  * @module Result
+  */
 export default {
     data() {
         return {
@@ -90,8 +94,10 @@ export default {
         list: Array,//列表数据
     },
     methods: {
-        /**@argument
-         * 进入患者详情
+        /**
+         * 查看患者详情（携带患者身份id跳转到通用患者详情页）
+         * @function goToInfo
+         * @param  {string} id 患者身份标识id
          */
         goToInfo(id){
             this.$router.push({
@@ -103,12 +109,10 @@ export default {
         }
     },
     mounted () {
-      
+
     },
     activated() {
-      
+
     }
 }
 </script>
- 
- 

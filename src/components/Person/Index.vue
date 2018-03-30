@@ -33,27 +33,26 @@
         }
     }
     &_content {
-        &_seeHistory{
-            .weui-cell__hd{
-                .weui-label{
+        &_seeHistory {
+            .weui-cell__hd {
+                .weui-label {
                     font-size: 15px;
                     color: #333
                 }
             }
-            .vux-popup-picker-value{
+            .vux-popup-picker-value {
                 font-size: 12px;
                 color: #666;
             }
-
         }
-        &_resultHistory{
-            &:before{
+        &_resultHistory {
+            &:before {
                 display: none;
             }
-            .weui-cell{
+            .weui-cell {
                 padding: 0;
             }
-            .vux-popup-picker-value{
+            .vux-popup-picker-value {
                 color: #999;
                 font-size: 12px;
             }
@@ -97,7 +96,7 @@
         }
         &_show {
             position: absolute;
-            top:50px;
+            top: 50px;
             right: 15px;
             color: #999
         }
@@ -298,7 +297,7 @@
                 color: #999;
                 margin-bottom: 15px;
             }
-            .normal{
+            .normal {
                 color: #f36837;
             }
         }
@@ -307,11 +306,17 @@
             box-sizing: border-box;
             padding: 10px 0;
             position: relative;
+            padding-right: 20px;
+            display: flex;
+            flex-wrap: wrap;
         }
         &_resultInfoList {
             position: relative;
         }
         &_resultSingle {
+            width: 50%;
+            box-sizing: border-box;
+            padding-right: 5px;
             font-size: 12px;
             color: #333;
             margin: 5px 0;
@@ -364,7 +369,7 @@
         &_getMore {
             position: absolute;
             top: 50%;
-            right: 15px;
+            right: 0px;
             transform: translateY(-50%);
         }
         &_resultInfoUser {
@@ -432,7 +437,7 @@
             background-color: #fff;
             display: flex;
             justify-content: space-between;
-                box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.08);
+            box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.08);
             >span {
                 width: 22%;
                 line-height: 30px;
@@ -517,7 +522,7 @@
                                             span 出院情况：
                                             | {{item.leavedescription}}
                                         li.perInfo_content_headerSingle
-                                            span 出院医嘱 ：  
+                                            span 出院医嘱 ：
                                             | {{item.leavedoctorcharge}}
                                         li.perInfo_content_headerSingle
                                             span 入院时间：
@@ -541,14 +546,14 @@
                                                 span 具体药品：
                                                 template(v-for="ite in ite.znjqrCfmxList")
                                                     | {{ite.ypmc}},
-                                        
-                                        
-                                   
+
+
+
                     .perInfo_content_table
                         span(:class="{'select':currentTable==0}",@click="tableSwitch(0)") 随访计划详情
                         i
                         span(:class="{'select':currentTable==1}",@click="tableSwitch(1)") 随访记录
-                            //-无数据判断 
+                            //-无数据判断
                     .perInfo_content_tableBox
                         .common_nodata(v-show="noData")
                             i(class="iconfont")  &#xe628;
@@ -572,12 +577,12 @@
                                         span {{item.statusStr}}
                                     span 计划随访时间：{{item.startDate}}
                                     p 采集指标：{{item.CollectionIndex}}
-                            
+
                             //- 随访记录
                         .perInfo_content_result(v-show="currentTable==1")
                             //-h3 随访记录
                             popup-picker(title="随访记录",:data="allCount", v-model="currentCount" ,@on-change="getPlanResult(taskId)" ,placeholder="查看历史随访结果").perInfo_content_resultHistory
-                            h4(:class="{'normal':!resultNormal}") {{resultNormal?"结果正常":"结果异常"}} 
+                            h4(:class="{'normal':!resultNormal}") {{resultNormal?"结果正常":"结果异常"}}
                             h4(v-show="diseaseInfo!=10") 处理意见：{{diseaseInfo==0?"病情稳定":diseaseInfo==1?"通知就诊":"暂不处理"}}
                             h5 完成时间：{{dateEnd}}
                             ul.perInfo_content_resultList
@@ -603,7 +608,7 @@
                                             .perInfo_content_resultInfoUser_text
                                                 //- 记得加上class判断
                                                 h4(:class="{'normal':item.isNormal}") 指标{{item.isNormal?"正常":"不正常"}}
-                                                h5 
+                                                h5
                                                 span {{item.fieldName}}:
                                                 | {{item.fieldValue}}
                 .perInfo_content_resultAction(v-show="diseaseInfo==10&&currentTable==1&&resultList.length>0")
@@ -616,10 +621,14 @@
 
 
 
-                    
-</template>         
+
+</template>
 
 <script>
+/** 
+ * 患者详情主页组件
+ * @module Pat_index
+ */
 import HeaderCop from '../Common/Header.vue';
 import ListCompent from '../Common/List.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
@@ -643,7 +652,7 @@ export default {
     },
     data() {
         return {
-            resultNormal:true,//是否正常
+            resultNormal: true,//是否正常
             title: "患者详情",
             taskId: '',
             detailShow: false,//是否显示患者诊断详情
@@ -681,11 +690,16 @@ export default {
         }
     },
     methods: {
+        /**
+         * 医生提供处理意见
+         * @param  {number} type 处理意见的类型
+         * @function creatAction
+         */
         creatAction(type) {
             API.followway.updateDiseaseInfo(
                 {
                     visitOrderId: this.resultList[0].orderId, //患者的id （必填）
-                    diseaseInfo: type, //(操作类型 1:关注 0：取消关注) （必填）
+                    diseaseInfo: type,
                 }
             ).then((res) => {
                 this.getPlanResult(this.taskId);
@@ -693,22 +707,25 @@ export default {
 
             });
         },
-        /** 
+        /**
          * 进入指标详情页面
+         * @function getMore
          */
         getMore() {
-            let count=this.currentCount[0].substring(1,2);
+            let count = this.currentCount[0].substring(1, 2);
             this.$router.push({
                 path: '/main/main/mine/patIndex',
                 query: {
                     id: this.taskId,
                     hzxxId: this.id,
-                    num:count,
+                    num: count,
                 }
             })
         },
-        /** 
-         * 添加关注
+        /**
+         * 添加关注/取消关注
+         * @function addLike
+         * @param {number} type 判断添加还是取消关注
          */
         addLike(type) {
             if (type == 0) {
@@ -757,14 +774,16 @@ export default {
 
 
         },
-        /** 
+        /**
          * 获取历史诊断数据
+         * @function getHistoryData
+         * @param  {object} value 历史时间列表
          */
         getHistoryData(value) {
             if (value) {
-                this.currentTable=0;
-                this.noData=false;
-                /** 
+                this.currentTable = 0;
+                this.noData = false;
+                /**
                  * 日期判断
                  */
                 let val = value[0];
@@ -787,26 +806,29 @@ export default {
                         }
                     });
                 }
-                /** 
+                /**
                  * 获取数据
                  */
                 if (this.taskId) {
                     this.getPlanList(this.taskId);
                     this.getPlanResult(this.taskId);
                 } else {
-                    this.planList={
+                    this.planList = {
                         orderList: []
                     };
-                    this.diseaseInfo=0;
-                    this.resultList=[];
+                    this.diseaseInfo = 0;
+                    this.resultList = [];
                     this.noData = true;
                 }
 
             }
 
         },
-        /** 
+        /**
          * 不通过计划
+         * @function passSelect
+         * @param  {string} menuKey  组件返回的对象key
+         * @param  {object} menuItem 选中的整个对象
          */
         passSelect(menuKey, menuItem) {
             let self = this;
@@ -814,7 +836,7 @@ export default {
                 content: "是否确定不通过该计划",
                 onConfirm() {
                     API.followplan.editVisitProjectStatus({
-                        operateType: 1, //操作类型（1：不通过 2：通过）   
+                        operateType: 1, //操作类型（1：不通过 2：通过）
                         isAll: 2,  //是否全部提交（(1:是 2：否)）
                         ids: self.taskId,   //要修改的随访方案Id （逗号分隔）
                         noPassReason: menuKey,
@@ -827,8 +849,10 @@ export default {
                 }
             });
         },
-        /**@argument
-         * 随访计划审核通过
+        /**
+         * 随访计划
+         * @function adopt
+         * @param  {number} type 判断选择通过还是不通过
          */
         adopt(type) {
             if (type != 2) {
@@ -840,7 +864,7 @@ export default {
                 content: "确定要通过计划吗？",
                 onConfirm() {
                     API.followplan.editVisitProjectStatus({
-                        operateType: 2, //操作类型（1：不通过 2：通过）   
+                        operateType: 2, //操作类型（1：不通过 2：通过）
                         isAll: 2,  //是否全部提交（(1:是 2：否)）
                         ids: "",   //要修改的随访方案Id （逗号分隔）
                     }).then((res) => {
@@ -852,8 +876,11 @@ export default {
                 }
             });
         },
-        /**@argument
+
+        /**
          * table切换
+         * @function tableSwitch
+         * @param  {number} type 切换选中的类型
          */
         tableSwitch(type) {
             this.currentTable = type;
@@ -868,8 +895,9 @@ export default {
                 }
             }
         },
-        /** 
+        /**
          * 获取就诊历史记录时间表
+         * @function getHistory
          */
         getHistory() {
             API.patientList.getRecordDate(
@@ -877,7 +905,7 @@ export default {
                     patientId: this.id //患者的id
                 }
             ).then((res) => {
-                /** 
+                /**
                  * 数据格式化
                  */
                 let arr = [];
@@ -890,7 +918,7 @@ export default {
                 this.copyHistory = res.data;
                 this.historyList = [arr];
 
-                /** 
+                /**
                  * 合并历史数据
                  */
                 this.getTaskByHzId();
@@ -899,8 +927,9 @@ export default {
 
             });
         },
-        /** 
+        /**
          * 获取所有的taskid
+         * @function getTaskByHzId
          */
         getTaskByHzId() {
             API.patientList.getTaskByHzId(
@@ -943,8 +972,9 @@ export default {
 
             });
         },
-        /** 
+        /**
          * 获取患者基本信息
+         * @function getBaseData
          */
         getBaseData() {
             API.common.getPatientRecord(
@@ -963,8 +993,10 @@ export default {
 
             });
         },
-        /**@argument
+        /**
          * 获取诊断信息
+         * @function getList
+         * @param  {string} date 选中的就诊日期
          */
         getList(date) {
             API.patientList.getRecordByDate(
@@ -983,15 +1015,17 @@ export default {
 
             });
         },
-        /** 
+        /**
          * 根据id获取随访记录
+         * @function getPlanResult
+         * @param  {string} id 记录id
          */
         getPlanResult(id) {
-            let count=this.currentCount[0].substring(1,2);
+            let count = this.currentCount[0].substring(1, 2);
             API.followway.getVisistOrderResult(
                 {
                     taskId: id, //计划id
-                    num:count
+                    num: count
                 }
             ).then((res) => {
                 this.resultList = res.data || [];
@@ -1010,13 +1044,13 @@ export default {
                     }
                 }
                 for (const item of res.data) {
-                    if(!item.isNormal){
-                        this.resultNormal=false;
+                    if (!item.isNormal) {
+                        this.resultNormal = false;
                         return false;
                     }
                 }
 
-                /** 
+                /**
                  * 判断是否已经
                  */
 
@@ -1038,9 +1072,10 @@ export default {
 
             });
         },
-
-        /** 
+        /**
          * 获取随访计划列表
+         * @function getPlanList
+         * @param  {string} id 患者id
          */
         getPlanList(id) {
             API.followplan.getVisitOrderDetail(
@@ -1062,36 +1097,38 @@ export default {
 
             });
         },
-        /**@argument
+        /**
          * 列表刷新
+         * @function listRefresh
          */
-        listRefresh(date, id) {
+        listRefresh() {
             this.list = [];
             this.page = 1;
             this.getBaseData();
             this.getHistory();
         },
-        /**@argument
-         * 滚动列表重置刷新
-         */
+        /**
+        * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+        * @function scollRefresh
+        */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();
         },
     },
     computed: {
-		 ...mapGetters([
+        ...mapGetters([
             'getReload'
         ])
-	},
+    },
     activated() {
-       /*  if(this.getReload){ */
-            this.id = this.$route.query.id;
-            this.visitOrderId = this.$route.query.visitOrderId;
-            this.listRefresh();
-       /*  }else{
-            this.$store.commit('updateIsReload');
-        } */
-        /** 
+        /*  if(this.getReload){ */
+        this.id = this.$route.query.id;
+        this.visitOrderId = this.$route.query.visitOrderId;
+        this.listRefresh();
+        /*  }else{
+             this.$store.commit('updateIsReload');
+         } */
+        /**
          * 获取id
          */
     }

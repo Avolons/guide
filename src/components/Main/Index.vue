@@ -249,7 +249,7 @@
 			p.rsIndex_header_text 早上好，{{baseData.realname}}医生，{{baseData.AiName}}已等候您{{getLastHours}}小时了。以下是您需要处理的内容。
 			//- 中间部分
 			i(@click="goMypatient").iconfont &#xe639;
-		.rsIndex_middle 
+		.rsIndex_middle
 			.rsIndex_middle_content
 				.rsIndex_middle_single
 					p 已随访{{baseData.hadVisitCount}}次共{{baseData.hadVisitPeopleCount}}位患者
@@ -273,10 +273,10 @@
 						h3 {{dataList[0].pieData.data.rows[0].Count}}人
 					.rsIndex_chart_indexList
 						li(v-for="item,index in dataList[0].pieData.data.rows",:key="item.index").rsIndex_chart_indexSingle
-							span(:style="{'backgroundColor':dataList[0].pieData.color[index]}") 
+							span(:style="{'backgroundColor':dataList[0].pieData.color[index]}")
 							h4.nowarp {{item.diagnoseName}}
 							h5 {{item.percent}}%
-					
+
 			//- 用药依从性
 			.rsIndex_chart_drugs(v-if="dataList[1].pieData.data.rows.length>0")
 				group.rsIndex_chart_commonTitle
@@ -287,11 +287,11 @@
 						h3 {{dataList[1].pieData.data.rows[0].Count}}人次
 					.rsIndex_chart_indexList
 						.rsIndex_chart_indexPer
-							div(v-for="item,index in dataList[1].pieData.data.rows",:key="item.index") 
+							div(v-for="item,index in dataList[1].pieData.data.rows",:key="item.index")
 								h3 {{item.percent}}%
 								span {{item.diagnoseName}}
 						li(v-for="item,index in dataList[1].pieData.data.rows",:key="item.index").rsIndex_chart_indexSingle
-							span(:style="{'backgroundColor':dataList[1].pieData.color[index]}")  
+							span(:style="{'backgroundColor':dataList[1].pieData.color[index]}")
 							h4.nowarp {{item.diagnoseName}}
 							h5 {{item.itemCount}}
 			//- 随访数量统计
@@ -301,14 +301,18 @@
 				.rsIndex_chart_disContent
 					.rsIndex_chart_disChartLine
 						line-example(:lineData="dataList[2].lineData")
-			
+
 		group.rsIndex_follow_title
 			cell( title="特别关注" ,link="/main/main/mine/follow")
 				span(slots="default") 更多
-		list-compent(:list="list") 
+		list-compent(:list="list")
 </template>
 
 <script>
+/**
+ * 首页组件
+ * @module Index
+ */
 import { API } from '@/services';
 import { ButtonTab, ButtonTabItem, Group, PopupRadio, Cell } from 'vux';
 import ListCompent from '../Common/Result.vue';
@@ -482,8 +486,9 @@ export default {
 		}
 	},
 	methods: {
-		/** 
+		/**
 		 * 页面刷新，获取所有数据
+		 * @function listRefresh
 		 */
 		listRefresh() {
 			/** 获取基础数据 */
@@ -493,11 +498,16 @@ export default {
 			this.getFollowData();
 			this.getList();
 		},
+		/**
+		 * 跳转到我的患者页面（搜索按钮点击直接跳转到我的患者）
+		 * @function goMypatient
+		 */
 		goMypatient(){
 			this.$router.push('/main/main/mine/patient')
 		},
-		/** 
+		/**
 		 * 获取基础数据
+		 * @function getBaseData
 		 */
 		getBaseData() {
 			API.homePage.adminInfo().then((res) => {
@@ -510,8 +520,9 @@ export default {
 
 			});
 		},
-		/** 
+		/**
 		 * 获取用药依从性接口
+		 * @function getDrugs
 		 */
 		getDrugs() {
 			API.homePage.getUseEatInfo({
@@ -526,8 +537,9 @@ export default {
 
 			});
 		},
-		/** 
+		/**
 		 * 获取疾病信息
+		 * @function getDisease 
 		 */
 		getDisease() {
 			API.homePage.diagnoseInfo({
@@ -542,8 +554,9 @@ export default {
 
 			});
 		},
-		/** 
+		/**
 		 * 获取随访数量统计
+		 * @function getFollowData
 		 */
 		getFollowData() {
 			API.homePage.visitCountInfo({
@@ -558,8 +571,9 @@ export default {
 
 			});
 		},
-		/**@argument
-         * 获取特别关注
+        /**
+         * 获取特别关注列表数据
+		 * @function getList
          */
 		getList() {
 			API.patientList.list(
@@ -579,7 +593,8 @@ export default {
 			});
 		},
 		/**
-		 * 获取首页推荐列表
+		 * 获取首页推荐列表（冻结使用）
+		 * @function getData
 		 */
 		getData() {
 			if (this.loading) {
@@ -591,9 +606,10 @@ export default {
 				this.swiper_nodata = false;
 			}
 		},
-		/**@argument
-		 * 滚动刷新
-		 */
+		/**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
+         */
 		scollRefresh() {
 			this.$refs.scollView.scroll.refresh();
 		},

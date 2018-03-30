@@ -110,6 +110,10 @@
 </template>
 
 <script>
+/** 
+ * 搜索组件（冻结使用）
+ * @module Search
+ */
 import BScroll from '../Common/scrollView.vue';
 import { mapGetters } from 'vuex';
 import { API } from '../../services';
@@ -131,7 +135,10 @@ export default {
         }
     },
     methods: {
-        /* 搜索函数 */
+        /**
+         * 搜索函数
+         * @function submit
+         */
         submit() {
             this.rsSearchValue = this.rsSearchValue.trim();
             if (!this.rsSearchValue) {
@@ -154,7 +161,12 @@ export default {
             window.localStorage.setItem("listReload", '11');
             this.rsSearchValue = "";
         },
-        /* 历史记录搜索 */
+        /*  */
+        /**
+         * 历史记录搜索
+         * @function historyrsSearch
+         * @param  {object} item 选中的历史搜索对象
+         */
         historyrsSearch(item) {
             this.rsSearchValue = item;
             this.$router.push({
@@ -164,7 +176,10 @@ export default {
             window.localStorage.setItem("listReload", '11');
             this.rsSearchValue = "";
         },
-        /* 清空历史记录 */
+        /**
+         * 清空历史记录
+         * @function cleanHistory
+         */
         cleanHistory() {
             this.history = [];
             localStorage.setItem("zj_history", JSON.stringify(this.history));
@@ -180,5 +195,5 @@ export default {
         this.history = history;
         console.log(this.$route.path);
     }
-}  
+}
 </script>

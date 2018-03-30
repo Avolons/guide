@@ -86,6 +86,10 @@
         button(type="button",@click="submitAi").rsAi_main_btn 确定
 </template>
 <script>
+/** 
+ * 选择AI助手组件
+ * @module ChooseAi
+ */
 import Vue from 'Vue';
 import { API } from '@/services';
 import { mapGetters } from 'vuex';
@@ -106,8 +110,9 @@ export default {
         this.getAiList();
     },
     methods: {
-        /** 
+        /**
          * 获取生肖列表
+         * @function getAiList
          */
         getAiList() {
             API.common.findAiPictureList({
@@ -118,8 +123,10 @@ export default {
 
             });
         },
-        /** 
-         * 选择ai助手
+        /**
+         * 选择AI助手
+         * @function chooseAi
+         * @param  {index} index 当前所选ai的具体位置
          */
         chooseAi(index) {
             let voidArry = [];
@@ -130,8 +137,9 @@ export default {
             Vue.set(this.choseList, index, 1);
             this.choseIndex = index;
         },
-        /** 
-         * 提交ai
+        /**
+         * 提交选择
+         * @function submitAi
          */
         submitAi() {
             let flag = 0;

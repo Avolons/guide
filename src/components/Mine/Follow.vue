@@ -1,22 +1,22 @@
 <style lang="scss">
 .rsFollow {
     &_main {
-        .common_nodata{
+        .common_nodata {
             top: 44px;
         }
-        .weui-search-bar__cancel-btn{
-                color: #f36837;
-                font-size: 15px;
+        .weui-search-bar__cancel-btn {
+            color: #f36837;
+            font-size: 15px;
+        }
+        .weui-search-bar__box .weui-search-bar__input {
+            color: #999;
+        }
+        .weui-search-bar {
+            &:after {
+                display: none;
             }
-            .weui-search-bar__box .weui-search-bar__input{
-                color: #999;
-            }
-            .weui-search-bar{
-                &:after{
-                    display: none;
-                }
-            }
-        .vux-search-box{
+        }
+        .vux-search-box {
             position: fixed !important;
             width: 100%;
             /* top: 50px !important; */
@@ -24,7 +24,7 @@
         height: 100%;
         background-color: #fff;
         &_list {
-           height: 100%; 
+            height: 100%;
         }
         &_title {
             background-color: #f7f7f7;
@@ -38,26 +38,26 @@
             box-sizing: border-box;
             padding: 0 15px;
             >span {
-                &:nth-of-type(1){
-                width: 65px;
-                flex-shrink: 0;
-                text-indent: 10px;
-            }
-            &:nth-of-type(2){
-                width: 80px;
-                text-align: center;
-                flex-shrink: 0;
-            }
-            &:nth-of-type(3){
-                flex-grow: 1;
-                text-align: center;
-                flex-shrink: 1;
-            }
-            &:nth-of-type(4){
-                width: 80px;
-                text-align: center;
-                flex-shrink: 0;
-            }
+                &:nth-of-type(1) {
+                    width: 65px;
+                    flex-shrink: 0;
+                    text-indent: 10px;
+                }
+                &:nth-of-type(2) {
+                    width: 80px;
+                    text-align: center;
+                    flex-shrink: 0;
+                }
+                &:nth-of-type(3) {
+                    flex-grow: 1;
+                    text-align: center;
+                    flex-shrink: 1;
+                }
+                &:nth-of-type(4) {
+                    width: 80px;
+                    text-align: center;
+                    flex-shrink: 0;
+                }
             }
         }
     }
@@ -86,9 +86,13 @@
                     :swiper_pullUp="swiper_pullUp",
                     :swiper_nodata="swiper_nodata"
                     )
-                    list-compent(:list="list") 
+                    list-compent(:list="list")
 </template>
 <script>
+/** 
+ * 特别关注患者组件
+ * @module Follow
+ */
 import HeaderCop from '../Common/Header.vue';
 import ListCompent from '../Common/Result.vue';//引入list列表组件
 import BScroll from '../Common/scrollView.vue';
@@ -104,7 +108,7 @@ export default {
     },
     data() {
         return {
-            title:"特别关注",
+            title: "特别关注",
             autoFixed: true,
             /* 上拉加载更多 */
             swiper_pullUp: false,//显示加载
@@ -113,13 +117,14 @@ export default {
             page: 1,
             noData: false,
             searchResult: "",
-            loading:false
+            loading: false
         }
     },
     methods: {
-        /**@argument
-        * 列表刷新
-        */
+        /**
+         * 列表刷新
+         * @function  listRefresh
+         */
         listRefresh() {
             this.list = [];
             this.selectNumber = 0;
@@ -127,14 +132,15 @@ export default {
             this.selectAll = [];
             this.getList();
         },
-        /**@argument
+        /**
          * 获取列表数据
+         * @function getList
          */
         getList() {
-            if(this.loading){
-                return false;      
+            if (this.loading) {
+                return false;
             }
-            this.loading=true;
+            this.loading = true;
             if (this.list.length >= 20) {
                 this.swiper_pullUp = true;
                 this.swiper_nodata = false;
@@ -143,7 +149,7 @@ export default {
                 {
                     pager: this.page,
                     limit: 20,
-                    gz:1,
+                    gz: 1,
                 }
             ).then((res) => {
                 let time = 0;
@@ -164,7 +170,7 @@ export default {
                     }
                     this.$nextTick(() => {
                         this.scollRefresh();
-                        this.loading=false;
+                        this.loading = false;
                     });
                     if (this.list.length == 0) {
                         this.noData = true;
@@ -174,7 +180,10 @@ export default {
                 }, time);
             })
         },
-        /* 滚动列表重置刷新 */
+        /**
+         * 滚动实例重置（当前页面总高度发生变化是需要调用此函数）
+         * @function scollRefresh
+         */
         scollRefresh() {
             this.$refs.scollView.scroll.refresh();
         },

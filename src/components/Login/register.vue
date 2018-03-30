@@ -1,9 +1,4 @@
 <style  lang="scss">
-/**
- * 2017.11.22
- * wzh
- * 注册页面
- */
  .rsReg{
    &_main{
      padding: 0 30px;
@@ -74,7 +69,7 @@
         font-size: 16px;
         margin-top: 15px;
      }
-      
+
    }
  }
 </style>
@@ -91,6 +86,10 @@
         x-button(class="rsReg_main_btn" @click.native="register") 确定
 </template>
 <script>
+/** 
+ * 注册组件 （冻结使用）
+ * @module Register
+ */
 import { XInput, Group, XButton } from 'vux'
 export default {
   data() {
@@ -116,7 +115,10 @@ export default {
   mounted: function() {
   },
   methods: {
-    /* 获取验证码 */
+    /**
+     * 获取验证码
+     * @function getcode
+     */
     getcode() {
       /* 判断手机号是否有值 */
       if (!this.form.user_phone) {
@@ -125,10 +127,13 @@ export default {
         return false;
       }
       if (!this.isDisable) {
-        
+
       }
     },
-    /* 密码修改 */
+    /**
+     * 注册新账号 
+     * @function register
+     */
     register() {
       /* 值判断 */
       if (!this.form.user_phone) {

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Common/List.vue - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ActInfo.html">ActInfo</a><ul class='methods'><li data-type='method'><a href="module-ActInfo.html#~getData">getData</a></li><li data-type='method'><a href="module-ActInfo.html#~scollRefresh">scollRefresh</a></li></ul></li><li><a href="module-Activity.html">Activity</a><ul class='methods'><li data-type='method'><a href="module-Activity.html#~enterInfo">enterInfo</a></li><li data-type='method'><a href="module-Activity.html#~getList">getList</a></li><li data-type='method'><a href="module-Activity.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Activity.html#~scollRefresh">scollRefresh</a></li></ul></li><li><a href="module-Change.html">Change</a><ul class='methods'><li data-type='method'><a href="module-Change.html#~nextStep">nextStep</a></li></ul></li><li><a href="module-ChooseAi.html">ChooseAi</a><ul class='methods'><li data-type='method'><a href="module-ChooseAi.html#~chooseAi">chooseAi</a></li><li data-type='method'><a href="module-ChooseAi.html#~getAiList">getAiList</a></li><li data-type='method'><a href="module-ChooseAi.html#~submitAi">submitAi</a></li></ul></li><li><a href="module-Follow.html">Follow</a><ul class='methods'><li data-type='method'><a href="module-Follow.html#~getList">getList</a></li><li data-type='method'><a href="module-Follow.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Follow.html#~scollRefresh">scollRefresh</a></li></ul></li><li><a href="module-Forget.html">Forget</a><ul class='methods'><li data-type='method'><a href="module-Forget.html#~getcode">getcode</a></li><li data-type='method'><a href="module-Forget.html#~nextStep">nextStep</a></li></ul></li><li><a href="module-Header.html">Header</a><ul class='methods'><li data-type='method'><a href="module-Header.html#~goBack">goBack</a></li><li data-type='method'><a href="module-Header.html#~goHome">goHome</a></li></ul></li><li><a href="module-Home.html">Home</a></li><li><a href="module-Index.html">Index</a><ul class='methods'><li data-type='method'><a href="module-Index.html#~getBaseData">getBaseData</a></li><li data-type='method'><a href="module-Index.html#~getData">getData</a></li><li data-type='method'><a href="module-Index.html#~getDisease">getDisease</a></li><li data-type='method'><a href="module-Index.html#~getDrugs">getDrugs</a></li><li data-type='method'><a href="module-Index.html#~getFollowData">getFollowData</a></li><li data-type='method'><a href="module-Index.html#~getList">getList</a></li><li data-type='method'><a href="module-Index.html#~goMypatient">goMypatient</a></li><li data-type='method'><a href="module-Index.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Index.html#~scollRefresh">scollRefresh</a></li></ul></li><li><a href="module-line.html">line</a></li><li><a href="module-List.html">List</a><ul class='methods'><li data-type='method'><a href="module-List.html#~addLike">addLike</a></li><li data-type='method'><a href="module-List.html#~inputChange">inputChange</a></li><li data-type='method'><a href="module-List.html#~maxHeight">maxHeight</a></li></ul></li><li><a href="module-Login.html">Login</a><ul class='methods'><li data-type='method'><a href="module-Login.html#~login">login</a></li></ul></li><li><a href="module-Mine.html">Mine</a></li><li><a href="module-Opinion.html">Opinion</a><ul class='methods'><li data-type='method'><a href="module-Opinion.html#~sendOption">sendOption</a></li></ul></li><li><a href="module-Pat_index.html">Pat_index</a><ul class='methods'><li data-type='method'><a href="module-Pat_index.html#~addLike">addLike</a></li><li data-type='method'><a href="module-Pat_index.html#~adopt">adopt</a></li><li data-type='method'><a href="module-Pat_index.html#~creatAction">creatAction</a></li><li data-type='method'><a href="module-Pat_index.html#~getBaseData">getBaseData</a></li><li data-type='method'><a href="module-Pat_index.html#~getHistory">getHistory</a></li><li data-type='method'><a href="module-Pat_index.html#~getHistoryData">getHistoryData</a></li><li data-type='method'><a href="module-Pat_index.html#~getList">getList</a></li><li data-type='method'><a href="module-Pat_index.html#~getMore">getMore</a></li><li data-type='method'><a href="module-Pat_index.html#~getPlanList">getPlanList</a></li><li data-type='method'><a href="module-Pat_index.html#~getPlanResult">getPlanResult</a></li><li data-type='method'><a href="module-Pat_index.html#~getTaskByHzId">getTaskByHzId</a></li><li data-type='method'><a href="module-Pat_index.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Pat_index.html#~passSelect">passSelect</a></li><li data-type='method'><a href="module-Pat_index.html#~scollRefresh">scollRefresh</a></li><li data-type='method'><a href="module-Pat_index.html#~tableSwitch">tableSwitch</a></li></ul></li><li><a href="module-Pat_result.html">Pat_result</a><ul class='methods'><li data-type='method'><a href="module-Pat_result.html#~getChart">getChart</a></li><li data-type='method'><a href="module-Pat_result.html#~getPlanResult">getPlanResult</a></li><li data-type='method'><a href="module-Pat_result.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Pat_result.html#~scollRefresh">scollRefresh</a></li></ul></li><li><a href="module-Patient.html">Patient</a><ul class='methods'><li data-type='method'><a href="module-Patient.html#~checkShow">checkShow</a></li><li data-type='method'><a href="module-Patient.html#~chooseSex">chooseSex</a></li><li data-type='method'><a href="module-Patient.html#~chooseSort">chooseSort</a></li><li data-type='method'><a href="module-Patient.html#~chooseTime">chooseTime</a></li><li data-type='method'><a href="module-Patient.html#~getList">getList</a></li><li data-type='method'><a href="module-Patient.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Patient.html#~reset">reset</a></li><li data-type='method'><a href="module-Patient.html#~scollRefresh">scollRefresh</a></li><li data-type='method'><a href="module-Patient.html#~searchData">searchData</a></li></ul></li><li><a href="module-pie.html">pie</a></li><li><a href="module-Plan.html">Plan</a><ul class='methods'><li data-type='method'><a href="module-Plan.html#~adopt">adopt</a></li><li data-type='method'><a href="module-Plan.html#~allCheck">allCheck</a></li><li data-type='method'><a href="module-Plan.html#~getList">getList</a></li><li data-type='method'><a href="module-Plan.html#~itemChange">itemChange</a></li><li data-type='method'><a href="module-Plan.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Plan.html#~scollRefresh">scollRefresh</a></li><li data-type='method'><a href="module-Plan.html#~searchData">searchData</a></li><li data-type='method'><a href="module-Plan.html#~tableSwitch">tableSwitch</a></li></ul></li><li><a href="module-Register.html">Register</a><ul class='methods'><li data-type='method'><a href="module-Register.html#~getcode">getcode</a></li><li data-type='method'><a href="module-Register.html#~register">register</a></li></ul></li><li><a href="module-Result.html">Result</a><ul class='methods'><li data-type='method'><a href="module-Result.html#~getList">getList</a></li><li data-type='method'><a href="module-Result.html#~goToInfo">goToInfo</a></li><li data-type='method'><a href="module-Result.html#~listRefresh">listRefresh</a></li><li data-type='method'><a href="module-Result.html#~scollRefresh">scollRefresh</a></li><li data-type='method'><a href="module-Result.html#~searchData">searchData</a></li><li data-type='method'><a href="module-Result.html#~tableSwitch">tableSwitch</a></li></ul></li><li><a href="module-ScrollView.html">ScrollView</a><ul class='methods'><li data-type='method'><a href="module-ScrollView.html#~_initScroll">_initScroll</a></li><li data-type='method'><a href="module-ScrollView.html#~disable">disable</a></li><li data-type='method'><a href="module-ScrollView.html#~enable">enable</a></li><li data-type='method'><a href="module-ScrollView.html#~refresh">refresh</a></li><li data-type='method'><a href="module-ScrollView.html#~scrollTo">scrollTo</a></li><li data-type='method'><a href="module-ScrollView.html#~scrollToElement">scrollToElement</a></li></ul></li><li><a href="module-Search.html">Search</a><ul class='methods'><li data-type='method'><a href="module-Search.html#~cleanHistory">cleanHistory</a></li><li data-type='method'><a href="module-Search.html#~historyrsSearch">historyrsSearch</a></li><li data-type='method'><a href="module-Search.html#~submit">submit</a></li></ul></li><li><a href="module-Setting.html">Setting</a><ul class='methods'><li data-type='method'><a href="module-Setting.html#~signOut">signOut</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Common/List.vue</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;style lang="scss">
+/* 自定义checkbox样式 */
+
+@mixin checkedCon($fs:18px) {
+    &amp;:before {
+        display: block;
+        width: 60%;
+        position: absolute;
+        border-radius: 50%;
+        height: 60%;
+        background-color: #f36837;
+        left: 20%;
+        top: 20%;
+        content: "";
+        color: #FFFFFF;
+        font-size: $fs;
+    }
+}
+
+$duration: .4s;
+.mui-checkbox {
+    -webkit-appearance: none;
+    position: relative;
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    background-color: #FFFFFF;
+    border: solid 1px #999;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-clip: padding-box;
+    display: inline-block;
+    &amp;:focus {
+        outline: 0 none;
+        outline-offset: -2px
+    }
+    &amp;--select {
+        @include checkedCon();
+    }
+    &amp;:checked {
+        @include checkedCon();
+    }
+    &amp;:disabled {
+        background-color: #d9d9d9;
+        border: solid 1px #d9d9d9;
+        @include checkedCon();
+        &amp;:before {
+            background-color: #eee;
+        }
+    }
+    &amp;.checkbox-green:checked {
+        background-color: #5cb85c;
+    }
+    &amp;.checkbox-orange:checked {
+        background-color: #f0ad4e;
+    }
+    &amp;.checkbox-s {
+        width: 19px;
+        height: 19px;
+        @include checkedCon(13px);
+    }
+}
+
+.mui-checkbox-anim {
+    //border等其他元素不做过渡效果，增加视觉差，更有动画效果
+    transition: background-color ease $duration/2;
+}
+
+
+
+
+
+
+
+
+/* 默认状态下的展示样式 */
+
+.common_type_default {
+    .rsCommon {
+        &amp;_single {
+            margin-bottom: 10px;
+            background-color: #fff;
+            padding: 15px 12px;
+            box-sizing: border-box;
+            position: relative;
+            &amp;_content {}
+            &amp;_title {
+                font-size: 17px;
+                color: #333;
+                margin-bottom: 15px;
+                &amp;--abnormal {
+                    color: #fa2525;
+                }
+                >span {
+                    color: #fa2525;
+                    margin-left: 10px;
+                }
+            }
+            &amp;_nameBox {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                >p {
+                    max-width: 80%;
+                    line-height: 15px;
+                    font-size: 13px;
+                    color: #666;
+                    transition: all 0.2s ease-in;
+                }
+                >i {
+                    color: #c7c7c7;
+                    font-size: 20px;
+                    transform-origin: 50% 50%;
+                    transform: rotate(180deg);
+                    transition: all 0.2s ease-in;
+                }
+                &amp;--maxHeight {
+                    >p {
+                        height: 15px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        transition: all 0.2s ease-in;
+                        text-overflow: ellipsis;
+                    }
+                    >i {
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+            &amp;_template {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &amp;_state {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                >span {
+                    margin-left: 10px;
+                }
+                >span[data-type='0'] {
+                    color: #333;
+                }
+                >span[data-type='1'] {
+                    color: #1aad19;
+                }
+                >span[data-type='2'] {
+                    color: #fa2525;
+                }
+            }
+
+            &amp;_add {
+                position: absolute;
+                right: 12px;
+                top: 15px;
+                display: flex;
+                justify-content: center;
+                width: 50px;
+                height: 23px;
+                border-radius: 2px;
+                border: solid 1px #f36837;
+                font-size: 11px;
+                color: #f36837;
+                text-align: center;
+                line-height: 23px;
+                &amp;--haveAdd {
+                    color: #999999;
+                    border-color: #999;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+/* 第二分类展示样式 */
+
+.common_type_else {
+    .rsCommon {
+        &amp;_single {
+            margin-bottom: 10px;
+            background-color: #fff;
+            padding: 15px 12px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            >input {
+                height: 20px;
+                width: 20px;
+                flex-shrink: 0;
+                margin-top: 2px;
+            }
+            &amp;_content {
+                width: calc(100% - 30px);
+            }
+            &amp;_title {
+                font-size: 15px;
+                color: #333;
+                margin-bottom: 10px;
+                &amp;--abnormal {
+                    color: #fa2525;
+                }
+                >span {
+                    color: #fa2525;
+                    margin-left: 10px;
+                }
+            }
+            &amp;_nameBox {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                width: 100%;
+                >p {
+                    max-width: 80%;
+                    line-height: 15px;
+                    font-size: 13px;
+                    color: #666;
+                    transition: all 0.2s ease-in;
+                }
+                >i {
+                    color: #c7c7c7;
+                    font-size: 20px;
+                    transform-origin: 50% 50%;
+                    transform: rotate(180deg);
+                    transition: all 0.2s ease-in;
+                }
+                &amp;--maxHeight {
+                    >p {
+                        height: 15px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        transition: all 0.2s ease-in;
+                        text-overflow: ellipsis;
+                    }
+                    >i {
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+            &amp;_planTime {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &amp;_countdown {
+                font-size: 15px;
+                color: #333;
+                line-height: 15px;
+                >span {
+                    margin-left: 20px;
+                    color: #999;
+                    font-size: 11px;
+                    line-height: 15px;
+                }
+            }
+            &amp;_template {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &amp;_state {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                >span {
+                    margin-left: 10px;
+                }
+                >span[data-type='0'] {
+                    color: #333;
+                }
+                >span[data-type='1'] {
+                    color: #1aad19;
+                }
+                >span[data-type='2'] {
+                    color: #fa2525;
+                }
+            }
+
+            &amp;_add {
+                position: absolute;
+                right: 12px;
+                top: 15px;
+                display: flex;
+                justify-content: center;
+                width: 50px;
+                height: 23px;
+                border-radius: 2px;
+                border: solid 1px #f36837;
+                font-size: 11px;
+                color: #f36837;
+                text-align: center;
+                line-height: 23px;
+                &amp;--haveAdd {
+                    color: #999999;
+                    border-color: #999;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+/* 最终分类展示形式 */
+
+.common_type_last {
+    .rsCommon {
+        &amp;_single {
+            margin-bottom: 10px;
+            background-color: #fff;
+            padding: 15px 12px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+
+            &amp;_content {
+                width: 100%;
+            }
+            &amp;_title {
+                font-size: 15px;
+                color: #333;
+                margin-bottom: 10px;
+                &amp;--abnormal {
+                    color: #fa2525;
+                }
+                >span {
+                    color: #fa2525;
+                    margin-left: 10px;
+                }
+            }
+            &amp;_nameBox {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                width: 100%;
+                >p {
+                    max-width: 80%;
+                    line-height: 15px;
+                    font-size: 13px;
+                    color: #666;
+                    transition: all 0.2s ease-in;
+                }
+                >i {
+                    color: #c7c7c7;
+                    font-size: 20px;
+                    transform-origin: 50% 50%;
+                    transform: rotate(180deg);
+                    transition: all 0.2s ease-in;
+                }
+                &amp;--maxHeight {
+                    >p {
+                        height: 15px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        transition: all 0.2s ease-in;
+                        text-overflow: ellipsis;
+                    }
+                    >i {
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+            &amp;_planTime {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &amp;_countdown {
+                font-size: 15px;
+                color: #333;
+                line-height: 15px;
+                >span {
+                    margin-left: 20px;
+                    color: #999;
+                    font-size: 11px;
+                    line-height: 15px;
+                }
+            }
+            &amp;_template {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                margin-bottom: 10px;
+            }
+            &amp;_state {
+                line-height: 15px;
+                font-size: 13px;
+                color: #999;
+                >span {
+                    margin-left: 10px;
+                }
+                >span[data-type='0'] {
+                    color: #333;
+                }
+                >span[data-type='1'] {
+                    color: #1aad19;
+                }
+                >span[data-type='2'] {
+                    color: #fa2525;
+                }
+            }
+
+            &amp;_add {
+                position: absolute;
+                right: 12px;
+                top: 15px;
+                display: flex;
+                justify-content: center;
+                width: 50px;
+                height: 23px;
+                border-radius: 2px;
+                border: solid 1px #f36837;
+                font-size: 11px;
+                color: #f36837;
+                text-align: center;
+                line-height: 23px;
+                &amp;--haveAdd {
+                    color: #999999;
+                    border-color: #999;
+                }
+            }
+        }
+    }
+}
+
+.rsCommon_single_base {
+    font-size: 12px;
+    color: #666;
+    margin-left: 5px;
+}
+
+.rsCommon_single_tag {
+    padding: 0 5px;
+    background-color: #efefef;
+    border-radius: 2px;
+    font-size: 10px;
+    margin-left: 10px;
+    color: #666;
+    font-style: normal;
+}
+.rsCommon_single_link{
+    font-size: 12px;
+    color: #999;
+    position: relative;
+    float: right;
+    &amp;:after{
+            content: " ";
+    display: inline-block;
+    height: 6px;
+    width: 6px;
+    border-width: 2px 2px 0 0;
+    border-color: #C8C8CD;
+    border-style: solid;
+    -webkit-transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    transform: matrix(0.71, 0.71, -0.71, 0.71, 0, 0);
+    position: relative;
+    top: -2px;
+    position: absolute;
+    top: 50%;
+    margin-top: -4px;
+    right: 2px;
+    }
+}
+&lt;/style>
+ &lt;template lang="pug">
+    //-列表大概会有三种状态，通过class来直接控制样式，不使用三个列表
+    div(:class="{'common_type_default':type==0,'common_type_else':type==1,'common_type_last':type==2,}")
+        .rsCommon_list
+            .rsCommon_single(v-for="item,index in list",:key="index")
+                input(@change="inputChange",v-show="type==1",type="checkbox",v-model="selectResult",:id='"check"+index',:value="item.id").mui-checkbox
+                .rsCommon_single_content
+                    //-患者姓名
+                    h3.rsCommon_single_title(:class="{'rsCommon_single_title--abnormal':item.abnormal===1}") {{item.patientName}}
+                        b.rsCommon_single_base {{item.sex || item.patientSex}}/{{item.patientAge}}
+                        span(v-show="item.currentVisitError>0") 指标异常
+                        i.rsCommon_single_tag(v-show="item.gzTag") {{item.gzTag}}
+                        router-link(v-if="item.hzxxId&amp;&amp;type!=0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId,taskId:item.id }}").rsCommon_single_link 查看更多&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                    .rsCommon_single_nameBox(@click="maxHeight(item,index)",:class="{'rsCommon_single_nameBox--maxHeight':!item.maxHeight}")
+                        p 疾病诊断：{{item.zdmc || item.icdName}}
+                        i(v-show="overArray[index]==1").iconfont &amp;#xe63e;
+                    p.rsCommon_single_template 随访计划：{{item.visitProjectName || item.schemeName}}
+                    p.rsCommon_single_state(v-show="type==0") 随访进度：{{item.currentVisitTime}}/{{item.visitCount}}
+                        router-link(v-if="item.hzxxId&amp;&amp;type==0",:to="{ path: '/main/main/mine/patInfo', query: { id: item.hzxxId,taskId:item.taskId }}").rsCommon_single_link 查看更多&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                        //-span(v-show="item.state==0",data-type=0) 待开始
+                        //-span(v-show="item.state==1",data-type=1) 待处理
+                        //-span(v-show="item.state==2",data-type=2) 立即处理
+                    p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
+                    p(v-show="type>=1&amp;&amp;item.notPassReason").rsCommon_single_planTime 不通过原因：
+                        span {{item.notPassReason==1?"患者已死亡":item.notPassReason==2?"患者不接受随访":item.notPassReason==3?"方案重复":"方案不匹配"}}
+                    p(v-show="type>=1&amp;&amp;item.dateUpdate").rsCommon_single_planTime 审核时间：{{item.dateUpdate}}
+
+                    .rsCommon_single_countdown(v-show="type==1") {{item.interTime | dataform}}
+                        span 后自动通过审核
+                    button(type="button",@click="addLike(item.hzxxId,0)",v-show="item.islike!=1&amp;&amp;type==0").rsCommon_single_add
+                        i.iconfont &amp;#xe61a;
+                        | 关注
+                    button(type="button",@click="addLike(item.hzxxId,1)",v-show="item.islike==1&amp;&amp;type==0").rsCommon_single_add.rsCommon_single_add--haveAdd 已关注
+ &lt;/template>
+
+
+ &lt;script>
+ /**
+  * 通用列表组件（三种状态,随访计划两种，随访结果一种）
+  * @module List
+  */
+import { API } from '@/services';
+import { mapGetters } from 'vuex';
+export default {
+    data() {
+        return {
+            selectResult: [],
+            baseWidth: 0,//百分之80的宽度基础值
+            overArray: []//专门用于存储当前数据是否有超出情况的集合 0：不超出 1：超过
+        }
+    },
+    props: {
+        list: Array,//列表数据
+        type: String,//列表类型
+    },
+    computed: {
+        ...mapGetters([
+            'getUserInfoUserId',
+            'getUserInfoToken',
+        ]),
+    },
+    watch: {
+        /* vue中严格禁止子组件修改父组件的实际数据 */
+        /* 将超出显示下拉的逻辑直接放在子组件中，额外设定一个集合属性用于存放判断条件 */
+        "list": function() {
+            if (this.list.length > 0) {
+                let overList = [];
+                this.$nextTick(function() {
+                    if (document.querySelector(".rsCommon_single_content")) {
+                        this.baseWidth = document.querySelector(".rsCommon_single_content").offsetWidth * 0.8;
+                    }
+                    setTimeout(() => {
+                        overList = document.querySelectorAll(".rsCommon_single_nameBox>p");
+                        this.overArray = [];
+                        for (const item of overList) {
+                            if (item.offsetWidth &lt; this.baseWidth) {
+                                this.overArray.push(0);
+                            } else {
+                                this.overArray.push(1);
+                            }
+                        }
+                    }, 20)
+                });
+
+            }
+        }
+    },
+    methods: {
+        /**
+         * input触发change自定义事件
+         * @function inputChange
+         */
+        inputChange() {
+            this.$emit('itemChange');
+        },
+        /**
+         * 展开收缩的切换（已取消使用）
+         * @function maxHeight
+         * @param  {object} ite   具体展开收缩的对象
+         * @param  {number} index 对象存在于父对象中的位置
+         */
+        maxHeight(ite, index) {
+            let item = JSON.parse(JSON.stringify(ite));
+            item.maxHeight = item.maxHeight || 0;
+            item.maxHeight = 1 - item.maxHeight;
+            Vue.set(this.list, index, item);
+        },
+        /**
+         * 添加关注/取消关注
+         * @function addLike
+         * @param {string} id   患者身份标识id
+         * @param {number} type 区别关注类型（0：添加关注，1：取消关注）
+         */
+        addLike(id, type) {
+            if (type == 0) {
+                const _this = this;
+                this.$vux.confirm.prompt('', {
+                    title: '添加关注标签',
+                    placeholder: '不得超过5个字',
+                    onConfirm(msg) {
+                        API.common.updateGz(
+                            {
+                                patientId: id, //患者的id （必填）
+                                operateTag: msg,
+                                operateType: 1, //(操作类型 1:关注 0：取消关注) （必填）
+                            }
+                        ).then((res) => {
+                            _this.$vux.toast.show({
+                                text: '关注成功',
+                                type: "success"
+                            });
+                            _this.$emit('dataReload');
+                        }).catch((err) => {
+
+                        });
+                    }
+                })
+            } else {
+                API.common.updateGz(
+                    {
+                        patientId: id, //患者的id （必填）
+                        operateType: 0, //(操作类型 1:关注 0：取消关注) （必填）
+                    }
+                ).then((res) => {
+                    this.$vux.toast.show({
+                        text: '取消关注成功',
+                        type: "success"
+                    });
+                    this.$emit('dataReload');
+                }).catch((err) => {
+
+                });
+            }
+        },
+    },
+    mounted() {
+
+    },
+    activated() {
+
+    }
+}
+&lt;/script>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Feb 28 2018 16:19:55 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

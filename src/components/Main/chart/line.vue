@@ -10,10 +10,14 @@
 </template>
 
 <script>
+/** 
+ * 折现图组件
+ * @module line
+ */
 import VeLine from 'v-charts/lib/line';
 export default {
   components: {
-		VeLine	
+		VeLine
 	},
   data() {
     return {
@@ -58,7 +62,7 @@ export default {
       /* xAxis:{
         type: 'time',
         name:"日期",
-       
+
       } */
     }
   },

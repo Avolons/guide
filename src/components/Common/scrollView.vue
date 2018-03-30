@@ -87,6 +87,10 @@
 </template>
 
 <script>
+/** 
+ * 滚动组件（transform滚动）
+ * @module ScrollView
+ */
 import BScroll from 'better-scroll'
 
 export default {
@@ -179,6 +183,10 @@ export default {
 		}, 20)
 	},
 	methods: {
+		/**
+		 * 滚动插件初始化
+		 * @function _initScroll
+		 */
 		_initScroll() {
 			if (!this.$refs.wrapper) {
 				return
@@ -232,22 +240,42 @@ export default {
 				})
 			}
 		},
+		/**
+		 * 禁用滚动效果
+		 * @function disable
+		 */
 		disable() {
 			// 代理better-scroll的disable方法
 			this.scroll && this.scroll.disable()
 		},
+		/**
+		 * 启用滚动效果
+		 * @function enable
+		 */
 		enable() {
 			// 代理better-scroll的enable方法
 			this.scroll && this.scroll.enable()
 		},
+		/**
+		 * 重置滚动实例
+		 * @function refresh
+		 */
 		refresh() {
 			// 代理better-scroll的refresh方法
 			this.scroll && this.scroll.refresh()
 		},
+		/**
+		 * 滚动到具体位置
+		 * @function scrollTo
+		 */
 		scrollTo() {
 			// 代理better-scroll的scrollTo方法
 			this.scroll && this.scroll.scrollTo.apply(this.scroll, arguments)
 		},
+		/**
+		 * 滚动到具体元素对象
+		 * @function scrollToElement
+		 */
 		scrollToElement() {
 			// 代理better-scroll的scrollToElement方法
 			this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments)

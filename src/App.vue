@@ -106,7 +106,7 @@ export default {
         }
     },
     mounted() {
-        /* function isWeiXin() {
+        function isWeiXin() {
             var ua = window.navigator.userAgent.toLowerCase();
             if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                 return true;
@@ -128,16 +128,13 @@ export default {
             if (!openId) {
                 if (access_code == null) {
                     var fromurl = location.href;//获取授权code的回调地址，获取到code，直接返回到当前页  
-                    var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd2d03971acd3bbf3&redirect_uri=' + location.href + '&response_type=code&scope=snsapi_base&state=0#wechat_redirect';
+                    var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxaa2c21bd49c7b1eb&redirect_uri=' + 'http://myaidoctor.net/' + '&response_type=code&scope=snsapi_base&state=0#wechat_redirect';
                     location.href = url;
                 } else {
-                    if (!openId) {
-                        localStorage.setItem("openId", access_code);
-                    }
-
+                    localStorage.setItem("openId", access_code);
                 }
             }
-        } */
+        }
 
     }
 }

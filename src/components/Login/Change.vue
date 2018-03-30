@@ -1,10 +1,4 @@
 <style  lang="scss">
-/**
- * 2017.11.22
- * wzh
- * 找回密码第一步
- */
-
 .rsChange {
   &_main {
     background-color: #fff;
@@ -86,13 +80,17 @@
         x-button(class="rsChange_main_btn" @click.native="nextStep") 确认
 </template>
 <script>
+/** 
+ * 密码修改组件
+ * @module Change
+ */
 import HeaderCop from '../Common/Header.vue';
 import { XInput, Group, XButton } from 'vux';
 import { API } from '@/services'
 export default {
   data() {
     return {
-      /** 
+      /**
        * 密码内容
        */
       form: {
@@ -112,8 +110,9 @@ export default {
   mounted: function() {
   },
   methods: {
-    /**@argument
+    /**
      * 确认修改密码
+     * @function nextStep
      */
     nextStep() {
       /* 值判断 */
@@ -146,7 +145,7 @@ export default {
           text: '密码修改成功,请重新登录',
           time: 500,
         });
-        /** 
+        /**
          * 清空操作
          */
         this.form = {

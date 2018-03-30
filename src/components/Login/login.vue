@@ -100,7 +100,7 @@
       .rsLogin_main_title
         img(src="../../assets/img/common/title.png")
       group.rsLogin_main_group
-        x-input(placeholder="请输入账号",type="text",v-model="form.user_phone",required) 
+        x-input(placeholder="请输入账号",type="text",v-model="form.user_phone",required)
           i(class="iconfont",slot="label") &#xe6ac;
         x-input(placeholder="请输入密码",type="password",v-model="form.user_password",required)
           i(class="iconfont" slot="label") &#xe65e;
@@ -110,6 +110,10 @@
         x-button(@click.native="login").rsLogin_main_button 登录
 </template>
 <script>
+/** 
+ * 登录组件
+ * @module Login
+ */
 import { XInput, Group, XButton, CheckIcon } from 'vux';
 import { API } from '@/services';
 export default {
@@ -130,6 +134,10 @@ export default {
     CheckIcon
   },
   methods: {
+    /**
+     * 登录
+     * @function login
+     */
     login() {
       /* 用户名格式检验 */
       if (this.form.user_phone == '') {
@@ -159,7 +167,7 @@ export default {
         this.$store.dispatch('SetUserInfo', res);
         localStorage.setItem("userInfo", JSON.stringify(res));
         setTimeout(()=> {
-          /** 
+          /**
            *  判断是否已经选择智能ai助手
            *  选择了之后直接转到首页，没有则让其选择ai助手
            */
@@ -168,7 +176,7 @@ export default {
           }else{
             this.$router.push('/');
           }
-        }, 500);
+        }, 100);
       }).catch((err) => {
 
       });

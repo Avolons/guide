@@ -65,6 +65,10 @@
     </div>
 </template>
 <script>
+/** 
+ * 主页公用父组件
+ * @module Home
+ */
 import { Tabbar, TabbarItem } from 'vux';
 export default {
     data() {
