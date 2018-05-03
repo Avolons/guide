@@ -510,10 +510,10 @@ $duration: .4s;
                         //-span(v-show="item.state==0",data-type=0) 待开始
                         //-span(v-show="item.state==1",data-type=1) 待处理
                         //-span(v-show="item.state==2",data-type=2) 立即处理
-                    p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.visitStartTime}}
+                    p(v-show="type>=1").rsCommon_single_planTime 随访计划生成时间：{{item.dateAdd}}
                     p(v-show="type>=1&&item.notPassReason").rsCommon_single_planTime 不通过原因：
                         span {{item.notPassReason==1?"患者已死亡":item.notPassReason==2?"患者不接受随访":item.notPassReason==3?"方案重复":"方案不匹配"}}
-                    p(v-show="type>=1&&item.dateUpdate").rsCommon_single_planTime 审核时间：{{item.dateUpdate}}
+                    p(v-show="type>=1&&item.dateVet").rsCommon_single_planTime 审核时间：{{item.dateVet}}
 
                     .rsCommon_single_countdown(v-show="type==1") {{item.interTime | dataform}}
                         span 后自动通过审核
