@@ -32,50 +32,16 @@ if ('addEventListener' in document) {
 }
 
 /* 路由全局函数 */
-Router.prototype.goBack = function () {
+/* Router.prototype.goBack = function () {
     if (history.length == 1) {
         window.location.href = '/';
     } else {
         this.isBack = true;
         window.history.go(-1);
     }
-};
+}; */
 
 /* 登录跳转判断 */
-router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
-    store.commit('updateLoadingStatus', {
-        isLoading: true
-    });
-    // 判断该路由是否需要登录权限
-    if (to.meta.requireAuth) {
-        // 通过vuex state获取当前的token是否存在
-        if (store.state.userInfo.id) {
-            next();
-        } else {
-            next({
-                path: '/login',
-                query: {
-                    redirect: to.fullPath
-                } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-            });
-        }
-    } else {
-        next();
-    }
-    /* title重新赋值 */
-    if (to.meta.title) {
-        document.title = to.meta.title;
-        let adminNmae = '';
-        if (localStorage.getItem('userInfo')) {
-            adminNmae = JSON.parse(localStorage.getItem('userInfo')).data.username;
-        }
-        if (adminNmae) {
-            TDAPP.onEvent(adminNmae, '访问页面_' + to.meta.title);
-        }
-        next();
-    }
-});
 
 router.afterEach(function (to) {
     store.commit('updateLoadingStatus', {

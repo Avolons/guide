@@ -106,7 +106,7 @@ export default {
         }
     },
     mounted() {
-        function isWeiXin() {
+       /*  function isWeiXin() {
             var ua = window.navigator.userAgent.toLowerCase();
             if (ua.match(/MicroMessenger/i) == 'micromessenger') {
                 return true;
@@ -135,7 +135,7 @@ export default {
                 }
             }
         }
-
+ */
     }
 }
 

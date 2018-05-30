@@ -9,7 +9,7 @@ Vue.prototype.$http = axios;
 
 /* 默认请求地址 */
 
-axios.defaults.baseURL = 'http://192.168.1.215:8088/';
+/* axios.defaults.baseURL = 'http://192.168.1.218:8085/'; */
 
 /* 默认最长响应时间 */
 axios.defaults.timeout = 35000;
@@ -48,6 +48,7 @@ function fetch (type, url, params = {}) {
                             text: JSON.parse(response.data).message,
                             type: 'cancel'
                         });
+                        reject(new Error('数据错误'));
                     }
                 }, err => {
                     reject(err);
@@ -68,6 +69,7 @@ function fetch (type, url, params = {}) {
                             text: JSON.parse(response.data).message,
                             type: 'cancel'
                         });
+                        reject(new Error('数据错误'));
                     }
                 }, err => {
                     reject(err);
@@ -99,79 +101,31 @@ export const common = {
         return fetch('post', '/wechat/login/getSmsCode', data);
     },
     /**
-     * 绑定手机号
+     * 获取验证码
      * @param phoneNum {string} 手机号码
-     * @param smsCode {string} 验证码
-     * @param userName {string} 用户名
      */
-    bindingPhone (data) {
-        return fetch('post', '/wechat/login/bindingPhone', data);
+    getDepartMent (data) {
+        return fetch('get', '/hospital/departments', data);
     },
     /**
-     * 绑定AI头像
-     * @param userId {string} 医生的iD
-     * @param aiPictureCode {string} ai助手头像对应的code
+     * 获取验证码
+     * @param phoneNum {string} 手机号码
      */
-    bindAiPicture (data) {
-        return fetch('post', '/wechat/center/bindAiPicture', data);
+    getCheck (data) {
+        return fetch('get', '/hospital/checks', data);
     },
     /**
-     * 获取12生肖
-     * @param adminId {string} 医生的id
-     * @param fromsys {string} h5/web 1是pc 2是h5
+     * 获取验证码
+     * @param phoneNum {string} 手机号码
      */
-    findAiPictureList (data) {
-        return fetch('post', '/wechat/center/findAiPictureList', data);
+    getCheckInfo (data) {
+        return fetch('post', '/hospital/checkDetail ', data);
     },
     /**
-     * 取消/添加关注
-     * @param adminId {string} 医生的id
-     * @param patientId {string} 患者的id
-     * @param operateType {number} (操作类型 1:关注 0：取消关注) （必填）
-     * @param operateTag {string} 关注的标签
+     * 获取验证码
+     * @param phoneNum {string} 手机号码
      */
-    updateGz (data) {
-        return fetch('post', '/wechat/center/updateGz', data);
-    },
-    /*
-     *修改密码/找回密码
-     */
-    /**
-     * 登录
-     * @param username {string} 用户名
-     * @param password {string} 密码
-     */
-    editPassword (data) {
-        return fetch('post', '/wechat/login/editPassword', data);
-    },
-    /*
-     *随访结果model获取病人信息
-     *phoneNum
-     */
-    /**
-     * 登录
-     * @param username {string} 用户名
-     * @param password {string} 密码
-     */
-    getPatientRecord (data) {
-        return fetch('post', '/wechat/patientRecord/getPatientRecord', data);
-    },
-    /**
-     * 修改密码
-     * @param adminId {string} 医生id
-     * @param oldPassword {string} 老密码
-     * @param newPassword {string} 新密码
-     */
-    pceditPassword (data) {
-        return fetch('post', '/wechat/login/pceditPassword', data);
-    },
-    /**
-     * 医生反馈意见
-     * @param adminId {string} 医生的id
-     * @param suggestion {string} 反馈的内容
-     * @param fromsys {string} h5/web 1是pc 2是h5
-     */
-    sendMessage (data) {
-        return fetch('post', '/wechat/center/sendMessage', data);
+    getDepart (data) {
+        return fetch('post', '/hospital/registerDetail', data);
     }
 };

@@ -20,44 +20,15 @@ const guide = () =>
 
 const routes = [{
     path: '/',
+    redirect: '/guide',
     component: guide,
-    /* children: [{
-        path: "",
-        meta: {
-          title: "认识医生",
-          requireAuth:true,
-        },
-        component: Index,
-      },
-      {
-        path: "plan",
-        meta: {
-          title: "随访计划",
-          requireAuth:true,
-          keepAlive: true // 需要被缓存
-        },
-        component: Plan
-      },
-      {
-        path: "result",
-        meta: {
-          title: "随访记录",
-          requireAuth:true,
-          keepAlive: true // 需要被缓存
-        },
-        component: Result
-      },
-      {
-        path: "mine",
-        meta: {
-          title: "个人中心",
-          requireAuth:true,
-          keepAlive: true // 需要被缓存
-        },
-        component: Mine
-      },
-    ] */
   },
+  {
+    path: '/guide',
+    component: guide,
+   
+  },
+  
 ];
 
 
