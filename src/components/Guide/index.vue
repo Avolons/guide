@@ -164,9 +164,9 @@
 <template lang="pug">
     .guide  
         .guide_header 
-            selector(placeholder="选择楼层", :options="floorList", v-model="floor",@on-change="floorChange")
             popup-picker( :display-format="formatName" ,show-name=true ,:columns="departLevel",:data="departMentList", v-model="departMent",@on-change="departMentChange" ,placeholder="请选择科室")
             selector(:options="checkList", v-model="check",@on-change="checkChange" ,placeholder="请选择检查")
+            selector(placeholder="选择楼层", :options="floorList", v-model="floor",@on-change="floorChange")
         h4.guide_floor {{floor}}
         .guide_asideOut
           .guide_aside
@@ -185,10 +185,10 @@
                           h4.guide_aside_name {{info.ksmc || info.yjjclx}}
                           ul.guide_aside_list
                               li.guide_aside_param 
-                                  span  {{info.pbys?"待就诊人数":"待检查人数"}}: 
+                                  span  {{!info.yjkslx?"待就诊人数":"待检查人数"}}: 
                                   |{{info.waitPeople || info.djzsl}}
                               li.guide_aside_param 
-                                  span  {{info.pbys?"当前就诊号码":"当前检查号码"}}:
+                                  span  {{!info.yjkslx?"当前就诊号码":"当前检查号码"}}:
                                   |{{info.presentno || info.dqjzhm}}
                               li.guide_aside_param 
                                   span  当前叫号时间: 
@@ -197,10 +197,10 @@
                                   span  科室医生: 
                                   |{{info.pbys}}
                               li.guide_aside_param    
-                                  span  检查位置: 
+                                  span  {{!info.yjkslx?"就诊位置":"检查位置"}}: 
                                   |{{info.deptplace ||  info.kswz}}
-                      .guide_aside_text(v-show="info.pbys")
-                          h4.guide_aside_name {{info.pbys?"科室介绍":"检查内容"}}:
+                      .guide_aside_text(v-show="!info.yjkslx")
+                          h4.guide_aside_name {{!info.yjkslx?"科室介绍":"检查内容"}}:
                           p.guide_aside_content  {{info.remark}}
                       div(@click='infoShow=false').guide_aside_close
                           x-icon(type="ios-close-empty")
@@ -327,11 +327,16 @@ export default {
         this.info = res.data;
         this.popoverLeft = res.data.addressX;
         this.popoverTop = res.data.addressY;
-        for (const item of this.checkList) {
+        /* for (const item of this.checkList) {
           if (item.yjjclx == check) {
             this.floor = item.floor;
             break;
           }
+        } */
+        if(res.data.kswz!= "住院部七楼"){
+          this.floor=res.data.kswz.substr(0, 2);
+        }else{
+          this.floor="住院部七楼";
         }
         setTimeout(() => {
           this.popoverShow = true;
@@ -384,9 +389,9 @@ export default {
         for (const item of res.data) {
           item.value = item.yjjclx;
           item.key = item.yjjclx;
-          if (item.kswz != "住院部七楼") {
-            item.floor = item.kswz.substr(0, 2);
-          }
+            if (item.kswz && item.kswz != "住院部七楼") {
+              item.floor = item.kswz.substr(0, 2);
+            }
         }
         this.checkList = res.data;
       });

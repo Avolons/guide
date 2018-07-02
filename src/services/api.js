@@ -9,7 +9,7 @@ Vue.prototype.$http = axios;
 
 /* 默认请求地址 */
 
-/* axios.defaults.baseURL = 'http://192.168.1.218:8085/'; */
+/* axios.defaults.baseURL = 'http://61.153.232.58:8088/'; */
 
 /* 默认最长响应时间 */
 axios.defaults.timeout = 35000;
